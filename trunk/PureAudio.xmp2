@@ -13,23 +13,23 @@
             <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
               <Param1 />
               <UpdateOption>OverwriteIfOlder</UpdateOption>
-              <LocalFileName>..\VS\PureAudio\bin\Release\ASIO.Interop.dll</LocalFileName>
+              <LocalFileName>Bin\Release\ASIO.Interop.dll</LocalFileName>
               <ZipFileName>Installer{CopyFile}\{ce2ca684-f06c-4fb4-bd24-5ad17e8f6d5b}-ASIO.Interop.dll</ZipFileName>
               <DestinationFilename>%Plugins%\ExternalPlayers\ASIO.Interop.dll</DestinationFilename>
             </FileItem>
             <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
               <Param1 />
               <UpdateOption>OverwriteIfOlder</UpdateOption>
-              <LocalFileName>..\VS\PureAudio\bin\Release\PureAudio.dll</LocalFileName>
+              <LocalFileName>Bin\Release\WMPEffects.Interop.dll</LocalFileName>
               <ZipFileName>Installer{CopyFile}\{de738801-5f49-4a81-bc3b-a94a5569992c}-PureAudio.dll</ZipFileName>
-              <DestinationFilename>%Plugins%\ExternalPlayers\PureAudio.dll</DestinationFilename>
+              <DestinationFilename>%Plugins%\ExternalPlayers\WMPEffects.Interop.dll</DestinationFilename>
             </FileItem>
             <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
               <Param1 />
               <UpdateOption>OverwriteIfOlder</UpdateOption>
-              <LocalFileName>..\VS\PureAudio\bin\Release\WMPEffects.Interop.dll</LocalFileName>
+              <LocalFileName>Bin\Release\PureAudio.dll</LocalFileName>
               <ZipFileName>Installer{CopyFile}\{bd30b7bb-ebdb-43b0-98c8-0d2524b80edd}-WMPEffects.Interop.dll</ZipFileName>
-              <DestinationFilename>%Plugins%\ExternalPlayers\WMPEffects.Interop.dll</DestinationFilename>
+              <DestinationFilename>%Plugins%\ExternalPlayers\PureAudio.dll</DestinationFilename>
             </FileItem>
           </Items>
         </Files>
@@ -147,7 +147,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Name>PureAudio </Name>
     <Id>e316da11-c3ac-4eba-bb92-570a65ad8de2</Id>
     <Author>Sieds Tilstra (aka Symphy)</Author>
-    <HomePage />
+    <HomePage>http://code.google.com/p/pureaudio-mediaportal-plugin/</HomePage>
     <ForumPage>http://forum.team-mediaportal.com/asio-music-player-245/</ForumPage>
     <UpdateUrl />
     <Version>
@@ -156,13 +156,13 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <Build>2</Build>
       <Revision>0</Revision>
     </Version>
-    <ExtensionDescription>Advanced music player </ExtensionDescription>
+    <ExtensionDescription>Advanced audioplayer plugin.</ExtensionDescription>
     <VersionDescription />
-    <DevelopmentStatus>Alpha</DevelopmentStatus>
-    <OnlineLocation />
+    <DevelopmentStatus>Stable</DevelopmentStatus>
+    <OnlineLocation>http://pureaudio-mediaportal-plugin.googlecode.com/files/PureAudio0.2.2.0.mpe1</OnlineLocation>
     <ReleaseDate>2010-04-12T20:30:24.3018651+02:00</ReleaseDate>
     <Tags />
-    <Location>D:\Development\MediaPortal\PureAudio\PureAudio\MpeMaker\PureAudio0220a4.mpe1</Location>
+    <Location>D:\Development\MediaPortal\SVN\PureAudio\trunk\PureAudio0220.mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">
@@ -200,28 +200,31 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
-        <LocalFileName>..\VS\PureAudio\bin\Release\ASIO.Interop.dll</LocalFileName>
+        <LocalFileName>Bin\Release\ASIO.Interop.dll</LocalFileName>
         <ZipFileName>Installer{CopyFile}\{ce2ca684-f06c-4fb4-bd24-5ad17e8f6d5b}-ASIO.Interop.dll</ZipFileName>
         <DestinationFilename>%Plugins%\ExternalPlayers\ASIO.Interop.dll</DestinationFilename>
       </FileItem>
       <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
-        <LocalFileName>..\VS\PureAudio\bin\Release\PureAudio.dll</LocalFileName>
+        <LocalFileName>Bin\Release\WMPEffects.Interop.dll</LocalFileName>
         <ZipFileName>Installer{CopyFile}\{de738801-5f49-4a81-bc3b-a94a5569992c}-PureAudio.dll</ZipFileName>
-        <DestinationFilename>%Plugins%\ExternalPlayers\PureAudio.dll</DestinationFilename>
+        <DestinationFilename>%Plugins%\ExternalPlayers\WMPEffects.Interop.dll</DestinationFilename>
       </FileItem>
       <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
-        <LocalFileName>..\VS\PureAudio\bin\Release\WMPEffects.Interop.dll</LocalFileName>
+        <LocalFileName>Bin\Release\PureAudio.dll</LocalFileName>
         <ZipFileName>Installer{CopyFile}\{bd30b7bb-ebdb-43b0-98c8-0d2524b80edd}-WMPEffects.Interop.dll</ZipFileName>
-        <DestinationFilename>%Plugins%\ExternalPlayers\WMPEffects.Interop.dll</DestinationFilename>
+        <DestinationFilename>%Plugins%\ExternalPlayers\PureAudio.dll</DestinationFilename>
       </FileItem>
     </Items>
   </UniqueFileList>
   <ProjectSettings>
     <FolderGroups />
-    <ProjectFilename>D:\Development\MediaPortal\PureAudio\PureAudio\MpeMaker\PureAudio0220a3.xmp2</ProjectFilename>
+    <ProjectFilename>D:\Development\MediaPortal\SVN\PureAudio\trunk\PureAudio.xmp2</ProjectFilename>
+    <UpdatePath1 />
+    <UpdatePath2 />
+    <UpdatePath3 />
   </ProjectSettings>
 </PackageClass>

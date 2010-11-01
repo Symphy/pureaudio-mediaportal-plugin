@@ -123,6 +123,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="PreBuild.bat" />
     <None Include="PostBuild.bat" />
   </ItemGroup>
