@@ -29,7 +29,7 @@ using System.IO;
 using MediaPortal.GUI.Library;
 using MediaPortal.Player.PureAudio;
 using Un4seen.Bass;
-using Un4seen.Bass.AddOn.Vis;
+using Un4seen.Bass.AddOn;
 using MediaPortal.Player.PureAudio.Asio;
 using BlueWave.Interop.Asio;
 using System.Diagnostics;

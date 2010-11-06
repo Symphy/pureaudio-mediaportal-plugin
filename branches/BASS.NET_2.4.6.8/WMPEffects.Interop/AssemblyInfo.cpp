@@ -34,12 +34,12 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyTitleAttribute("WMPEffects.Interop")];
 [assembly:AssemblyDescriptionAttribute("WMP visualization wrapper")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("Sieds Tilstra (aka Symphy)")];
+[assembly:AssemblyCompanyAttribute("Sieds Tilstra (Symphy)")];
 [assembly:AssemblyProductAttribute("MediaPortal")];
 [assembly:AssemblyCopyrightAttribute("Copyright © 2010 Team MediaPortal")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
-[assembly:AssemblyVersionAttribute("0.2.2.0")];
+[assembly:AssemblyVersionAttribute("0.2.3.0")];
 
 [assembly:ComVisible(false)];
 

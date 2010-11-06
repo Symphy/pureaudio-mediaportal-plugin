@@ -149,20 +149,20 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Author>Sieds Tilstra (Symphy)</Author>
     <HomePage>http://pureaudio-mediaportal-plugin.googlecode.com</HomePage>
     <ForumPage>http://forum.team-mediaportal.com/asio-music-player-245/</ForumPage>
-    <UpdateUrl>http://pureaudio-mediaportal-plugin.googlecode.com/svn/trunk/MPE/update.xml</UpdateUrl>
+    <UpdateUrl />
     <Version>
       <Major>0</Major>
       <Minor>2</Minor>
-      <Build>2</Build>
+      <Build>3</Build>
       <Revision>0</Revision>
     </Version>
     <ExtensionDescription>Advanced music player.</ExtensionDescription>
     <VersionDescription />
-    <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>http://pureaudio-mediaportal-plugin.googlecode.com/files/PureAudio_0.2.2.0_Stable.mpe1</OnlineLocation>
+    <DevelopmentStatus>Alpha</DevelopmentStatus>
+    <OnlineLocation />
     <ReleaseDate>2010-04-12T20:30:24.3018651+02:00</ReleaseDate>
     <Tags>audio,asio,gapless,bitperfect,replaygain</Tags>
-    <Location>D:\Development\MediaPortal\SVN\PureAudio\trunk\MPE\PureAudio_[Version]_[DevelopmentStatus].mpe1</Location>
+    <Location>D:\Development\MediaPortal\SVN\PureAudio\branches\BASS.NET_2.4.6.8\MPE\PureAudio_[Version]_[DevelopmentStatus].mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">
@@ -222,7 +222,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
   </UniqueFileList>
   <ProjectSettings>
     <FolderGroups />
-    <ProjectFilename>D:\Development\MediaPortal\SVN\PureAudio\trunk\MPE\PureAudio.xmp2</ProjectFilename>
+    <ProjectFilename>D:\Development\MediaPortal\SVN\PureAudio\branches\BASS.NET_2.4.6.8\MPE\PureAudio.xmp2</ProjectFilename>
     <UpdatePath1>D:\Development\MediaPortal\SVN\PureAudio\trunk\MPE\update.xml</UpdatePath1>
     <UpdatePath2 />
     <UpdatePath3 />
