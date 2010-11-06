@@ -219,25 +219,25 @@ namespace MediaPortal.Player.PureAudio
     /// </summary>
     private void InitializeComponent()
     {
-      System.Windows.Forms.TreeNode treeNode91 = new System.Windows.Forms.TreeNode("Output Device");
-      System.Windows.Forms.TreeNode treeNode92 = new System.Windows.Forms.TreeNode("Upmixing");
-      System.Windows.Forms.TreeNode treeNode93 = new System.Windows.Forms.TreeNode("Extensions");
-      System.Windows.Forms.TreeNode treeNode94 = new System.Windows.Forms.TreeNode("General Settings", new System.Windows.Forms.TreeNode[] {
-            treeNode92,
-            treeNode93});
-      System.Windows.Forms.TreeNode treeNode95 = new System.Windows.Forms.TreeNode("Visualizations");
-      System.Windows.Forms.TreeNode treeNode96 = new System.Windows.Forms.TreeNode("DSP\'s");
-      System.Windows.Forms.TreeNode treeNode97 = new System.Windows.Forms.TreeNode("ASIO");
-      System.Windows.Forms.TreeNode treeNode98 = new System.Windows.Forms.TreeNode("WaveOut");
-      System.Windows.Forms.TreeNode treeNode99 = new System.Windows.Forms.TreeNode("Advanced Settings", new System.Windows.Forms.TreeNode[] {
-            treeNode97,
-            treeNode98});
-      System.Windows.Forms.TreeNode treeNode100 = new System.Windows.Forms.TreeNode("PureAudio Plugin", new System.Windows.Forms.TreeNode[] {
-            treeNode91,
-            treeNode94,
-            treeNode95,
-            treeNode96,
-            treeNode99});
+      System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Output Device");
+      System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Upmixing");
+      System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Extensions");
+      System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("General Settings", new System.Windows.Forms.TreeNode[] {
+            treeNode2,
+            treeNode3});
+      System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Visualizations");
+      System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("DSP\'s");
+      System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("ASIO");
+      System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("WaveOut");
+      System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Advanced Settings", new System.Windows.Forms.TreeNode[] {
+            treeNode7,
+            treeNode8});
+      System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("PureAudio Plugin", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode4,
+            treeNode5,
+            treeNode6,
+            treeNode9});
       this.btnOk = new MediaPortal.UserInterface.Controls.MPButton();
       this.btnCancel = new MediaPortal.UserInterface.Controls.MPButton();
       this.mpLabel4 = new MediaPortal.UserInterface.Controls.MPLabel();
@@ -734,10 +734,10 @@ namespace MediaPortal.Player.PureAudio
       this.lnkDownload.AutoSize = true;
       this.lnkDownload.Location = new System.Drawing.Point(22, 122);
       this.lnkDownload.Name = "lnkDownload";
-      this.lnkDownload.Size = new System.Drawing.Size(244, 13);
+      this.lnkDownload.Size = new System.Drawing.Size(176, 13);
       this.lnkDownload.TabIndex = 1;
       this.lnkDownload.TabStop = true;
-      this.lnkDownload.Text = "Visit downloadpage at www.team-mediaportal.com";
+      this.lnkDownload.Text = "Visit homepage at code.google.com";
       this.lnkDownload.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkDownLoad_LinkClicked);
       // 
       // mpLabel16
@@ -1836,28 +1836,28 @@ namespace MediaPortal.Player.PureAudio
       this.tvwMenu.HideSelection = false;
       this.tvwMenu.Location = new System.Drawing.Point(13, 13);
       this.tvwMenu.Name = "tvwMenu";
-      treeNode91.Name = "NodeDevice";
-      treeNode91.Text = "Output Device";
-      treeNode92.Name = "NodeUpmixing";
-      treeNode92.Text = "Upmixing";
-      treeNode93.Name = "NodeExtensions";
-      treeNode93.Text = "Extensions";
-      treeNode94.Name = "NodeGeneral";
-      treeNode94.Text = "General Settings";
-      treeNode95.Name = "NodeVisualizations";
-      treeNode95.Text = "Visualizations";
-      treeNode96.Name = "NodeDSP";
-      treeNode96.Text = "DSP\'s";
-      treeNode97.Name = "NodeASIO";
-      treeNode97.Text = "ASIO";
-      treeNode98.Name = "NodeWaveOut";
-      treeNode98.Text = "WaveOut";
-      treeNode99.Name = "NodeAdvanced";
-      treeNode99.Text = "Advanced Settings";
-      treeNode100.Name = "NodeRoot";
-      treeNode100.Text = "PureAudio Plugin";
+      treeNode1.Name = "NodeDevice";
+      treeNode1.Text = "Output Device";
+      treeNode2.Name = "NodeUpmixing";
+      treeNode2.Text = "Upmixing";
+      treeNode3.Name = "NodeExtensions";
+      treeNode3.Text = "Extensions";
+      treeNode4.Name = "NodeGeneral";
+      treeNode4.Text = "General Settings";
+      treeNode5.Name = "NodeVisualizations";
+      treeNode5.Text = "Visualizations";
+      treeNode6.Name = "NodeDSP";
+      treeNode6.Text = "DSP\'s";
+      treeNode7.Name = "NodeASIO";
+      treeNode7.Text = "ASIO";
+      treeNode8.Name = "NodeWaveOut";
+      treeNode8.Text = "WaveOut";
+      treeNode9.Name = "NodeAdvanced";
+      treeNode9.Text = "Advanced Settings";
+      treeNode10.Name = "NodeRoot";
+      treeNode10.Text = "PureAudio Plugin";
       this.tvwMenu.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode100});
+            treeNode10});
       this.tvwMenu.Size = new System.Drawing.Size(185, 336);
       this.tvwMenu.TabIndex = 1;
       this.tvwMenu.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwMenu_AfterSelect);
@@ -2215,7 +2215,7 @@ namespace MediaPortal.Player.PureAudio
     private void lnkDownLoad_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
       Process.Start(
-        "http://www.team-mediaportal.com/files/Download/MediaPortalInstaller(MPI)/AudioorRadio/ASIOMusicPlayerPlugin/");
+        "http://code.google.com/p/pureaudio-mediaportal-plugin");
     }
 
     private void lnkForum_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
