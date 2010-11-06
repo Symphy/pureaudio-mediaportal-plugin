@@ -1,6 +1,4 @@
-#summary Version history.
-
-= Version History =
+#summary Version history for the PureAudio MediaPortal plugin.
 
 == Version 0.2.2.0 stable ==
 === Changes: ===
