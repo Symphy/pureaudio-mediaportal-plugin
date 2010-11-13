@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Utils, Version=1.1.5.23873, Culture=neutral, processorArchitecture=x86">
@@ -55,6 +56,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\Sections\About.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration\Sections\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\Sections\SectionBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration\Sections\SectionBase.Designer.cs">
+      <DependentUpon>SectionBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="CoreComponents\MixingMatrix.cs" />
     <Compile Include="CoreComponents\MixingMatrixBuilder.cs" />
     <Compile Include="Definitions\WaveFormatExtensible.cs" />
@@ -63,7 +79,7 @@
     <Compile Include="Utils\ChannelLayoutHelper.cs" />
     <Compile Include="Exceptions\BassLibraryException.cs" />
     <Compile Include="Exceptions\BassPlayerException.cs" />
-    <Compile Include="BassPlayerSettings.cs" />
+    <Compile Include="Configuration\BassPlayerSettings.cs" />
     <Compile Include="BassStream.cs" />
     <Compile Include="BassStreamNestedTypes.cs" />
     <Compile Include="Definitions\ChannelAssignmentInfos.cs" />
@@ -117,6 +133,17 @@
   <ItemGroup>
     <None Include="PostBuild.bat" />
     <None Include="PreBuild.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\ConfigurationForm.resx">
+      <DependentUpon>ConfigurationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\Sections\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\Sections\SectionBase.resx">
+      <DependentUpon>SectionBase.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
