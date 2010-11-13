@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PureAudio.ASIOInterop", "PureAudio.ASIOInterop\PureAudio.ASIOInterop.vcproj", "{2EC0CE30-4934-4856-A64C-75316F98393E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureAudio.Plugin", "PureAudio.Plugin\PureAudio.Plugin.csproj", "{ABB83D33-0F45-48D4-865D-88B22C02230D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{C4948AE0-FC7F-4BF1-B321-EF4236536B0F}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\SetDirectories.bat = Dependencies\SetDirectories.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{0CE41379-3B9F-49BE-BB81-E171A746CB52}"
+	ProjectSection(SolutionItems) = preProject
+		Doc\Readme.txt = Doc\Readme.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Debug|Win32.Build.0 = Debug|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Any CPU.ActiveCfg = Release|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Win32.ActiveCfg = Release|Win32
+		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Win32.Build.0 = Release|Win32
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Win32.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
