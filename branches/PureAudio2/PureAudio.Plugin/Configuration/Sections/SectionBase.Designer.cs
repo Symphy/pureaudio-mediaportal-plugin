@@ -1,4 +1,4 @@
-﻿namespace PureAudio.Plugin.Configuration.Sections
+﻿namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
 {
   partial class SectionBase
   {

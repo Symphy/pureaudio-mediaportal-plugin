@@ -21,7 +21,7 @@
 using System;
 using System.Threading;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   /// <summary>
   /// Represents a single workitem to be executed on a different thread.

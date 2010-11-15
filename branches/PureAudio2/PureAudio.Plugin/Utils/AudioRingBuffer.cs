@@ -21,7 +21,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   /// <summary>
   /// Fifo ringbuffer for audio data.

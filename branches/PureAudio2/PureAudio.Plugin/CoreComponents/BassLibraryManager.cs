@@ -23,7 +23,7 @@ using System.IO;
 using System.Collections.Generic;
 using Un4seen.Bass;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {
@@ -164,15 +164,20 @@ namespace MediaPortal.Player.PureAudio
       public void Dispose()
       {
         Log.Debug("BassLibraryManager.Dispose()");
-
-        foreach (int pluginHandle in BassLibraryManager._DecoderPluginHandles)
+        
+        if (BassLibraryManager._BassInitialized)
         {
-          Bass.BASS_PluginFree(pluginHandle);
-        }
+          foreach (int pluginHandle in BassLibraryManager._DecoderPluginHandles)
+          {
+            Bass.BASS_PluginFree(pluginHandle);
+          }
 
-        if (!Bass.BASS_Free())
-        {
-          throw new BassLibraryException("BASS_Free");
+          if (!Bass.BASS_Free())
+          {
+            throw new BassLibraryException("BASS_Free");
+          }
+          
+          BassLibraryManager._BassInitialized = false;
         }
       }
 
