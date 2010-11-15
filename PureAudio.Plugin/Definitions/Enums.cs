@@ -20,7 +20,7 @@
 
 using System;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {
@@ -33,13 +33,20 @@ namespace MediaPortal.Player.PureAudio
       Stopped
     }
 
-    enum MediaItemType
+    enum MediaItemMainType
     {
-      Unknown,
-      WebStream,
-      MODFile,
-      AudioFile,
-      CDTrack
+      Unknown = 0,
+      WebStream = 1,
+      MODFile = 2,
+      AudioFile = 3,
+      CDTrack = 4
+    }
+
+    enum MediaItemSubType
+    {
+      None = 0,
+      ASXWebStream = 1,
+      LastFmWebStream = 3
     }
 
     enum InternalPlayBackState
@@ -78,9 +85,10 @@ namespace MediaPortal.Player.PureAudio
 
   public enum PlaybackMode
   {
-    Normal,
-    Gapless,
-    CrossFading
+    // Must match int values as used by MP for IPlayer.PlaybackType
+    Normal = 0,
+    Gapless = 1,
+    CrossFading = 2
   }
 
   /// <summary>

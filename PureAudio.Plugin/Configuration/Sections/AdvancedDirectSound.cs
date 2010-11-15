@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Data;
 using System.Text;
@@ -29,16 +28,16 @@ using System.Windows.Forms;
 
 namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
 {
-  public partial class About : SectionBase
+  public partial class AdvancedDirectSound : SectionBase
   {
 
     #region constructors
 
-    public About()
+    public AdvancedDirectSound()
     {
       InitializeComponent();
     }
-    
+
     #endregion
 
     #region public members
@@ -46,27 +45,26 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
     public override void ReadSettings(ConfigurationForm form)
     {
       base.ReadSettings(form);
-      lblPlayerName.Text = form.Player.PlayerName;
-      lblDescription.Text = form.Player.Description();
-      lblVersion.Text = form.Player.VersionNumber;
-      lblAuthorName.Text = form.Player.AuthorName;
+
+      trackBarDirectSoundBufferSize.Value = (int)BassPlayerSettings.DirectSoundBufferSize.TotalMilliseconds / 100;
+      lblDirectSoundBufferSize.Text = BassPlayerSettings.DirectSoundBufferSize.TotalMilliseconds.ToString();
     }
 
     #endregion
 
     #region event handlers
 
-    private void lnkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void trackBarDirectSoundBufferSize_ValueChanged(object sender, EventArgs e)
     {
-        Process.Start("http://code.google.com/p/pureaudio-mediaportal-plugin");
+      int value = trackBarDirectSoundBufferSize.Value * 100;
+      BassPlayerSettings.DirectSoundBufferSize = TimeSpan.FromMilliseconds(value);
+      lblDirectSoundBufferSize.Text = value.ToString();
     }
 
-    private void lnkForum_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-    {
-        Process.Start("http://forum.team-mediaportal.com/asio-music-player-245/");
-    }
-    
     #endregion
 
+    #region private members
+
+    #endregion
   }
 }

@@ -20,7 +20,7 @@
 
 using System;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {
@@ -37,7 +37,7 @@ namespace MediaPortal.Player.PureAudio
       /// <summary>
       /// Gets the mediaitem type for the inputsource.
       /// </summary>
-      MediaItemType MediaItemType { get; }
+      MediaItemMainType MediaItemType { get; }
 
       /// <summary>
       /// Gets the output Bass stream.

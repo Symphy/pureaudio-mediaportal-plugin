@@ -29,16 +29,16 @@ using System.Windows.Forms;
 
 namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
 {
-  public partial class About : SectionBase
+  public partial class Advanced : SectionBase
   {
 
     #region constructors
 
-    public About()
+    public Advanced()
     {
       InitializeComponent();
     }
-    
+
     #endregion
 
     #region public members
@@ -46,24 +46,27 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
     public override void ReadSettings(ConfigurationForm form)
     {
       base.ReadSettings(form);
-      lblPlayerName.Text = form.Player.PlayerName;
-      lblDescription.Text = form.Player.Description();
-      lblVersion.Text = form.Player.VersionNumber;
-      lblAuthorName.Text = form.Player.AuthorName;
+
+      trackBarPlaybackBufferSize.Value = (int)BassPlayerSettings.PlaybackBufferSize.TotalMilliseconds / 100;
+      lblPlaybackBufferSize.Text = BassPlayerSettings.PlaybackBufferSize.TotalMilliseconds.ToString();
+
+      chkEnableOverSampling.Checked = BassPlayerSettings.EnableOversampling;
     }
 
     #endregion
 
     #region event handlers
 
-    private void lnkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void trackBarPlaybackBufferSize_ValueChanged(object sender, EventArgs e)
     {
-        Process.Start("http://code.google.com/p/pureaudio-mediaportal-plugin");
+      int value = trackBarPlaybackBufferSize.Value * 100;
+      BassPlayerSettings.PlaybackBufferSize = TimeSpan.FromMilliseconds(value);
+      lblPlaybackBufferSize.Text = value.ToString();
     }
 
-    private void lnkForum_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void chkEnableOverSampling_CheckedChanged(object sender, EventArgs e)
     {
-        Process.Start("http://forum.team-mediaportal.com/asio-music-player-245/");
+      BassPlayerSettings.EnableOversampling = chkEnableOverSampling.Checked;
     }
     
     #endregion

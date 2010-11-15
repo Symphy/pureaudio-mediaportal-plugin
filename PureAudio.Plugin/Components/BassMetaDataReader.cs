@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Un4seen.Bass;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {

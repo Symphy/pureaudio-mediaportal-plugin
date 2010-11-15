@@ -27,7 +27,7 @@ using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using MediaPortal.Player;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer : IExternalPlayer, IDisposable
   {
@@ -91,10 +91,7 @@ namespace MediaPortal.Player.PureAudio
 
     public override string VersionNumber
     {
-      get
-      {
-        return Assembly.GetExecutingAssembly().GetName().Version.ToString();
-      }
+      get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
     }
 
     public override string AuthorName
@@ -129,9 +126,8 @@ namespace MediaPortal.Player.PureAudio
 
     public override void ShowPlugin()
     {
-      // Todo: implement
-      //ConfigurationForm confForm = new ConfigurationForm();
-      //confForm.ShowDialog();
+      Configuration.ConfigurationForm confForm = new Configuration.ConfigurationForm();
+      confForm.ShowDialog();
     }
 
     #endregion
@@ -160,12 +156,12 @@ namespace MediaPortal.Player.PureAudio
 
     public override bool IsRadio
     {
-      get { return _CurrentMediaItemType == MediaItemType.WebStream; }
+      get { return _CurrentMediaItemType.MainType == MediaItemMainType.WebStream; }
     }
 
     public override bool IsCDA
     {
-      get { return _CurrentMediaItemType == MediaItemType.CDTrack; }
+      get { return _CurrentMediaItemType.MainType == MediaItemMainType.CDTrack; }
     }
 
     public override bool HasVideo
@@ -388,7 +384,7 @@ namespace MediaPortal.Player.PureAudio
 
     void OnNewAction(Action action)
     {
-      //Log.Debug("Action: {0}", action.wID);
+      Log.Debug("Action: {0}", action.wID);
 
       switch (action.wID)
       {

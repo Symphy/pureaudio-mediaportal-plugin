@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Threading;
 using MediaPortal.Core;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {
@@ -302,6 +302,8 @@ namespace MediaPortal.Player.PureAudio
         _InternalState = InternalPlayBackState.Stopped;
         _MainThreadAbortFlag = false;
 
+        _PlaybackMode = _Player._Settings.PlaybackMode;
+
         _WorkItemQueue = new WorkItemQueue();
 
         _MainThreadNotify = new AutoResetEvent(false);
@@ -436,6 +438,26 @@ namespace MediaPortal.Player.PureAudio
       /// </summary>
       private void InternalTogglePlayBackMode()
       {
+        if (_InternalState == InternalPlayBackState.Playing || _InternalState == InternalPlayBackState.Paused)
+        {
+          switch (_PlaybackMode)
+          {
+            case PlaybackMode.Normal:
+              _PlaybackMode = PlaybackMode.Gapless;
+              break;
+            
+            case PlaybackMode.Gapless:
+              _PlaybackMode = PlaybackMode.CrossFading;
+              break;
+
+            case PlaybackMode.CrossFading:
+              _PlaybackMode = PlaybackMode.Normal;
+              break;
+
+            default:
+              break;
+          }
+        }
       }
 
       /// <summary>

@@ -22,7 +22,7 @@
 
 using System;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {

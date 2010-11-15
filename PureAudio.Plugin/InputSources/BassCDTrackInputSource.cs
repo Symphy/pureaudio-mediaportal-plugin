@@ -22,7 +22,7 @@ using System;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Cd;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {
@@ -66,9 +66,9 @@ namespace MediaPortal.Player.PureAudio
           get { return _MediaItem; }
         }
 
-        public MediaItemType MediaItemType
+        public MediaItemMainType MediaItemType
         {
-          get { return MediaItemType.CDTrack; }
+          get { return MediaItemMainType.CDTrack; }
         }
 
         public IMetaData MetaData

@@ -24,21 +24,15 @@ namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {
-    /// <summary>
-    /// Provides members to control and write to an outputdevice.
-    /// </summary>
-    private interface IMediaItem
+    struct MediaItemType
     {
-      /// <summary>
-      /// Returns the title of the media item.
-      /// </summary>
-      string Title { get; set; }
-
-      /// <summary>
-      /// Gets the content URI for this item
-      /// </summary>
-      /// <value>The content URI.</value>
-      Uri ContentUri { get; }
+      public MediaItemMainType MainType;
+      public MediaItemSubType SubType;
+      
+      public override string ToString()
+      {
+        return String.Format("{0}/{1}", MainType, SubType);
+      }
     }
   }
 }

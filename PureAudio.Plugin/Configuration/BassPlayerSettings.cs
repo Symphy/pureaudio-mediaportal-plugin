@@ -21,7 +21,7 @@
 using System;
 using MediaPortal.Configuration;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   /// <summary>
   /// Contains the bass player user configuration.
@@ -61,12 +61,15 @@ namespace MediaPortal.Player.PureAudio
       public const string VizStreamLatencyCorrection = "VizStreamLatencyCorrection";
 
       public const string SupportedExtensions = "SupportedExtensions";
+      public const string UseForCDDA = "UseForCDDA";
+      public const string UseForWebStream = "UseForWebStream";
+      public const string UseForLastFMWebStream = "UseForLastFMWebStream";
     }
 
     public static class Defaults
     {
-      public const OutputMode OutputMode = MediaPortal.Player.PureAudio.OutputMode.ASIO;
-      public const ChannelAssignmentDef ChannelAssignmentDef = MediaPortal.Player.PureAudio.ChannelAssignmentDef._4_0;
+      public const OutputMode OutputMode = MediaPortal.Plugins.PureAudio.OutputMode.ASIO;
+      public const ChannelAssignmentDef ChannelAssignmentDef = MediaPortal.Plugins.PureAudio.ChannelAssignmentDef._4_0;
       public const bool EnableOversampling = false;
       public const bool EnableUpmixing = false;
 
@@ -80,7 +83,7 @@ namespace MediaPortal.Player.PureAudio
       public const int ASIOMaxRate = Constants.Auto;
       public const int ASIOMinRate = Constants.Auto;
 
-      public const PlaybackMode PlaybackMode = MediaPortal.Player.PureAudio.PlaybackMode.Normal;
+      public const PlaybackMode PlaybackMode = MediaPortal.Plugins.PureAudio.PlaybackMode.Normal;
       public static TimeSpan FadeDuration = TimeSpan.FromMilliseconds(1000);
       public static TimeSpan CrossFadeDuration = TimeSpan.FromMilliseconds(5000);
 
@@ -88,7 +91,44 @@ namespace MediaPortal.Player.PureAudio
       public static TimeSpan VizStreamLatencyCorrection = TimeSpan.FromMilliseconds(0);
 
       public const string SupportedExtensions =
-        ".mp3,.ogg,.wav,.flac,.cda,.asx,.dts,.mod,.mo3,.s3m,.xm,.it,.mtm,.umx,.mdz,.s3z,.itz,.xmz,.mp2,.mp1,.aiff,.m2a,.mpa,.m1a,.swa,.aif,.mp3pro,.aac,.mp4,.m4a,.m4b,.ac3,.aac,.mov,.ape,.apl,.midi,.mid,.rmi,.kar,.mpc,.mpp,.mp+,.ofr,.ofs,.spx,.tta,.wma,.wv";
+        ".asx,.dts," +
+        // Bass
+        // .mpg,.mpeg,
+        ".mod,.mo3,.s3m,.xm,.it,.mtm,.umx,.mdz,.s3z,.itz,.xmz," +
+        ".mp3,.ogg,.wav,.mp2,.mp1,.aiff,.m2a,.mpa,.m1a,.swa,.aif,.mp3pro," +
+        // BassCD
+        ".cda," +
+        // BassAac
+        ".aac,.mp4,.m4a,.m4b," +
+        // BassAc3
+        ".ac3," +
+        // BassAlac
+        // .mov,
+        ".m4a,.aac,.mp4," +
+        // BassApe
+        ".ape,.apl," +
+        // BassFlac
+        ".flac," +
+        // BassMidi
+        ".midi,.mid,.rmi,.kar," +
+        // BassMpc
+        ".mpc,.mpp,.mp+," +
+        // BassOfr
+        ".ofr,.ofs," +
+        // BassSpx
+        ".spx," +
+        // BassTta
+        ".tta," +
+        // BassWma
+        // .wmv,
+        ".wma," +
+        // BassWv
+        ".wv";
+
+      public const bool UseForCDDA = true;
+      public const bool UseForWebStream = true;
+      public const bool UseForLastFMWebStream = true;
+
     }
 
     #region Fields
@@ -114,6 +154,9 @@ namespace MediaPortal.Player.PureAudio
     public TimeSpan FadeDuration { get; set; }
     public TimeSpan CrossFadeDuration { get; set; }
     public string SupportedExtensions { get; set; }
+    public bool UseForCDDA { get; set; }
+    public bool UseForWebStream { get; set; }
+    public bool UseForLastFMWebStream { get; set; }
     public TimeSpan VizStreamLatencyCorrection { get; set; }
 
     public BassPlayerSettings()
@@ -141,6 +184,9 @@ namespace MediaPortal.Player.PureAudio
       VizStreamLatencyCorrection = Defaults.VizStreamLatencyCorrection;
 
       SupportedExtensions = Defaults.SupportedExtensions;
+      UseForCDDA = Defaults.UseForCDDA;
+      UseForWebStream = Defaults.UseForWebStream;
+      UseForLastFMWebStream = Defaults.UseForLastFMWebStream;
     }
 
     public void LoadSettings()
@@ -167,11 +213,15 @@ namespace MediaPortal.Player.PureAudio
         PlaybackMode = (PlaybackMode)xmlreader.GetValueAsInt(section, PropNames.PlaybackMode, (int)Defaults.PlaybackMode);
         FadeDuration = TimeSpan.FromMilliseconds(xmlreader.GetValueAsInt(section, PropNames.FadeDuration, (int)Defaults.FadeDuration.TotalMilliseconds));
         CrossFadeDuration = TimeSpan.FromMilliseconds(xmlreader.GetValueAsInt(section, PropNames.CrossFadeDuration, (int)Defaults.CrossFadeDuration.TotalMilliseconds));
-        
+
         PlaybackBufferSize = TimeSpan.FromMilliseconds(xmlreader.GetValueAsInt(section, PropNames.PlaybackBufferSize, (int)Defaults.PlaybackBufferSize.TotalMilliseconds));
         VizStreamLatencyCorrection = TimeSpan.FromMilliseconds(xmlreader.GetValueAsInt(section, PropNames.VizStreamLatencyCorrection, (int)Defaults.VizStreamLatencyCorrection.TotalMilliseconds));
 
         SupportedExtensions = xmlreader.GetValueAsString(section, PropNames.SupportedExtensions, Defaults.SupportedExtensions);
+
+        UseForCDDA = xmlreader.GetValueAsBool(section, PropNames.UseForCDDA, Defaults.UseForCDDA);
+        UseForWebStream = xmlreader.GetValueAsBool(section, PropNames.UseForWebStream, Defaults.UseForWebStream);
+        UseForLastFMWebStream = xmlreader.GetValueAsBool(section, PropNames.UseForLastFMWebStream, Defaults.UseForLastFMWebStream);
       }
     }
 
@@ -181,32 +231,34 @@ namespace MediaPortal.Player.PureAudio
       {
         string section = ConfigSection;
 
-        xmlWriter.SetValue(section, PropNames.OutputMode, Defaults.OutputMode);
-        xmlWriter.SetValue(section, PropNames.ChannelAssignmentDef, Defaults.ChannelAssignmentDef);
-        xmlWriter.SetValue(section, PropNames.EnableOversampling, Defaults.EnableOversampling);
-        xmlWriter.SetValue(section, PropNames.EnableUpmixing, Defaults.EnableUpmixing);
+        xmlWriter.SetValue(section, PropNames.OutputMode, (int)OutputMode);
+        xmlWriter.SetValue(section, PropNames.ChannelAssignmentDef, (int)ChannelAssignmentDef);
+        xmlWriter.SetValueAsBool(section, PropNames.EnableOversampling, EnableOversampling);
+        xmlWriter.SetValueAsBool(section, PropNames.EnableUpmixing, EnableUpmixing);
 
-        xmlWriter.SetValue(section, PropNames.DirectSoundDevice, Defaults.DirectSoundDevice);
-        xmlWriter.SetValue(section, PropNames.DirectSoundBufferSize, Defaults.DirectSoundBufferSize);
+        xmlWriter.SetValue(section, PropNames.DirectSoundDevice, DirectSoundDevice);
+        xmlWriter.SetValue(section, PropNames.DirectSoundBufferSize, DirectSoundBufferSize.TotalMilliseconds);
 
-        xmlWriter.SetValue(section, PropNames.ASIODevice, Defaults.ASIODevice);
-        xmlWriter.SetValue(section, PropNames.ASIOFirstChan, Defaults.ASIOFirstChan);
-        xmlWriter.SetValue(section, PropNames.ASIOLastChan, Defaults.ASIOLastChan);
-        xmlWriter.SetValue(section, PropNames.ASIOMaxRate, Defaults.ASIOMaxRate);
-        xmlWriter.SetValue(section, PropNames.ASIOMinRate, Defaults.ASIOMinRate);
-        xmlWriter.SetValue(section, PropNames.ASIOUseMaxBufferSize, Defaults.ASIOUseMaxBufferSize);
+        xmlWriter.SetValue(section, PropNames.ASIODevice, ASIODevice);
+        xmlWriter.SetValue(section, PropNames.ASIOFirstChan, ASIOFirstChan);
+        xmlWriter.SetValue(section, PropNames.ASIOLastChan, ASIOLastChan);
+        xmlWriter.SetValue(section, PropNames.ASIOMaxRate, ASIOMaxRate);
+        xmlWriter.SetValue(section, PropNames.ASIOMinRate, ASIOMinRate);
+        xmlWriter.SetValueAsBool(section, PropNames.ASIOUseMaxBufferSize, ASIOUseMaxBufferSize);
 
-        xmlWriter.SetValue(section, PropNames.PlaybackMode, Defaults.PlaybackMode);
-        xmlWriter.SetValue(section, PropNames.FadeDuration, Defaults.FadeDuration);
-        xmlWriter.SetValue(section, PropNames.CrossFadeDuration, Defaults.CrossFadeDuration);
+        xmlWriter.SetValue(section, PropNames.PlaybackMode, (int)PlaybackMode);
+        xmlWriter.SetValue(section, PropNames.FadeDuration, FadeDuration.TotalMilliseconds);
+        xmlWriter.SetValue(section, PropNames.CrossFadeDuration, CrossFadeDuration.TotalMilliseconds);
 
-        xmlWriter.SetValue(section, PropNames.PlaybackBufferSize, Defaults.PlaybackBufferSize);
-        xmlWriter.SetValue(section, PropNames.VizStreamLatencyCorrection, Defaults.VizStreamLatencyCorrection);
+        xmlWriter.SetValue(section, PropNames.PlaybackBufferSize, PlaybackBufferSize.TotalMilliseconds);
+        xmlWriter.SetValue(section, PropNames.VizStreamLatencyCorrection, VizStreamLatencyCorrection.TotalMilliseconds);
 
-        xmlWriter.SetValue(section, PropNames.SupportedExtensions, Defaults.SupportedExtensions);
+        xmlWriter.SetValue(section, PropNames.SupportedExtensions, SupportedExtensions);
+        xmlWriter.SetValueAsBool(section, PropNames.UseForCDDA, UseForCDDA);
+        xmlWriter.SetValueAsBool(section, PropNames.UseForWebStream, UseForWebStream);
+        xmlWriter.SetValueAsBool(section, PropNames.UseForLastFMWebStream, UseForLastFMWebStream);
 
         MediaPortal.Profile.Settings.SaveCache();
-
       }
     }
 

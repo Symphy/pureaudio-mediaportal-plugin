@@ -25,7 +25,7 @@ using MediaPortal.Configuration;
 using MediaPortal.Services;
 using MediaPortal.Profile;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   /// <summary>
   /// Logger service wrapper.

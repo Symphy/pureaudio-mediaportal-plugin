@@ -22,7 +22,7 @@ using System;
 using System.Threading;
 using Un4seen.Bass;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   /// <summary>
   /// Performs fade-in and fade-out on a Bass stream.

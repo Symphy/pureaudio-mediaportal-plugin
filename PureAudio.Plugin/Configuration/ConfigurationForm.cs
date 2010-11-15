@@ -27,18 +27,32 @@ using System.Windows.Forms;
 using System.Text;
 using System.IO;
 using MediaPortal.GUI.Library;
-using MediaPortal.Player.PureAudio;
 using Un4seen.Bass;
 using System.Diagnostics;
 using Microsoft.Win32;
+using MediaPortal.Plugins.PureAudio;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio.Configuration
 {
   /// <summary>
   /// Summary description for Configuration.
   /// </summary>
   public class ConfigurationForm : System.Windows.Forms.Form
   {
+    #region constructors
+
+    public ConfigurationForm()
+    {
+      //
+      // Required for Windows Form Designer support
+      //
+      InitializeComponent();
+    }
+
+    #endregion
+
+    #region private members
+
     private MediaPortal.UserInterface.Controls.MPButton btnOk;
     private MediaPortal.UserInterface.Controls.MPButton btnCancel;
     private TabControl tabControl;
@@ -50,25 +64,42 @@ namespace MediaPortal.Player.PureAudio
     private TabPage tabPageDevice;
     private TreeView tvwMenu;
     private TabPage tabPageASIO;
-    private TabPage tabPageWaveOut;
+    private TabPage tabPageDirectSound;
     private MediaPortal.UserInterface.Controls.MPGradientLabel ctlHeader;
     private MediaPortal.UserInterface.Controls.MPBeveledLine beveledLine1;
     private TabPage tabPageVisualization;
     private TabPage tabPageWMPViz;
     private TabPage tabPageDSP;
-    private global::PureAudio.Plugin.Configuration.Sections.About about1;
+    private global::MediaPortal.Plugins.PureAudio.Configuration.Sections.About sectionAbout;
     /// <summary>
     /// Required designer variable.
     /// </summary>
     private System.ComponentModel.Container components = null;
+    
+    #endregion
 
-    public ConfigurationForm()
+    #region public members
+
+    private BassPlayer _player = new BassPlayer();
+    private MediaPortal.Plugins.PureAudio.Configuration.Sections.Extensions sectionExtensions;
+    private MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedASIO sectionAdvancedASIO;
+    private MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedDirectSound sectionAdvancedDirectSound;
+    private MediaPortal.Plugins.PureAudio.Configuration.Sections.Advanced sectionAdvanced;
+  
+    public BassPlayer Player
     {
-      //
-      // Required for Windows Form Designer support
-      //
-      InitializeComponent();
+      get { return _player; }
     }
+
+    private BassPlayerSettings _settings = new BassPlayerSettings();
+    public BassPlayerSettings Settings
+    {
+      get { return _settings; }
+    }
+
+    #endregion
+
+    #region IDisposable members
 
     /// <summary>
     /// Clean up any resources being used.
@@ -84,33 +115,113 @@ namespace MediaPortal.Player.PureAudio
       }
       base.Dispose(disposing);
     }
+    
+    #endregion
+
+    #region event handlers
+
+    private void ConfigurationForm_Load(object sender, EventArgs e)
+    {
+      tvwMenu.ExpandAll();
+      Settings.LoadSettings();
+      ReadSettings();
+    }
+
+    private void tvwMenu_AfterSelect(object sender, TreeViewEventArgs e)
+    {
+      ctlHeader.Caption = tvwMenu.SelectedNode.Text;
+      string nodeName = tvwMenu.SelectedNode.Name;
+      switch (nodeName)
+      {
+        case "NodeRoot":
+          tabControl.SelectedTab = tabPageAbout;
+          break;
+        case "NodeDevice":
+          tabControl.SelectedTab = tabPageDevice;
+          break;
+        case "NodeGeneral":
+          tabControl.SelectedTab = tabPageGeneral;
+          break;
+        case "NodeUpmixing":
+          tabControl.SelectedTab = tabPageUpmixing;
+          break;
+        case "NodeDSP":
+          tabControl.SelectedTab = tabPageDSP;
+          break;
+        case "NodeVisualizations":
+          tabControl.SelectedTab = tabPageVisualization;
+          break;
+        case "NodeWMPViz":
+          tabControl.SelectedTab = tabPageWMPViz;
+          break;
+        case "NodeExtensions":
+          tabControl.SelectedTab = tabPageExtensions;
+          break;
+        case "NodeAdvanced":
+          tabControl.SelectedTab = tabPageAdvanced;
+          break;
+        case "NodeDirectSound":
+          tabControl.SelectedTab = tabPageDirectSound;
+          break;
+        case "NodeASIO":
+          tabControl.SelectedTab = tabPageASIO;
+          break;
+      }
+    }
+
+    private void btnOk_Click(object sender, System.EventArgs e)
+    {
+      Settings.SaveSettings();
+      Close();
+    }
+
+    private void ConfigurationForm_FormClosed(object sender, FormClosedEventArgs e)
+    {
+      Player.RealDispose();
+    }
+    
+    #endregion
+
+    #region private members
+
+    private void ReadSettings()
+    {
+      sectionAbout.ReadSettings(this);
+      sectionExtensions.ReadSettings(this);
+      sectionAdvanced.ReadSettings(this);
+      sectionAdvancedASIO.ReadSettings(this);
+      sectionAdvancedDirectSound.ReadSettings(this);
+    }
+
+    #endregion
 
     #region Windows Form Designer generated code
+
     /// <summary>
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent()
     {
-      System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("Output Device");
-      System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("Upmixing");
-      System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("Extensions");
-      System.Windows.Forms.TreeNode treeNode34 = new System.Windows.Forms.TreeNode("General Settings", new System.Windows.Forms.TreeNode[] {
-            treeNode32,
-            treeNode33});
-      System.Windows.Forms.TreeNode treeNode35 = new System.Windows.Forms.TreeNode("Visualizations");
-      System.Windows.Forms.TreeNode treeNode36 = new System.Windows.Forms.TreeNode("DSP\'s");
-      System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("ASIO");
-      System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("WaveOut");
-      System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("Advanced Settings", new System.Windows.Forms.TreeNode[] {
-            treeNode37,
-            treeNode38});
-      System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("PureAudio Plugin", new System.Windows.Forms.TreeNode[] {
-            treeNode31,
-            treeNode34,
-            treeNode35,
-            treeNode36,
-            treeNode39});
+      System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Output Device");
+      System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Upmixing");
+      System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Extensions");
+      System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("General Settings", new System.Windows.Forms.TreeNode[] {
+            treeNode2,
+            treeNode3});
+      System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Visualizations");
+      System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("DSP\'s");
+      System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("ASIO");
+      System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("DirectSound");
+      System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Advanced Settings", new System.Windows.Forms.TreeNode[] {
+            treeNode7,
+            treeNode8});
+      System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("PureAudio Plugin", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode4,
+            treeNode5,
+            treeNode6,
+            treeNode9});
       this.btnOk = new MediaPortal.UserInterface.Controls.MPButton();
       this.btnCancel = new MediaPortal.UserInterface.Controls.MPButton();
       this.tabControl = new System.Windows.Forms.TabControl();
@@ -121,16 +232,24 @@ namespace MediaPortal.Player.PureAudio
       this.tabPageExtensions = new System.Windows.Forms.TabPage();
       this.tabPageAdvanced = new System.Windows.Forms.TabPage();
       this.tabPageASIO = new System.Windows.Forms.TabPage();
-      this.tabPageWaveOut = new System.Windows.Forms.TabPage();
+      this.tabPageDirectSound = new System.Windows.Forms.TabPage();
       this.tabPageVisualization = new System.Windows.Forms.TabPage();
       this.tabPageWMPViz = new System.Windows.Forms.TabPage();
       this.tabPageDSP = new System.Windows.Forms.TabPage();
       this.tvwMenu = new System.Windows.Forms.TreeView();
       this.ctlHeader = new MediaPortal.UserInterface.Controls.MPGradientLabel();
       this.beveledLine1 = new MediaPortal.UserInterface.Controls.MPBeveledLine();
-      this.about1 = new PureAudio.Plugin.Configuration.Sections.About();
+      this.sectionAbout = new MediaPortal.Plugins.PureAudio.Configuration.Sections.About();
+      this.sectionExtensions = new MediaPortal.Plugins.PureAudio.Configuration.Sections.Extensions();
+      this.sectionAdvancedASIO = new MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedASIO();
+      this.sectionAdvancedDirectSound = new MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedDirectSound();
+      this.sectionAdvanced = new MediaPortal.Plugins.PureAudio.Configuration.Sections.Advanced();
       this.tabControl.SuspendLayout();
       this.tabPageAbout.SuspendLayout();
+      this.tabPageExtensions.SuspendLayout();
+      this.tabPageAdvanced.SuspendLayout();
+      this.tabPageASIO.SuspendLayout();
+      this.tabPageDirectSound.SuspendLayout();
       this.SuspendLayout();
       // 
       // btnOk
@@ -141,6 +260,7 @@ namespace MediaPortal.Player.PureAudio
       this.btnOk.TabIndex = 3;
       this.btnOk.Text = "Ok";
       this.btnOk.UseVisualStyleBackColor = true;
+      this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
       // 
       // btnCancel
       // 
@@ -162,7 +282,7 @@ namespace MediaPortal.Player.PureAudio
       this.tabControl.Controls.Add(this.tabPageExtensions);
       this.tabControl.Controls.Add(this.tabPageAdvanced);
       this.tabControl.Controls.Add(this.tabPageASIO);
-      this.tabControl.Controls.Add(this.tabPageWaveOut);
+      this.tabControl.Controls.Add(this.tabPageDirectSound);
       this.tabControl.Controls.Add(this.tabPageVisualization);
       this.tabControl.Controls.Add(this.tabPageWMPViz);
       this.tabControl.Controls.Add(this.tabPageDSP);
@@ -174,7 +294,7 @@ namespace MediaPortal.Player.PureAudio
       // 
       // tabPageAbout
       // 
-      this.tabPageAbout.Controls.Add(this.about1);
+      this.tabPageAbout.Controls.Add(this.sectionAbout);
       this.tabPageAbout.Location = new System.Drawing.Point(4, 25);
       this.tabPageAbout.Name = "tabPageAbout";
       this.tabPageAbout.Size = new System.Drawing.Size(503, 319);
@@ -213,6 +333,7 @@ namespace MediaPortal.Player.PureAudio
       // 
       // tabPageExtensions
       // 
+      this.tabPageExtensions.Controls.Add(this.sectionExtensions);
       this.tabPageExtensions.Location = new System.Drawing.Point(4, 25);
       this.tabPageExtensions.Name = "tabPageExtensions";
       this.tabPageExtensions.Padding = new System.Windows.Forms.Padding(3);
@@ -223,6 +344,7 @@ namespace MediaPortal.Player.PureAudio
       // 
       // tabPageAdvanced
       // 
+      this.tabPageAdvanced.Controls.Add(this.sectionAdvanced);
       this.tabPageAdvanced.Location = new System.Drawing.Point(4, 25);
       this.tabPageAdvanced.Name = "tabPageAdvanced";
       this.tabPageAdvanced.Padding = new System.Windows.Forms.Padding(3);
@@ -233,6 +355,7 @@ namespace MediaPortal.Player.PureAudio
       // 
       // tabPageASIO
       // 
+      this.tabPageASIO.Controls.Add(this.sectionAdvancedASIO);
       this.tabPageASIO.Location = new System.Drawing.Point(4, 25);
       this.tabPageASIO.Name = "tabPageASIO";
       this.tabPageASIO.Size = new System.Drawing.Size(503, 319);
@@ -240,14 +363,15 @@ namespace MediaPortal.Player.PureAudio
       this.tabPageASIO.Text = "ASIO";
       this.tabPageASIO.UseVisualStyleBackColor = true;
       // 
-      // tabPageWaveOut
+      // tabPageDirectSound
       // 
-      this.tabPageWaveOut.Location = new System.Drawing.Point(4, 25);
-      this.tabPageWaveOut.Name = "tabPageWaveOut";
-      this.tabPageWaveOut.Size = new System.Drawing.Size(503, 319);
-      this.tabPageWaveOut.TabIndex = 7;
-      this.tabPageWaveOut.Text = "WaveOut";
-      this.tabPageWaveOut.UseVisualStyleBackColor = true;
+      this.tabPageDirectSound.Controls.Add(this.sectionAdvancedDirectSound);
+      this.tabPageDirectSound.Location = new System.Drawing.Point(4, 25);
+      this.tabPageDirectSound.Name = "tabPageDirectSound";
+      this.tabPageDirectSound.Size = new System.Drawing.Size(503, 319);
+      this.tabPageDirectSound.TabIndex = 7;
+      this.tabPageDirectSound.Text = "DirectSound";
+      this.tabPageDirectSound.UseVisualStyleBackColor = true;
       // 
       // tabPageVisualization
       // 
@@ -281,30 +405,31 @@ namespace MediaPortal.Player.PureAudio
       this.tvwMenu.HideSelection = false;
       this.tvwMenu.Location = new System.Drawing.Point(13, 13);
       this.tvwMenu.Name = "tvwMenu";
-      treeNode31.Name = "NodeDevice";
-      treeNode31.Text = "Output Device";
-      treeNode32.Name = "NodeUpmixing";
-      treeNode32.Text = "Upmixing";
-      treeNode33.Name = "NodeExtensions";
-      treeNode33.Text = "Extensions";
-      treeNode34.Name = "NodeGeneral";
-      treeNode34.Text = "General Settings";
-      treeNode35.Name = "NodeVisualizations";
-      treeNode35.Text = "Visualizations";
-      treeNode36.Name = "NodeDSP";
-      treeNode36.Text = "DSP\'s";
-      treeNode37.Name = "NodeASIO";
-      treeNode37.Text = "ASIO";
-      treeNode38.Name = "NodeWaveOut";
-      treeNode38.Text = "WaveOut";
-      treeNode39.Name = "NodeAdvanced";
-      treeNode39.Text = "Advanced Settings";
-      treeNode40.Name = "NodeRoot";
-      treeNode40.Text = "PureAudio Plugin";
+      treeNode1.Name = "NodeDevice";
+      treeNode1.Text = "Output Device";
+      treeNode2.Name = "NodeUpmixing";
+      treeNode2.Text = "Upmixing";
+      treeNode3.Name = "NodeExtensions";
+      treeNode3.Text = "Extensions";
+      treeNode4.Name = "NodeGeneral";
+      treeNode4.Text = "General Settings";
+      treeNode5.Name = "NodeVisualizations";
+      treeNode5.Text = "Visualizations";
+      treeNode6.Name = "NodeDSP";
+      treeNode6.Text = "DSP\'s";
+      treeNode7.Name = "NodeASIO";
+      treeNode7.Text = "ASIO";
+      treeNode8.Name = "NodeDirectSound";
+      treeNode8.Text = "DirectSound";
+      treeNode9.Name = "NodeAdvanced";
+      treeNode9.Text = "Advanced Settings";
+      treeNode10.Name = "NodeRoot";
+      treeNode10.Text = "PureAudio Plugin";
       this.tvwMenu.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode40});
+            treeNode10});
       this.tvwMenu.Size = new System.Drawing.Size(185, 336);
       this.tvwMenu.TabIndex = 1;
+      this.tvwMenu.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwMenu_AfterSelect);
       // 
       // ctlHeader
       // 
@@ -329,12 +454,45 @@ namespace MediaPortal.Player.PureAudio
       this.beveledLine1.TabIndex = 6;
       this.beveledLine1.TabStop = false;
       // 
-      // about1
+      // sectionAbout
       // 
-      this.about1.Location = new System.Drawing.Point(0, 0);
-      this.about1.Name = "about1";
-      this.about1.Size = new System.Drawing.Size(497, 308);
-      this.about1.TabIndex = 0;
+      this.sectionAbout.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionAbout.Location = new System.Drawing.Point(0, 0);
+      this.sectionAbout.Name = "sectionAbout";
+      this.sectionAbout.Size = new System.Drawing.Size(503, 319);
+      this.sectionAbout.TabIndex = 0;
+      // 
+      // sectionExtensions
+      // 
+      this.sectionExtensions.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionExtensions.Location = new System.Drawing.Point(3, 3);
+      this.sectionExtensions.Name = "sectionExtensions";
+      this.sectionExtensions.Size = new System.Drawing.Size(497, 313);
+      this.sectionExtensions.TabIndex = 0;
+      // 
+      // sectionAdvancedASIO
+      // 
+      this.sectionAdvancedASIO.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionAdvancedASIO.Location = new System.Drawing.Point(0, 0);
+      this.sectionAdvancedASIO.Name = "sectionAdvancedASIO";
+      this.sectionAdvancedASIO.Size = new System.Drawing.Size(503, 319);
+      this.sectionAdvancedASIO.TabIndex = 0;
+      // 
+      // sectionAdvancedDirectSound
+      // 
+      this.sectionAdvancedDirectSound.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionAdvancedDirectSound.Location = new System.Drawing.Point(0, 0);
+      this.sectionAdvancedDirectSound.Name = "sectionAdvancedDirectSound";
+      this.sectionAdvancedDirectSound.Size = new System.Drawing.Size(503, 319);
+      this.sectionAdvancedDirectSound.TabIndex = 0;
+      // 
+      // sectionAdvanced
+      // 
+      this.sectionAdvanced.Dock = System.Windows.Forms.DockStyle.Top;
+      this.sectionAdvanced.Location = new System.Drawing.Point(3, 3);
+      this.sectionAdvanced.Name = "sectionAdvanced";
+      this.sectionAdvanced.Size = new System.Drawing.Size(497, 308);
+      this.sectionAdvanced.TabIndex = 0;
       // 
       // ConfigurationForm
       // 
@@ -355,16 +513,17 @@ namespace MediaPortal.Player.PureAudio
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "PureAudio Player Configuration";
       this.Load += new System.EventHandler(this.ConfigurationForm_Load);
+      this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ConfigurationForm_FormClosed);
       this.tabControl.ResumeLayout(false);
       this.tabPageAbout.ResumeLayout(false);
+      this.tabPageExtensions.ResumeLayout(false);
+      this.tabPageAdvanced.ResumeLayout(false);
+      this.tabPageASIO.ResumeLayout(false);
+      this.tabPageDirectSound.ResumeLayout(false);
       this.ResumeLayout(false);
 
     }
     #endregion
-
-    private void ConfigurationForm_Load(object sender, EventArgs e)
-    {
-    }
 
   }
 }

@@ -20,7 +20,7 @@
 
 using System;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   internal static class InternalSettings
   {

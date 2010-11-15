@@ -65,6 +65,30 @@
     <Compile Include="Configuration\Sections\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\Sections\AdvancedASIO.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration\Sections\AdvancedASIO.Designer.cs">
+      <DependentUpon>AdvancedASIO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\Sections\AdvancedDirectSound.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration\Sections\AdvancedDirectSound.Designer.cs">
+      <DependentUpon>AdvancedDirectSound.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\Sections\Advanced.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration\Sections\Advanced.Designer.cs">
+      <DependentUpon>Advanced.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\Sections\Extensions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration\Sections\Extensions.Designer.cs">
+      <DependentUpon>Extensions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\Sections\SectionBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -73,6 +97,7 @@
     </Compile>
     <Compile Include="CoreComponents\MixingMatrix.cs" />
     <Compile Include="CoreComponents\MixingMatrixBuilder.cs" />
+    <Compile Include="Definitions\MediaItemType.cs" />
     <Compile Include="Definitions\WaveFormatExtensible.cs" />
     <Compile Include="Definitions\BassConstants.cs" />
     <Compile Include="Interfaces\IMetaData.cs" />
@@ -140,6 +165,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Configuration\Sections\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\Sections\AdvancedASIO.resx">
+      <DependentUpon>AdvancedASIO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\Sections\AdvancedDirectSound.resx">
+      <DependentUpon>AdvancedDirectSound.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\Sections\Advanced.resx">
+      <DependentUpon>Advanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\Sections\Extensions.resx">
+      <DependentUpon>Extensions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Configuration\Sections\SectionBase.resx">
       <DependentUpon>SectionBase.cs</DependentUpon>

@@ -22,7 +22,7 @@ using System;
 using System.IO;
 using Un4seen.Bass;
 
-namespace MediaPortal.Player.PureAudio
+namespace MediaPortal.Plugins.PureAudio
 {
   public partial class BassPlayer
   {
@@ -59,7 +59,18 @@ namespace MediaPortal.Player.PureAudio
       public bool IsSupported(IMediaItem mediaItem)
       {
         MediaItemType itemType = GetMediaItemType(mediaItem);
-        return itemType != MediaItemType.Unknown;
+
+        if (itemType.MainType == MediaItemMainType.CDTrack)
+          return _Player._Settings.UseForCDDA;
+
+        else if (itemType.MainType == MediaItemMainType.WebStream)
+          if (itemType.SubType == MediaItemSubType.LastFmWebStream)
+            return _Player._Settings.UseForLastFMWebStream;
+          else
+            return _Player._Settings.UseForWebStream;
+
+        else
+          return itemType.MainType != MediaItemMainType.Unknown;
       }
 
       /// <summary>
@@ -74,21 +85,21 @@ namespace MediaPortal.Player.PureAudio
 
         IInputSource inputSource;
 
-        switch (itemType)
+        switch (itemType.MainType)
         {
-          case MediaItemType.AudioFile:
+          case MediaItemMainType.AudioFile:
             inputSource = BassAudioFileInputSource.Create(mediaItem);
             break;
 
-          case MediaItemType.CDTrack:
+          case MediaItemMainType.CDTrack:
             inputSource = BassCDTrackInputSource.Create(mediaItem);
             break;
 
-          case MediaItemType.MODFile:
+          case MediaItemMainType.MODFile:
             inputSource = BassMODFileInputSource.Create(mediaItem);
             break;
 
-          case MediaItemType.WebStream:
+          case MediaItemMainType.WebStream:
             _Player._Controller.OnWaitStarted();
             inputSource = BassWebStreamInputSource.Create(mediaItem);
             _Player._Controller.OnWaitEnded();
@@ -109,26 +120,44 @@ namespace MediaPortal.Player.PureAudio
       public MediaItemType GetMediaItemType(IMediaItem mediaItem)
       {
         Uri uri = mediaItem.ContentUri;
+
         MediaItemType mediaItemType;
+        mediaItemType.MainType = MediaItemMainType.Unknown;
+        mediaItemType.SubType = MediaItemSubType.None;
 
         if (uri.IsFile)
         {
           string filePath = uri.LocalPath;
 
           if (String.IsNullOrEmpty(filePath))
-            mediaItemType = MediaItemType.Unknown;
+          {
+            mediaItemType.MainType = MediaItemMainType.Unknown;
+            mediaItemType.SubType = MediaItemSubType.None;
+          }
 
           else if (IsCDDA(filePath))
-            mediaItemType = MediaItemType.CDTrack;
+          {
+            mediaItemType.MainType = MediaItemMainType.CDTrack;
+            mediaItemType.SubType = MediaItemSubType.None;
+          }
 
           else if (IsASXFile(filePath))
-            mediaItemType = MediaItemType.WebStream;
+          {
+            mediaItemType.MainType = MediaItemMainType.WebStream;
+            mediaItemType.SubType = MediaItemSubType.ASXWebStream;
+          }
 
           else if (IsMODFile(filePath))
-            mediaItemType = MediaItemType.MODFile;
+          {
+            mediaItemType.MainType = MediaItemMainType.MODFile;
+            mediaItemType.SubType = MediaItemSubType.None;
+          }
 
           else
-            mediaItemType = MediaItemType.AudioFile;
+          {
+            mediaItemType.MainType = MediaItemMainType.AudioFile;
+            mediaItemType.SubType = MediaItemSubType.None;
+          }
         }
         else
         {
@@ -136,10 +165,19 @@ namespace MediaPortal.Player.PureAudio
           bool supported = (ext == "" || IsExtensionSupported(ext));
 
           if (supported)
-            mediaItemType = MediaItemType.WebStream;
+          {
+            mediaItemType.MainType = MediaItemMainType.WebStream;
+            if (IsLastFmWebStream(uri.PathAndQuery))
+              mediaItemType.SubType = MediaItemSubType.LastFmWebStream;
 
+            else
+              mediaItemType.SubType = MediaItemSubType.None;
+          }
           else
-            mediaItemType = MediaItemType.Unknown;
+          {
+            mediaItemType.MainType = MediaItemMainType.Unknown;
+            mediaItemType.SubType = MediaItemSubType.None;
+          }
         }
 
         return mediaItemType;
@@ -197,6 +235,18 @@ namespace MediaPortal.Player.PureAudio
         return (Path.GetExtension(path).ToLower() == ".asx");
       }
 
+      /// <summary>
+      /// Determines if a given url represents a last.fm webstream.
+      /// </summary>
+      /// <param name="path"></param>
+      /// <returns></returns>
+      private static bool IsLastFmWebStream(string url)
+      {
+        return
+          (url.Contains(@".last.fm/") ||
+          url.Contains(@"/last.mp3?session="));
+      }
+
       private bool IsSupportedAudioFile(string path)
       {
         string ext = Path.GetExtension(path).ToLower();
@@ -209,6 +259,7 @@ namespace MediaPortal.Player.PureAudio
           _Player._Settings.SupportedExtensions.Contains(String.Format("{0},", ext)) ||
           _Player._Settings.SupportedExtensions.EndsWith(ext);
       }
+
 
       #endregion
 
