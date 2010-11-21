@@ -22,7 +22,7 @@ using System;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     private partial class OutputDeviceManager
     {

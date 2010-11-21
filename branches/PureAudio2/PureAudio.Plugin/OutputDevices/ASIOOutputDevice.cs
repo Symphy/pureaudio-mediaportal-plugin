@@ -27,7 +27,7 @@ using Un4seen.Bass.AddOn.Mix;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     private partial class OutputDeviceManager
     {

@@ -83,6 +83,12 @@
     <Compile Include="Configuration\Sections\Advanced.Designer.cs">
       <DependentUpon>Advanced.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\Sections\Visualizations.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration\Sections\Visualizations.Designer.cs">
+      <DependentUpon>Visualizations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\Sections\Extensions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -148,11 +154,22 @@
     <Compile Include="Utils\Silence.cs" />
     <Compile Include="Utils\WorkItem.cs" />
     <Compile Include="Utils\WorkItemQueue.cs" />
+    <Compile Include="Visualizations\BaseVisualizationWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Visualizations\VisualizationFactory.cs" />
+    <Compile Include="Visualizations\WMPVisualizationWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PureAudio.ASIOInterop\PureAudio.ASIOInterop.vcproj">
       <Project>{2EC0CE30-4934-4856-A64C-75316F98393E}</Project>
       <Name>PureAudio.ASIOInterop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PureAudio.WMPEffectsInterop\PureAudio.WMPEffectsInterop.vcproj">
+      <Project>{C6978A0C-4C54-4E53-AB39-F28E7A541581}</Project>
+      <Name>PureAudio.WMPEffectsInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +191,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Configuration\Sections\Advanced.resx">
       <DependentUpon>Advanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\Sections\Visualizations.resx">
+      <DependentUpon>Visualizations.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Configuration\Sections\Extensions.resx">
       <DependentUpon>Extensions.cs</DependentUpon>

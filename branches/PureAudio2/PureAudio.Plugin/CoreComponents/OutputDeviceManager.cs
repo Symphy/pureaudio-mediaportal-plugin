@@ -22,7 +22,7 @@ using System;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     /// <summary>
     /// Manages creation and initialization of the outputdevice.
@@ -36,7 +36,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static OutputDeviceManager Create(BassPlayer player)
+      public static OutputDeviceManager Create(PureAudioPlayer player)
       {
         OutputDeviceManager outputDeviceManager = new OutputDeviceManager(player);
         outputDeviceManager.Initialize();
@@ -53,7 +53,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Fields
 
-      private BassPlayer _Player;
+      private PureAudioPlayer _Player;
       private OutputDeviceFactory _OutputDeviceFactory;
       private IOutputDevice _OutputDevice;
       private bool _StreamInitialized;
@@ -235,7 +235,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
       
-      private OutputDeviceManager(BassPlayer player)
+      private OutputDeviceManager(PureAudioPlayer player)
       {
         _Player = player;
       }

@@ -24,7 +24,7 @@ using Un4seen.Bass.AddOn.Tags;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     private partial class InputSourceFactory
     {

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -29,8 +30,32 @@ using MediaPortal.Player;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer : IExternalPlayer, IDisposable
+  public partial class PureAudioPlayer : IExternalPlayer, IDisposable
   {
+    private const string VisualizationName = "PureAudioVisualizationWindow";
+
+    #region static members
+
+    public static g_Player.ShowFullScreenWindowHandler FullScreenHandler = new g_Player.ShowFullScreenWindowHandler(ActivateFullScreen);
+    private static g_Player.ShowFullScreenWindowHandler _SavedFullScreenHandler;
+
+    private static bool ActivateFullScreen()
+    {
+      if (g_Player.Player != null && g_Player.Player.GetType().FullName == "MediaPortal.Plugins.PureAudio.PureAudioPlayer")
+      {
+        if (GUIWindowManager.ActiveWindow != (int)GUIWindow.Window.WINDOW_FULLSCREEN_MUSIC)
+        {
+          GUIWindowManager.ActivateWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_MUSIC);
+          GUIGraphicsContext.IsFullScreenVideo = true;
+        }
+        return true;
+      }
+      else
+        return _SavedFullScreenHandler.Invoke();
+    }
+
+    #endregion
+
     #region Fields
 
     private BassLibraryManager _BassLibraryManager;
@@ -46,6 +71,7 @@ namespace MediaPortal.Plugins.PureAudio
     private PlaybackBuffer _PlaybackBuffer;
     private OutputDeviceManager _OutputDeviceManager;
     private PlaybackSession _PlaybackSession;
+    private BaseVisualizationWindow _VisualizationWindow;
     private WaitCursor _WaitCursor;
 
     private bool _SettingsLoaded = false;
@@ -281,13 +307,16 @@ namespace MediaPortal.Plugins.PureAudio
       _Controller.Dispose();
 
       _BassLibraryManager.Dispose();
+
+      if (_VisualizationWindow != null)
+        _VisualizationWindow.Dispose();
     }
 
     #endregion
 
     #region Public members
 
-    public BassPlayer()
+    public PureAudioPlayer()
     {
       Initialize();
     }
@@ -305,8 +334,10 @@ namespace MediaPortal.Plugins.PureAudio
         Log.Info("Plugin version: {0}", VersionNumber);
         Log.Info("Initializing player ...");
 
-        _BassLibraryManager = BassLibraryManager.Create();
         _Settings = new BassPlayerSettings();
+        LoadSettings();
+
+        _BassLibraryManager = BassLibraryManager.Create();
         _InputSourceFactory = new InputSourceFactory(this);
 
         _Controller = Controller.Create(this);
@@ -324,25 +355,25 @@ namespace MediaPortal.Plugins.PureAudio
 
         _Controller.WireUp();
 
+        _Monitor.MonitorProcess += new Monitor.MonitorProcessDelegate(_Monitor_MonitorProcess);
+        _Controller.SessionStarted += new Controller.SessionStartedDelegate(_Controller_SessionStarted);
+        _Controller.SessionStopped += new Controller.SessionStoppedDelegate(_Controller_SessionStopped);
+
+        _SavedFullScreenHandler = g_Player.ShowFullScreenWindowVideo;
+        g_Player.ShowFullScreenWindowVideo = new g_Player.ShowFullScreenWindowHandler(FullScreenHandler);
+
+        VisualizationFactory visualizationFactory = VisualizationFactory.Create(_Settings);
+        _VisualizationWindow = visualizationFactory.GetVisualizationWindow();
+        if (_VisualizationWindow != null)
+        {
+          _VisualizationWindow.Name = VisualizationName;
+          _VisualizationWindow.Visible = false;
+        }
+
         GUIGraphicsContext.form.Disposed += new EventHandler(OnAppFormDisposed);
         GUIGraphicsContext.OnNewAction += new OnActionHandler(OnNewAction);
 
         _Initialized = true;
-      }
-    }
-
-    void _Controller_WaitStarted()
-    {
-      if (_WaitCursor == null)
-        _WaitCursor = new WaitCursor();
-    }
-
-    void _Controller_WaitEnded()
-    {
-      if (_WaitCursor != null)
-      {
-        _WaitCursor.Dispose();
-        _WaitCursor = null;
       }
     }
 
@@ -378,6 +409,96 @@ namespace MediaPortal.Plugins.PureAudio
         _SettingsLoaded = true;
       }
     }
+    private void AttachVisualizationWindow()
+    {
+      if (_VisualizationWindow != null)
+      {
+        bool present = false;
+        Control.ControlCollection controls = GUIGraphicsContext.form.Controls;
+        foreach (Control control in controls)
+        {
+          if (control == _VisualizationWindow)
+          {
+            present = true;
+            break;
+          }
+        }
+
+        if (!present)
+        {
+          GUIGraphicsContext.form.SuspendLayout();
+          GUIGraphicsContext.form.Controls.Add(_VisualizationWindow);
+          GUIGraphicsContext.form.ResumeLayout();
+        }
+      }
+    }
+
+    private void DetachVisualizationWindow()
+    {
+      if (_VisualizationWindow != null)
+      {
+        Control.ControlCollection controls = GUIGraphicsContext.form.Controls;
+        foreach (Control control in controls)
+        {
+          if (control == _VisualizationWindow)
+          {
+            GUIGraphicsContext.form.SuspendLayout();
+            GUIGraphicsContext.form.Controls.Remove(control);
+            GUIGraphicsContext.form.ResumeLayout();
+            break;
+          }
+        }
+      }
+    }
+
+    private void PositionVisualizationWindow()
+    {
+      if (_VisualizationWindow != null)
+      {
+        if (GUIGraphicsContext.BlankScreen)
+        {
+          if (_VisualizationWindow.Visible)
+            _VisualizationWindow.Visible = false;
+        }
+        else
+        {
+
+          //// Fix:
+          //// g_Player sets GUIGraphicsContext.IsFullScreenVideo to false on Stop().
+          //GUIGraphicsContext.IsFullScreenVideo =
+          //  GUIGraphicsContext.IsFullScreenVideo ||
+          //  (GUIWindowManager.ActiveWindow == (int)GUIWindow.Window.WINDOW_FULLSCREEN_MUSIC);
+
+          Point location;
+          Size size;
+          bool visible;
+
+          if (GUIGraphicsContext.IsFullScreenVideo)
+          {
+            location = new Point(GUIGraphicsContext.OverScanLeft, GUIGraphicsContext.OverScanTop);
+            size = new Size(GUIGraphicsContext.OverScanWidth, GUIGraphicsContext.OverScanHeight);
+            visible = true;
+          }
+          else
+          {
+            location = new Point(1, 1);
+            size = new Size(1, 1);
+            visible = false;
+          }
+
+          if (location != _VisualizationWindow.Location)
+            _VisualizationWindow.Location = location;
+
+          if (size != _VisualizationWindow.Size)
+            _VisualizationWindow.Size = size;
+
+          if (visible != _VisualizationWindow.Visible)
+            _VisualizationWindow.Visible = visible;
+
+        }
+      }
+    }
+
     #endregion
 
     #region Eventhandlers
@@ -423,6 +544,39 @@ namespace MediaPortal.Plugins.PureAudio
     void OnAppFormDisposed(object sender, EventArgs e)
     {
       RealDispose();
+    }
+
+    void _Monitor_MonitorProcess()
+    {
+      PositionVisualizationWindow();
+    }
+
+    void _Controller_WaitStarted()
+    {
+      if (_WaitCursor == null)
+        _WaitCursor = new WaitCursor();
+    }
+
+    void _Controller_WaitEnded()
+    {
+      if (_WaitCursor != null)
+      {
+        _WaitCursor.Dispose();
+        _WaitCursor = null;
+      }
+    }
+
+    void _Controller_SessionStarted()
+    {
+      AttachVisualizationWindow();
+
+      if (_VisualizationWindow != null)
+        _VisualizationWindow.BassStream = _PlaybackBuffer.VizStream.Handle;
+    }
+
+    void _Controller_SessionStopped()
+    {
+      DetachVisualizationWindow();
     }
 
     #endregion

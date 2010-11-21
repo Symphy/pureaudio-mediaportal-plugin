@@ -22,7 +22,7 @@ using System;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     enum PlaybackState
     {
@@ -176,4 +176,11 @@ namespace MediaPortal.Plugins.PureAudio
     /// </summary>
     Rrs
   }
+
+  public enum VisualizationType
+  {
+    None = 0,
+    WMP = 1
+  }
+
 }

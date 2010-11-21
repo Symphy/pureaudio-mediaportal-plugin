@@ -31,12 +31,12 @@ using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
 using namespace System::Security::Permissions;
 
-[assembly:AssemblyTitleAttribute("BassPlayer.ASIOInterop")];
+[assembly:AssemblyTitleAttribute("PureAudio.ASIOInterop")];
 [assembly:AssemblyDescriptionAttribute("Provides .NET access to ASIO drivers")];
 [assembly:AssemblyConfigurationAttribute("")];
 [assembly:AssemblyCompanyAttribute("Team MediaPortal")];
 [assembly:AssemblyProductAttribute("MediaPortal")];
-[assembly:AssemblyCopyrightAttribute("Copyright © 2008 Team MediaPortal")];
+[assembly:AssemblyCopyrightAttribute("Copyright © 2010 Team MediaPortal")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 [assembly:AssemblyVersionAttribute("2.0.0.0")];

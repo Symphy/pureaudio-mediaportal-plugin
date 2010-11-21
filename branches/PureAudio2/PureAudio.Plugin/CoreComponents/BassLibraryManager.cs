@@ -25,7 +25,7 @@ using Un4seen.Bass;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     /// <summary>
     /// Manages the Bass audio library and its plugins.

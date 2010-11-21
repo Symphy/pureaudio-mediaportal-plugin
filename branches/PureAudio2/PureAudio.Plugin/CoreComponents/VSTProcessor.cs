@@ -24,7 +24,7 @@ using System;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     /// <summary>
     /// Performs signal processing using VST plugins.
@@ -38,7 +38,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static VSTProcessor Create(BassPlayer player)
+      public static VSTProcessor Create(PureAudioPlayer player)
       {
         VSTProcessor vstProcessor = new VSTProcessor(player);
         vstProcessor.Initialize();
@@ -49,7 +49,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Fields
 
-      BassPlayer _Player;
+      PureAudioPlayer _Player;
       private BassStream _InputStream;
       private BassStream _OutputStream;
       private bool _Initialized;
@@ -115,7 +115,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private VSTProcessor(BassPlayer player)
+      private VSTProcessor(PureAudioPlayer player)
       {
         _Player = player;
       }

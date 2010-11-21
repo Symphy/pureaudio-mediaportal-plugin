@@ -58,12 +58,19 @@ namespace MediaPortal.Plugins.PureAudio
       public const string CrossFadeDuration = "CrossFadeDuration";
 
       public const string PlaybackBufferSize = "PlaybackBufferSize";
-      public const string VizStreamLatencyCorrection = "VizStreamLatencyCorrection";
 
       public const string SupportedExtensions = "SupportedExtensions";
       public const string UseForCDDA = "UseForCDDA";
       public const string UseForWebStream = "UseForWebStream";
       public const string UseForLastFMWebStream = "UseForLastFMWebStream";
+
+      public const string VisualizationUseAGC = "VisualizationUseAGC";
+      public const string VisualizationLatencyCorrection = "VisualizationLatencyCorrection";
+      public const string VisualizationType = "VisualizationType";
+      
+      public const string WMPEffectClsId = "WMPEffectClsId";
+      public const string WMPEffectPreset = "WMPEffectPreset";
+      public const string WMPEffectFps = "WMPEffectFps";
     }
 
     public static class Defaults
@@ -88,7 +95,6 @@ namespace MediaPortal.Plugins.PureAudio
       public static TimeSpan CrossFadeDuration = TimeSpan.FromMilliseconds(5000);
 
       public static TimeSpan PlaybackBufferSize = TimeSpan.FromMilliseconds(500);
-      public static TimeSpan VizStreamLatencyCorrection = TimeSpan.FromMilliseconds(0);
 
       public const string SupportedExtensions =
         ".asx,.dts," +
@@ -129,6 +135,13 @@ namespace MediaPortal.Plugins.PureAudio
       public const bool UseForWebStream = true;
       public const bool UseForLastFMWebStream = true;
 
+      public const bool VisualizationUseAGC = true;
+      public static TimeSpan VisualizationLatencyCorrection = TimeSpan.FromMilliseconds(0);
+      public const VisualizationType VisualizationType = MediaPortal.Plugins.PureAudio.VisualizationType.None;
+      
+      public const string WMPEffectClsId = "";
+      public const int WMPEffectPreset = 0;
+      public const int WMPEffectFps = 30;
     }
 
     #region Fields
@@ -157,7 +170,14 @@ namespace MediaPortal.Plugins.PureAudio
     public bool UseForCDDA { get; set; }
     public bool UseForWebStream { get; set; }
     public bool UseForLastFMWebStream { get; set; }
-    public TimeSpan VizStreamLatencyCorrection { get; set; }
+
+    public bool VisualizationUseAGC { get; set; }
+    public TimeSpan VisualizationLatencyCorrection { get; set; }
+    public VisualizationType VisualizationType { get; set; }
+    
+    public string WMPEffectClsId { get; set; }
+    public int WMPEffectPreset { get; set; }
+    public int WMPEffectFps { get; set; }
 
     public BassPlayerSettings()
     {
@@ -181,12 +201,19 @@ namespace MediaPortal.Plugins.PureAudio
       CrossFadeDuration = Defaults.CrossFadeDuration;
 
       PlaybackBufferSize = Defaults.PlaybackBufferSize;
-      VizStreamLatencyCorrection = Defaults.VizStreamLatencyCorrection;
 
       SupportedExtensions = Defaults.SupportedExtensions;
       UseForCDDA = Defaults.UseForCDDA;
       UseForWebStream = Defaults.UseForWebStream;
       UseForLastFMWebStream = Defaults.UseForLastFMWebStream;
+
+      VisualizationUseAGC = Defaults.VisualizationUseAGC;
+      VisualizationLatencyCorrection = Defaults.VisualizationLatencyCorrection;
+      VisualizationType = Defaults.VisualizationType;
+      
+      WMPEffectClsId = Defaults.WMPEffectClsId;
+      WMPEffectPreset = Defaults.WMPEffectPreset;
+      WMPEffectFps = Defaults.WMPEffectFps;
     }
 
     public void LoadSettings()
@@ -215,13 +242,20 @@ namespace MediaPortal.Plugins.PureAudio
         CrossFadeDuration = TimeSpan.FromMilliseconds(xmlreader.GetValueAsInt(section, PropNames.CrossFadeDuration, (int)Defaults.CrossFadeDuration.TotalMilliseconds));
 
         PlaybackBufferSize = TimeSpan.FromMilliseconds(xmlreader.GetValueAsInt(section, PropNames.PlaybackBufferSize, (int)Defaults.PlaybackBufferSize.TotalMilliseconds));
-        VizStreamLatencyCorrection = TimeSpan.FromMilliseconds(xmlreader.GetValueAsInt(section, PropNames.VizStreamLatencyCorrection, (int)Defaults.VizStreamLatencyCorrection.TotalMilliseconds));
 
         SupportedExtensions = xmlreader.GetValueAsString(section, PropNames.SupportedExtensions, Defaults.SupportedExtensions);
 
         UseForCDDA = xmlreader.GetValueAsBool(section, PropNames.UseForCDDA, Defaults.UseForCDDA);
         UseForWebStream = xmlreader.GetValueAsBool(section, PropNames.UseForWebStream, Defaults.UseForWebStream);
         UseForLastFMWebStream = xmlreader.GetValueAsBool(section, PropNames.UseForLastFMWebStream, Defaults.UseForLastFMWebStream);
+
+        VisualizationUseAGC = xmlreader.GetValueAsBool(section, PropNames.VisualizationUseAGC, Defaults.VisualizationUseAGC);
+        VisualizationLatencyCorrection = TimeSpan.FromMilliseconds(xmlreader.GetValueAsInt(section, PropNames.VisualizationLatencyCorrection, (int)Defaults.VisualizationLatencyCorrection.TotalMilliseconds));
+        VisualizationType = (VisualizationType)xmlreader.GetValueAsInt(section, PropNames.VisualizationType, (int)Defaults.VisualizationType);
+
+        WMPEffectClsId = xmlreader.GetValueAsString(section, PropNames.WMPEffectClsId, Defaults.WMPEffectClsId);
+        WMPEffectPreset = xmlreader.GetValueAsInt(section, PropNames.WMPEffectPreset, Defaults.WMPEffectPreset);
+        WMPEffectFps = xmlreader.GetValueAsInt(section, PropNames.WMPEffectFps, Defaults.WMPEffectFps);
       }
     }
 
@@ -251,12 +285,19 @@ namespace MediaPortal.Plugins.PureAudio
         xmlWriter.SetValue(section, PropNames.CrossFadeDuration, CrossFadeDuration.TotalMilliseconds);
 
         xmlWriter.SetValue(section, PropNames.PlaybackBufferSize, PlaybackBufferSize.TotalMilliseconds);
-        xmlWriter.SetValue(section, PropNames.VizStreamLatencyCorrection, VizStreamLatencyCorrection.TotalMilliseconds);
 
         xmlWriter.SetValue(section, PropNames.SupportedExtensions, SupportedExtensions);
         xmlWriter.SetValueAsBool(section, PropNames.UseForCDDA, UseForCDDA);
         xmlWriter.SetValueAsBool(section, PropNames.UseForWebStream, UseForWebStream);
         xmlWriter.SetValueAsBool(section, PropNames.UseForLastFMWebStream, UseForLastFMWebStream);
+
+        xmlWriter.SetValueAsBool(section, PropNames.VisualizationUseAGC, VisualizationUseAGC);
+        xmlWriter.SetValue(section, PropNames.VisualizationLatencyCorrection, VisualizationLatencyCorrection.TotalMilliseconds);
+        xmlWriter.SetValue(section, PropNames.VisualizationType ,(int)VisualizationType );
+
+        xmlWriter.SetValue(section, PropNames.WMPEffectClsId , WMPEffectClsId);
+        xmlWriter.SetValue(section, PropNames.WMPEffectPreset ,WMPEffectPreset );
+        xmlWriter.SetValue(section, PropNames.WMPEffectFps , WMPEffectFps);
 
         MediaPortal.Profile.Settings.SaveCache();
       }

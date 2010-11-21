@@ -25,7 +25,7 @@ using Un4seen.Bass.AddOn.Mix;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     /// <summary>
     /// Buffers the output stream to ensure stable playback. Also provides a synchronized stream for visualization purposes.
@@ -39,7 +39,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static PlaybackBuffer Create(BassPlayer player)
+      public static PlaybackBuffer Create(PureAudioPlayer player)
       {
         PlaybackBuffer playbackBuffer = new PlaybackBuffer(player);
         playbackBuffer.Initialize();
@@ -51,8 +51,8 @@ namespace MediaPortal.Plugins.PureAudio
       #region Fields
 
       private int _BufferUpdateIntervalMS;
-      private int _ReadOffsetBytes;
-      private int _VizReadOffsetBytes;
+      private int _ReadOffsetSamples;
+      private int _VizReadOffsetSamples;
 
       private bool _Initialized;
 
@@ -75,7 +75,7 @@ namespace MediaPortal.Plugins.PureAudio
       private STREAMPROC _VizRawStreamWriteProcDelegate;
 
       private AudioRingBuffer _Buffer;
-      private BassPlayer _Player;
+      private PureAudioPlayer _Player;
       private Silence _Silence;
       private Thread _BufferUpdateThread;
 
@@ -129,14 +129,14 @@ namespace MediaPortal.Plugins.PureAudio
         ResetInputStream();
 
         _InputStream = stream;
-        _ReadOffsetBytes = AudioRingBuffer.CalculateLength(stream.SampleRate, stream.Channels, _ReadOffset);
+        _ReadOffsetSamples = AudioRingBuffer.CalculateLength(stream.SampleRate, stream.Channels, _ReadOffset);
 
         Log.Debug("Output stream reading offset: {0} ms", _ReadOffset.TotalMilliseconds);
 
         UpdateVizLatencyCorrection();
 
         _Buffer = new AudioRingBuffer(stream.SampleRate, stream.Channels, _BufferSize + _ReadOffset);
-        _Buffer.ResetPointers(_ReadOffsetBytes);
+        _Buffer.ResetPointers(_ReadOffsetSamples);
 
         CreateOutputStream();
         CreateVizStream();
@@ -155,7 +155,7 @@ namespace MediaPortal.Plugins.PureAudio
       public void ClearBuffer()
       {
         _Buffer.Clear();
-        _Buffer.ResetPointers(_ReadOffsetBytes);
+        _Buffer.ResetPointers(_ReadOffsetSamples);
       }
 
       /// <summary>
@@ -191,8 +191,8 @@ namespace MediaPortal.Plugins.PureAudio
 
           _Buffer = null;
           _InputStream = null;
-          _ReadOffsetBytes = 0;
-          _VizReadOffsetBytes = 0;
+          _ReadOffsetSamples = 0;
+          _VizReadOffsetSamples = 0;
         }
       }
 
@@ -200,7 +200,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private PlaybackBuffer(BassPlayer player)
+      private PlaybackBuffer(PureAudioPlayer player)
       {
         _Player = player;
       }
@@ -237,8 +237,8 @@ namespace MediaPortal.Plugins.PureAudio
       {
         Log.Debug("PlaybackBuffer.UpdateVizLatencyCorrection()");
 
-        _VizReadOffset = InternalSettings.VizLatencyCorrectionRange.Add(_Player._Settings.VizStreamLatencyCorrection);
-        _VizReadOffsetBytes = AudioRingBuffer.CalculateLength(_InputStream.SampleRate, _InputStream.Channels, _VizReadOffset);
+        _VizReadOffset = InternalSettings.VizLatencyCorrectionRange.Add(_Player._Settings.VisualizationLatencyCorrection);
+        _VizReadOffsetSamples = AudioRingBuffer.CalculateLength(_InputStream.SampleRate, _InputStream.Channels, _VizReadOffset);
 
         Log.Debug("Vizstream reading offset: {0} ms", _VizReadOffset.TotalMilliseconds);
       }
@@ -334,7 +334,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// <returns>Number of bytes read.</returns>
       private int OutputStreamWriteProc(int streamHandle, IntPtr buffer, int requestedBytes, IntPtr userData)
       {
-        int read = _Buffer.Read(buffer, requestedBytes / BassConstants.FloatBytes, _ReadOffsetBytes);
+        int read = _Buffer.Read(buffer, requestedBytes / BassConstants.FloatBytes, _ReadOffsetSamples);
         return read * BassConstants.FloatBytes;
       }
 
@@ -350,7 +350,8 @@ namespace MediaPortal.Plugins.PureAudio
       {
         if (_Player._Controller.ExternalState == PlaybackState.Playing)
         {
-          int read = _Buffer.Peek(buffer, requestedBytes, _VizReadOffsetBytes);
+
+          int read = _Buffer.Peek(buffer, requestedBytes / BassConstants.FloatBytes, _VizReadOffsetSamples);
           return read * BassConstants.FloatBytes;
         }
         else
