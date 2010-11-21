@@ -35,14 +35,15 @@
 #include "InstalledDriver.h"
 #include "LatencyInfo.h"
 
-namespace Media
+namespace MediaPortal
 {
-  namespace Players
+  namespace Plugins
   {
-    namespace BassPlayer
+    namespace PureAudio
     {
       namespace ASIOInterop
       {
+
         array<InstalledDriver^>^ AsioDriver::InstalledDrivers::get()
         {
           // if we don't know what drivers are installed, ask the InstalledDriver class

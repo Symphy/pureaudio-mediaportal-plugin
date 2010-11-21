@@ -28,11 +28,11 @@
 #include "AsioRedirect.h"
 #include "BufferInt16LSB.h"
 
-namespace Media
+namespace MediaPortal
 {
-  namespace Players
+  namespace Plugins
   {
-    namespace BassPlayer
+    namespace PureAudio
     {
       namespace ASIOInterop
       {
