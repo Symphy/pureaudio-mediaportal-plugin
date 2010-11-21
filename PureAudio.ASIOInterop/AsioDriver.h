@@ -35,11 +35,11 @@
 #pragma managed
 using namespace System;
 
-namespace Media
+namespace MediaPortal
 {
-  namespace Players
+  namespace Plugins
   {
-    namespace BassPlayer
+    namespace PureAudio
     {
       namespace ASIOInterop
       {

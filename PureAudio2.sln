@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PureAudio.ASIOInterop", "PureAudio.ASIOInterop\PureAudio.ASIOInterop.vcproj", "{2EC0CE30-4934-4856-A64C-75316F98393E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureAudio.Plugin", "PureAudio.Plugin\PureAudio.Plugin.csproj", "{ABB83D33-0F45-48D4-865D-88B22C02230D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{C4948AE0-FC7F-4BF1-B321-EF4236536B0F}"
 	ProjectSection(SolutionItems) = preProject
 		Dependencies\SetDirectories.bat = Dependencies\SetDirectories.bat
@@ -16,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{0CE41379-3B9
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PureAudio.WMPEffectsInterop", "PureAudio.WMPEffectsInterop\PureAudio.WMPEffectsInterop.vcproj", "{C6978A0C-4C54-4E53-AB39-F28E7A541581}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureAudio.Player", "PureAudio.Player\PureAudio.Player.csproj", "{ABB83D33-0F45-48D4-865D-88B22C02230D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,16 +37,6 @@ Global
 		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Win32.ActiveCfg = Release|Win32
 		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Win32.Build.0 = Release|Win32
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C6978A0C-4C54-4E53-AB39-F28E7A541581}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{C6978A0C-4C54-4E53-AB39-F28E7A541581}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{C6978A0C-4C54-4E53-AB39-F28E7A541581}.Debug|Mixed Platforms.Build.0 = Debug|Win32
@@ -57,6 +47,16 @@ Global
 		{C6978A0C-4C54-4E53-AB39-F28E7A541581}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{C6978A0C-4C54-4E53-AB39-F28E7A541581}.Release|Win32.ActiveCfg = Release|Win32
 		{C6978A0C-4C54-4E53-AB39-F28E7A541581}.Release|Win32.Build.0 = Release|Win32
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ABB83D33-0F45-48D4-865D-88B22C02230D}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

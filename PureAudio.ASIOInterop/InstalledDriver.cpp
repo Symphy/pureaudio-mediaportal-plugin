@@ -33,11 +33,11 @@ using namespace Microsoft::Win32;
 // and we need this for typed lists
 using namespace System::Collections::Generic;
 
-namespace Media
+namespace MediaPortal
 {
-  namespace Players
+  namespace Plugins
   {
-    namespace BassPlayer
+    namespace PureAudio
     {
       namespace ASIOInterop
       {
