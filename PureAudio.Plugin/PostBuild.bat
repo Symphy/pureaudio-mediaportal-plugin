@@ -17,7 +17,7 @@ rem // along with MediaPortal. If not, see <http://www.gnu.org/licenses/>.
 set MPDIR=
 call "%1\Dependencies\SetDirectories.bat"
 
-copy "%1\Bin\%2\PureAudio.Plugin.dll" "%MPDIR%\plugins\ExternalPlayers"
+copy "%1\Bin\%2\PureAudio.Player.dll" "%MPDIR%\plugins\ExternalPlayers"
 copy "%1\Bin\%2\PureAudio.ASIOInterop.dll" "%MPDIR%\plugins\ExternalPlayers"
 copy "%1\Bin\%2\PureAudio.WMPEffectsInterop.dll" "%MPDIR%\plugins\ExternalPlayers"
 

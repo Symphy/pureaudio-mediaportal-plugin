@@ -22,7 +22,7 @@ using System;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     private partial class OutputDeviceManager
     {
@@ -33,7 +33,7 @@ namespace MediaPortal.Plugins.PureAudio
       {
         #region Fields
 
-        PureAudioPlayer _Player;
+        Player _Player;
 
         #endregion
 
@@ -47,7 +47,7 @@ namespace MediaPortal.Plugins.PureAudio
 
         #region Public members
 
-        public OutputDeviceFactory(PureAudioPlayer player)
+        public OutputDeviceFactory(Player player)
         {
           _Player = player;
         }

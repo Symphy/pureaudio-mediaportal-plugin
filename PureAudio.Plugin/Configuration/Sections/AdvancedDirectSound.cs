@@ -46,8 +46,8 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
     {
       base.ReadSettings(form);
 
-      trackBarDirectSoundBufferSize.Value = (int)BassPlayerSettings.DirectSoundBufferSize.TotalMilliseconds / 100;
-      lblDirectSoundBufferSize.Text = BassPlayerSettings.DirectSoundBufferSize.TotalMilliseconds.ToString();
+      trackBarDirectSoundBufferSize.Value = (int)Settings.DirectSoundBufferSize.TotalMilliseconds / 100;
+      lblDirectSoundBufferSize.Text = Settings.DirectSoundBufferSize.TotalMilliseconds.ToString();
     }
 
     #endregion
@@ -57,7 +57,7 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
     private void trackBarDirectSoundBufferSize_ValueChanged(object sender, EventArgs e)
     {
       int value = trackBarDirectSoundBufferSize.Value * 100;
-      BassPlayerSettings.DirectSoundBufferSize = TimeSpan.FromMilliseconds(value);
+      Settings.DirectSoundBufferSize = TimeSpan.FromMilliseconds(value);
       lblDirectSoundBufferSize.Text = value.ToString();
     }
 

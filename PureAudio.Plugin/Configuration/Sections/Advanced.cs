@@ -47,10 +47,10 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
     {
       base.ReadSettings(form);
 
-      trackBarPlaybackBufferSize.Value = (int)BassPlayerSettings.PlaybackBufferSize.TotalMilliseconds / 100;
-      lblPlaybackBufferSize.Text = BassPlayerSettings.PlaybackBufferSize.TotalMilliseconds.ToString();
+      trackBarPlaybackBufferSize.Value = (int)Settings.PlaybackBufferSize.TotalMilliseconds / 100;
+      lblPlaybackBufferSize.Text = Settings.PlaybackBufferSize.TotalMilliseconds.ToString();
 
-      chkEnableOverSampling.Checked = BassPlayerSettings.EnableOversampling;
+      chkEnableOverSampling.Checked = Settings.EnableOversampling;
     }
 
     #endregion
@@ -60,13 +60,13 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
     private void trackBarPlaybackBufferSize_ValueChanged(object sender, EventArgs e)
     {
       int value = trackBarPlaybackBufferSize.Value * 100;
-      BassPlayerSettings.PlaybackBufferSize = TimeSpan.FromMilliseconds(value);
+      Settings.PlaybackBufferSize = TimeSpan.FromMilliseconds(value);
       lblPlaybackBufferSize.Text = value.ToString();
     }
 
     private void chkEnableOverSampling_CheckedChanged(object sender, EventArgs e)
     {
-      BassPlayerSettings.EnableOversampling = chkEnableOverSampling.Checked;
+      Settings.EnableOversampling = chkEnableOverSampling.Checked;
     }
     
     #endregion

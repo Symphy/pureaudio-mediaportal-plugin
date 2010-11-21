@@ -25,7 +25,7 @@ using Un4seen.Bass.Misc;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     private class BassStreamWinder : IDisposable
     {

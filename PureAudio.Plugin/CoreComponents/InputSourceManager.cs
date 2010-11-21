@@ -23,7 +23,7 @@ using Un4seen.Bass;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     /// <summary>
     /// Switches between inputsources and can perform crossfading and gapless playback.
@@ -37,7 +37,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static InputSourceManager Create(PureAudioPlayer player)
+      public static InputSourceManager Create(Player player)
       {
         InputSourceManager inputSourceManager = new InputSourceManager(player);
         inputSourceManager.Initialize();
@@ -48,7 +48,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Fields
 
-      private PureAudioPlayer _Player;
+      private Player _Player;
       private BassStream _OutputStream;
       private InputSourceHolder _CurrentInputSourceHolder;
       private STREAMPROC _StreamWriteProcDelegate;
@@ -146,7 +146,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private InputSourceManager(PureAudioPlayer player)
+      private InputSourceManager(Player player)
       {
         _Player = player;
       }

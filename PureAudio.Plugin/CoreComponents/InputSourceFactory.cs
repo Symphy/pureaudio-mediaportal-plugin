@@ -24,7 +24,7 @@ using Un4seen.Bass;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     /// <summary>
     /// Creates inputsource objects.
@@ -33,7 +33,7 @@ namespace MediaPortal.Plugins.PureAudio
     {
       #region Fields
 
-      PureAudioPlayer _Player;
+      Player _Player;
 
       #endregion
 
@@ -47,7 +47,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Public members
 
-      public InputSourceFactory(PureAudioPlayer player)
+      public InputSourceFactory(Player player)
       {
         _Player = player;
       }
