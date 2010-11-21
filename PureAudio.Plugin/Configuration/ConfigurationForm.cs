@@ -80,13 +80,14 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
 
     #region public members
 
-    private BassPlayer _player = new BassPlayer();
+    private PureAudioPlayer _player = new PureAudioPlayer();
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.Extensions sectionExtensions;
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedASIO sectionAdvancedASIO;
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedDirectSound sectionAdvancedDirectSound;
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.Advanced sectionAdvanced;
+    private MediaPortal.Plugins.PureAudio.Configuration.Sections.Visualizations sectionVisualizations;
   
-    public BassPlayer Player
+    public PureAudioPlayer Player
     {
       get { return _player; }
     }
@@ -191,6 +192,7 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       sectionAdvanced.ReadSettings(this);
       sectionAdvancedASIO.ReadSettings(this);
       sectionAdvancedDirectSound.ReadSettings(this);
+      sectionVisualizations.ReadSettings(this);
     }
 
     #endregion
@@ -226,30 +228,32 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       this.btnCancel = new MediaPortal.UserInterface.Controls.MPButton();
       this.tabControl = new System.Windows.Forms.TabControl();
       this.tabPageAbout = new System.Windows.Forms.TabPage();
+      this.sectionAbout = new MediaPortal.Plugins.PureAudio.Configuration.Sections.About();
       this.tabPageDevice = new System.Windows.Forms.TabPage();
       this.tabPageGeneral = new System.Windows.Forms.TabPage();
       this.tabPageUpmixing = new System.Windows.Forms.TabPage();
       this.tabPageExtensions = new System.Windows.Forms.TabPage();
+      this.sectionExtensions = new MediaPortal.Plugins.PureAudio.Configuration.Sections.Extensions();
       this.tabPageAdvanced = new System.Windows.Forms.TabPage();
+      this.sectionAdvanced = new MediaPortal.Plugins.PureAudio.Configuration.Sections.Advanced();
       this.tabPageASIO = new System.Windows.Forms.TabPage();
+      this.sectionAdvancedASIO = new MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedASIO();
       this.tabPageDirectSound = new System.Windows.Forms.TabPage();
+      this.sectionAdvancedDirectSound = new MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedDirectSound();
       this.tabPageVisualization = new System.Windows.Forms.TabPage();
       this.tabPageWMPViz = new System.Windows.Forms.TabPage();
       this.tabPageDSP = new System.Windows.Forms.TabPage();
       this.tvwMenu = new System.Windows.Forms.TreeView();
       this.ctlHeader = new MediaPortal.UserInterface.Controls.MPGradientLabel();
       this.beveledLine1 = new MediaPortal.UserInterface.Controls.MPBeveledLine();
-      this.sectionAbout = new MediaPortal.Plugins.PureAudio.Configuration.Sections.About();
-      this.sectionExtensions = new MediaPortal.Plugins.PureAudio.Configuration.Sections.Extensions();
-      this.sectionAdvancedASIO = new MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedASIO();
-      this.sectionAdvancedDirectSound = new MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedDirectSound();
-      this.sectionAdvanced = new MediaPortal.Plugins.PureAudio.Configuration.Sections.Advanced();
+      this.sectionVisualizations = new MediaPortal.Plugins.PureAudio.Configuration.Sections.Visualizations();
       this.tabControl.SuspendLayout();
       this.tabPageAbout.SuspendLayout();
       this.tabPageExtensions.SuspendLayout();
       this.tabPageAdvanced.SuspendLayout();
       this.tabPageASIO.SuspendLayout();
       this.tabPageDirectSound.SuspendLayout();
+      this.tabPageVisualization.SuspendLayout();
       this.SuspendLayout();
       // 
       // btnOk
@@ -302,6 +306,14 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       this.tabPageAbout.Text = "About";
       this.tabPageAbout.UseVisualStyleBackColor = true;
       // 
+      // sectionAbout
+      // 
+      this.sectionAbout.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionAbout.Location = new System.Drawing.Point(0, 0);
+      this.sectionAbout.Name = "sectionAbout";
+      this.sectionAbout.Size = new System.Drawing.Size(503, 319);
+      this.sectionAbout.TabIndex = 0;
+      // 
       // tabPageDevice
       // 
       this.tabPageDevice.Location = new System.Drawing.Point(4, 25);
@@ -342,6 +354,14 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       this.tabPageExtensions.Text = "Extensions";
       this.tabPageExtensions.UseVisualStyleBackColor = true;
       // 
+      // sectionExtensions
+      // 
+      this.sectionExtensions.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionExtensions.Location = new System.Drawing.Point(3, 3);
+      this.sectionExtensions.Name = "sectionExtensions";
+      this.sectionExtensions.Size = new System.Drawing.Size(497, 313);
+      this.sectionExtensions.TabIndex = 0;
+      // 
       // tabPageAdvanced
       // 
       this.tabPageAdvanced.Controls.Add(this.sectionAdvanced);
@@ -353,6 +373,14 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       this.tabPageAdvanced.Text = "Advanced";
       this.tabPageAdvanced.UseVisualStyleBackColor = true;
       // 
+      // sectionAdvanced
+      // 
+      this.sectionAdvanced.Dock = System.Windows.Forms.DockStyle.Top;
+      this.sectionAdvanced.Location = new System.Drawing.Point(3, 3);
+      this.sectionAdvanced.Name = "sectionAdvanced";
+      this.sectionAdvanced.Size = new System.Drawing.Size(497, 308);
+      this.sectionAdvanced.TabIndex = 0;
+      // 
       // tabPageASIO
       // 
       this.tabPageASIO.Controls.Add(this.sectionAdvancedASIO);
@@ -362,6 +390,14 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       this.tabPageASIO.TabIndex = 6;
       this.tabPageASIO.Text = "ASIO";
       this.tabPageASIO.UseVisualStyleBackColor = true;
+      // 
+      // sectionAdvancedASIO
+      // 
+      this.sectionAdvancedASIO.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionAdvancedASIO.Location = new System.Drawing.Point(0, 0);
+      this.sectionAdvancedASIO.Name = "sectionAdvancedASIO";
+      this.sectionAdvancedASIO.Size = new System.Drawing.Size(503, 319);
+      this.sectionAdvancedASIO.TabIndex = 0;
       // 
       // tabPageDirectSound
       // 
@@ -373,8 +409,17 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       this.tabPageDirectSound.Text = "DirectSound";
       this.tabPageDirectSound.UseVisualStyleBackColor = true;
       // 
+      // sectionAdvancedDirectSound
+      // 
+      this.sectionAdvancedDirectSound.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionAdvancedDirectSound.Location = new System.Drawing.Point(0, 0);
+      this.sectionAdvancedDirectSound.Name = "sectionAdvancedDirectSound";
+      this.sectionAdvancedDirectSound.Size = new System.Drawing.Size(503, 319);
+      this.sectionAdvancedDirectSound.TabIndex = 0;
+      // 
       // tabPageVisualization
       // 
+      this.tabPageVisualization.Controls.Add(this.sectionVisualizations);
       this.tabPageVisualization.Location = new System.Drawing.Point(4, 25);
       this.tabPageVisualization.Name = "tabPageVisualization";
       this.tabPageVisualization.Size = new System.Drawing.Size(503, 319);
@@ -454,45 +499,13 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       this.beveledLine1.TabIndex = 6;
       this.beveledLine1.TabStop = false;
       // 
-      // sectionAbout
+      // sectionVisualizations
       // 
-      this.sectionAbout.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.sectionAbout.Location = new System.Drawing.Point(0, 0);
-      this.sectionAbout.Name = "sectionAbout";
-      this.sectionAbout.Size = new System.Drawing.Size(503, 319);
-      this.sectionAbout.TabIndex = 0;
-      // 
-      // sectionExtensions
-      // 
-      this.sectionExtensions.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.sectionExtensions.Location = new System.Drawing.Point(3, 3);
-      this.sectionExtensions.Name = "sectionExtensions";
-      this.sectionExtensions.Size = new System.Drawing.Size(497, 313);
-      this.sectionExtensions.TabIndex = 0;
-      // 
-      // sectionAdvancedASIO
-      // 
-      this.sectionAdvancedASIO.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.sectionAdvancedASIO.Location = new System.Drawing.Point(0, 0);
-      this.sectionAdvancedASIO.Name = "sectionAdvancedASIO";
-      this.sectionAdvancedASIO.Size = new System.Drawing.Size(503, 319);
-      this.sectionAdvancedASIO.TabIndex = 0;
-      // 
-      // sectionAdvancedDirectSound
-      // 
-      this.sectionAdvancedDirectSound.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.sectionAdvancedDirectSound.Location = new System.Drawing.Point(0, 0);
-      this.sectionAdvancedDirectSound.Name = "sectionAdvancedDirectSound";
-      this.sectionAdvancedDirectSound.Size = new System.Drawing.Size(503, 319);
-      this.sectionAdvancedDirectSound.TabIndex = 0;
-      // 
-      // sectionAdvanced
-      // 
-      this.sectionAdvanced.Dock = System.Windows.Forms.DockStyle.Top;
-      this.sectionAdvanced.Location = new System.Drawing.Point(3, 3);
-      this.sectionAdvanced.Name = "sectionAdvanced";
-      this.sectionAdvanced.Size = new System.Drawing.Size(497, 308);
-      this.sectionAdvanced.TabIndex = 0;
+      this.sectionVisualizations.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.sectionVisualizations.Location = new System.Drawing.Point(0, 0);
+      this.sectionVisualizations.Name = "sectionVisualizations";
+      this.sectionVisualizations.Size = new System.Drawing.Size(503, 319);
+      this.sectionVisualizations.TabIndex = 0;
       // 
       // ConfigurationForm
       // 
@@ -520,6 +533,7 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
       this.tabPageAdvanced.ResumeLayout(false);
       this.tabPageASIO.ResumeLayout(false);
       this.tabPageDirectSound.ResumeLayout(false);
+      this.tabPageVisualization.ResumeLayout(false);
       this.ResumeLayout(false);
 
     }

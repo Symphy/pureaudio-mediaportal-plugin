@@ -25,7 +25,7 @@ using MediaPortal.Core;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     /// <summary>
     /// Player controller.
@@ -39,7 +39,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static Controller Create(BassPlayer player)
+      public static Controller Create(PureAudioPlayer player)
       {
         Controller controller = new Controller(player);
         controller.Initialize();
@@ -51,7 +51,7 @@ namespace MediaPortal.Plugins.PureAudio
       #region Fields
 
       // Reference to the containin IPlayer object.
-      private BassPlayer _Player;
+      private PureAudioPlayer _Player;
 
       // The current external playback state.
       private PlaybackState _ExternalState;
@@ -99,6 +99,12 @@ namespace MediaPortal.Plugins.PureAudio
 
       public delegate void WaitEndedDelegate();
       public event WaitEndedDelegate WaitEnded;
+
+      public delegate void SessionStartedDelegate();
+      public event SessionStartedDelegate SessionStarted;
+
+      public delegate void SessionStoppedDelegate();
+      public event SessionStoppedDelegate SessionStopped;
 
       /// <summary>
       /// Returns the current external playback state. 
@@ -288,7 +294,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private Controller(BassPlayer player)
+      private Controller(PureAudioPlayer player)
       {
         _Player = player;
       }
@@ -340,6 +346,9 @@ namespace MediaPortal.Plugins.PureAudio
           _InternalState = InternalPlayBackState.Initializing;
 
           _Player._PlaybackSession = PlaybackSession.Create(_Player, inputSource.OutputStream.Channels, inputSource.OutputStream.SampleRate, inputSource.OutputStream.IsPassThrough);
+          
+          if (SessionStarted != null)
+            SessionStarted();
 
           _InternalState = InternalPlayBackState.Playing;
         }
@@ -428,6 +437,9 @@ namespace MediaPortal.Plugins.PureAudio
 
           _Player._PlaybackSession.End();
           _Player._PlaybackSession = null;
+          
+          if (SessionStopped != null)
+            SessionStopped();
 
           _InternalState = InternalPlayBackState.Stopped;
         }

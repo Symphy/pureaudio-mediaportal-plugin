@@ -24,7 +24,7 @@ using System.Threading;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     /// <summary>
     /// Player monitor. Keeps track of playback position and notifies controller if nessecary.
@@ -38,7 +38,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static Monitor Create(BassPlayer player)
+      public static Monitor Create(PureAudioPlayer player)
       {
         Monitor monitor = new Monitor(player);
         monitor.Initialize();
@@ -50,7 +50,7 @@ namespace MediaPortal.Plugins.PureAudio
       #region Fields
 
       // Reference to the containin IPlayer object.
-      private BassPlayer _Player;
+      private PureAudioPlayer _Player;
 
       // Monitorthread.
       private Thread _MonitorThread;
@@ -66,6 +66,12 @@ namespace MediaPortal.Plugins.PureAudio
       #endregion
 
       #region Public members
+
+      public delegate void MonitorProcessDelegate();
+      /// <summary>
+      /// Fires periodically after each monitoring interval. Hook for additional functionality.
+      /// </summary>
+      public event MonitorProcessDelegate MonitorProcess;
 
       /// <summary>
       /// Returns the duration of the currently played track.
@@ -110,7 +116,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private Monitor(BassPlayer player)
+      private Monitor(PureAudioPlayer player)
       {
         _Player = player;
       }
@@ -151,6 +157,9 @@ namespace MediaPortal.Plugins.PureAudio
 
               _PlaybackSpeed = 1;
             }
+
+            if (MonitorProcess != null)
+              MonitorProcess();
 
             _MonitorThreadNotify.WaitOne(200, false);
           }

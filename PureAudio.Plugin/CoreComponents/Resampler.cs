@@ -24,7 +24,7 @@ using Un4seen.Bass.AddOn.Mix;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     /// <summary>
     /// Performs upmixing and downmixing.
@@ -38,7 +38,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static Resampler Create(BassPlayer player)
+      public static Resampler Create(PureAudioPlayer player)
       {
         Resampler resampler = new Resampler(player);
         resampler.Initialize();
@@ -49,7 +49,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Fields
 
-      private BassPlayer _Player;
+      private PureAudioPlayer _Player;
       private BassStream _InputStream;
       private BassStream _OutputStream;
       private bool _Initialized;
@@ -160,7 +160,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private Resampler(BassPlayer player)
+      private Resampler(PureAudioPlayer player)
       {
         _Player = player;
       }

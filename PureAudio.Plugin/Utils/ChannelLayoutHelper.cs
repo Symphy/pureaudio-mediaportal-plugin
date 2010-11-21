@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class BassPlayer
+  public partial class PureAudioPlayer
   {
     /// <summary>
     /// Provides helperfunctions dealing with channelassignments and mappings.

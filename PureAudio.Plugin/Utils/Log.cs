@@ -111,7 +111,7 @@ namespace MediaPortal.Plugins.PureAudio
 
     private static string GetPrefix()
     {
-      if (Thread.CurrentThread.Name.StartsWith("PureAudio"))
+      if (Thread.CurrentThread != null && Thread.CurrentThread.Name != null && Thread.CurrentThread.Name.StartsWith("PureAudio"))
         return "";
       else
         return _Prefix;
