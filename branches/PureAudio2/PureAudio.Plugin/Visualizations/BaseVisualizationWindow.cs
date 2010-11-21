@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace MediaPortal.Plugins.PureAudio
+namespace MediaPortal.Plugins.PureAudio.Visualization
 {
   public class BaseVisualizationWindow : UserControl
   {
@@ -39,7 +39,7 @@ namespace MediaPortal.Plugins.PureAudio
       SetStyle(ControlStyles.DoubleBuffer, true);
     }
 
-    public virtual int? BassStream { get; set; }
+    public virtual BassStream BassStream { get; set; }
 
   }
 }

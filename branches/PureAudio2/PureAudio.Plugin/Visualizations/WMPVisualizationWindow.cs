@@ -25,15 +25,12 @@ using MediaPortal.Plugins.PureAudio.WMPEffectsInterop;
 using MediaPortal.GUI.Library;
 using Un4seen.Bass;
 
-namespace MediaPortal.Plugins.PureAudio
+namespace MediaPortal.Plugins.PureAudio.Visualization
 {
   public class WMPVisualizationWindow : BaseVisualizationWindow
   {
-    public const int MaxSamples = 1024;
-    public const int MaxChannels = 2;
-
-    private float[] _WaveDataBuffer = new float[MaxSamples * 2];
-    private float[] _FFTDataBuffer = new float[MaxSamples * 2];
+    private float[] _WaveDataBuffer = new float[1024 * 2];
+    private float[] _FFTDataBuffer = new float[1024 * 2];
 
     private float[,] _WaveData = new float[2, 1024];
     private float[,] _FFTData = new float[2, 1024];
@@ -41,7 +38,7 @@ namespace MediaPortal.Plugins.PureAudio
     private delegate void RenderDelegate();
 
     private WMPEffect _WMPEffect;
-    private BassPlayerSettings _Settings;
+    private PureAudioSettings _Settings;
     private RenderDelegate _RenderDelegate;
     private Thread _RenderThread;
     private AutoResetEvent _WakeupRenderThread;
@@ -49,13 +46,10 @@ namespace MediaPortal.Plugins.PureAudio
 
     private bool CanRender
     {
-      get
-      {
-        return Visible && _WMPEffect != null;
-      }
+      get { return Visible && _WMPEffect != null; }
     }
 
-    public WMPVisualizationWindow(BassPlayerSettings settings)
+    public WMPVisualizationWindow(PureAudioSettings settings)
     {
       this._Settings = settings;
 
@@ -115,10 +109,10 @@ namespace MediaPortal.Plugins.PureAudio
 
     private void PrepareRenderData()
     {
-      if (BassStream.HasValue)
+      if (BassStream != null)
       {
         // Assume 2 channels floating point
-        int read = Bass.BASS_ChannelGetData(BassStream.Value, _WaveDataBuffer, _WaveDataBuffer.Length * 4);
+        int read = Bass.BASS_ChannelGetData(BassStream.Handle, _WaveDataBuffer, _WaveDataBuffer.Length * 4);
         if (read > 0)
         {
           int audioDataChan = 0;
@@ -137,12 +131,12 @@ namespace MediaPortal.Plugins.PureAudio
           }
         }
 
-        read = Bass.BASS_ChannelGetData(BassStream.Value, _FFTDataBuffer, (int)(BASSData.BASS_DATA_FFT2048 | BASSData.BASS_DATA_FFT_INDIVIDUAL));
+        read = Bass.BASS_ChannelGetData(BassStream.Handle, _FFTDataBuffer, (int)(BASSData.BASS_DATA_FFT2048 | BASSData.BASS_DATA_FFT_INDIVIDUAL));
         if (read > 0)
         {
           int fftDataChan = 0;
           int fftDataIndex = 0;
-          
+
           // Start at index = 2; to skip the first fft samples being the DC components.
           // This will cause the last samples in _FFTData to be always empty, but who cares at 22050 Hz...
           for (int index = 2; index < _FFTDataBuffer.Length; index++)
@@ -161,7 +155,7 @@ namespace MediaPortal.Plugins.PureAudio
       }
       else
       {
-        Array.Clear(_WaveData, 0, _FFTData.Length);
+        Array.Clear(_WaveData, 0, _WaveData.Length);
         Array.Clear(_FFTData, 0, _FFTData.Length);
       }
     }

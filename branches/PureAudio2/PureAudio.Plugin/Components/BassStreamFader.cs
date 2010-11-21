@@ -31,7 +31,7 @@ namespace MediaPortal.Plugins.PureAudio
   /// Only modifies the volume attribute.
   /// The actual fading must be implemented in code that reads from the stream!
   /// </remarks>
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     private partial class BassStreamFader
     {

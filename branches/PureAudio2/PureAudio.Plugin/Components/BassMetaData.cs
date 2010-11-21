@@ -23,7 +23,7 @@ using Un4seen.Bass;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     /// <summary>
     /// Provides meta data retrieved from a BASS stream.

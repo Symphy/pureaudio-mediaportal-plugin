@@ -25,7 +25,7 @@ using MediaPortal.Core;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     /// <summary>
     /// Player controller.
@@ -39,7 +39,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static Controller Create(PureAudioPlayer player)
+      public static Controller Create(Player player)
       {
         Controller controller = new Controller(player);
         controller.Initialize();
@@ -51,7 +51,7 @@ namespace MediaPortal.Plugins.PureAudio
       #region Fields
 
       // Reference to the containin IPlayer object.
-      private PureAudioPlayer _Player;
+      private Player _Player;
 
       // The current external playback state.
       private PlaybackState _ExternalState;
@@ -294,7 +294,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private Controller(PureAudioPlayer player)
+      private Controller(Player player)
       {
         _Player = player;
       }

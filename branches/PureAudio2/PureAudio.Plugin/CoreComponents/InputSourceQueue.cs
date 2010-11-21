@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     /// <summary>
     /// Queue of inputsources that have to be played in sequence.

@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     static private partial class ChannelAssignmentHelper
     {

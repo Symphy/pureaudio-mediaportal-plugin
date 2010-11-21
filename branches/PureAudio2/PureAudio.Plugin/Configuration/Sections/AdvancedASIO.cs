@@ -72,17 +72,17 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
     {
       base.ReadSettings(form);
 
-      chkASIOUseMaxBufferSize.Checked = BassPlayerSettings.ASIOUseMaxBufferSize;
+      chkASIOUseMaxBufferSize.Checked = Settings.ASIOUseMaxBufferSize;
 
       cboASIOMinRate.SelectedItem =
-        BassPlayerSettings.ASIOMinRate == BassPlayerSettings.Constants.Auto
+        Settings.ASIOMinRate == PureAudioSettings.Constants.Auto
         ? "Auto"
-        : BassPlayerSettings.ASIOMinRate.ToString();
+        : Settings.ASIOMinRate.ToString();
 
       cboASIOMaxRate.SelectedItem =
-        BassPlayerSettings.ASIOMaxRate == BassPlayerSettings.Constants.Auto
+        Settings.ASIOMaxRate == PureAudioSettings.Constants.Auto
         ? "Auto"
-        : BassPlayerSettings.ASIOMaxRate.ToString();
+        : Settings.ASIOMaxRate.ToString();
     }
 
     #endregion
@@ -91,25 +91,25 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
 
     private void chkASIOUseMaxBufferSize_CheckedChanged(object sender, EventArgs e)
     {
-      BassPlayerSettings.ASIOUseMaxBufferSize = chkASIOUseMaxBufferSize.Checked;
+      Settings.ASIOUseMaxBufferSize = chkASIOUseMaxBufferSize.Checked;
     }
 
     private void cboASIOMinRate_SelectedIndexChanged(object sender, EventArgs e)
     {
       string value = cboASIOMinRate.SelectedItem.ToString();
       if (value == "Auto")
-        BassPlayerSettings.ASIOMinRate = BassPlayerSettings.Constants.Auto;
+        Settings.ASIOMinRate = PureAudioSettings.Constants.Auto;
       else
-        BassPlayerSettings.ASIOMinRate = Convert.ToInt32(value);
+        Settings.ASIOMinRate = Convert.ToInt32(value);
     }
 
     private void cboASIOMaxRate_SelectedIndexChanged(object sender, EventArgs e)
     {
       string value = cboASIOMaxRate.SelectedItem.ToString();
       if (value == "Auto")
-        BassPlayerSettings.ASIOMaxRate = BassPlayerSettings.Constants.Auto;
+        Settings.ASIOMaxRate = PureAudioSettings.Constants.Auto;
       else
-        BassPlayerSettings.ASIOMaxRate = Convert.ToInt32(value);
+        Settings.ASIOMaxRate = Convert.ToInt32(value);
     }
     #endregion
 

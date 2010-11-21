@@ -25,7 +25,7 @@ using Un4seen.Bass.AddOn.Mix;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     /// <summary>
     /// Buffers the output stream to ensure stable playback. Also provides a synchronized stream for visualization purposes.
@@ -39,7 +39,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static PlaybackBuffer Create(PureAudioPlayer player)
+      public static PlaybackBuffer Create(Player player)
       {
         PlaybackBuffer playbackBuffer = new PlaybackBuffer(player);
         playbackBuffer.Initialize();
@@ -75,7 +75,7 @@ namespace MediaPortal.Plugins.PureAudio
       private STREAMPROC _VizRawStreamWriteProcDelegate;
 
       private AudioRingBuffer _Buffer;
-      private PureAudioPlayer _Player;
+      private Player _Player;
       private Silence _Silence;
       private Thread _BufferUpdateThread;
 
@@ -200,7 +200,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private PlaybackBuffer(PureAudioPlayer player)
+      private PlaybackBuffer(Player player)
       {
         _Player = player;
       }

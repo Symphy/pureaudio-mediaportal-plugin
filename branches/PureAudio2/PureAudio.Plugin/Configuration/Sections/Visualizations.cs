@@ -55,7 +55,7 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
         object item = new InstalledEffectInfo(effect);
         cboWMPEffects.Items.Add(item);
 
-        if (effect.ClsId == BassPlayerSettings.WMPEffectClsId)
+        if (effect.ClsId == Settings.WMPEffectClsId)
           cboWMPEffects.SelectedItem = item;
       }
 
@@ -63,12 +63,12 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
       if (cboWMPEffects.SelectedIndex == -1)
         cboWMPEffects.SelectedIndex = 0;
 
-      nudWMPEffectFps.Value = BassPlayerSettings.WMPEffectFps;
+      nudWMPEffectFps.Value = Settings.WMPEffectFps;
       
-      trackBarVisualizationLatencyCorrection.Value = (int)BassPlayerSettings.VisualizationLatencyCorrection.TotalMilliseconds / 25 + 20;
-      lblVisualizationLatencyCorrection.Text = BassPlayerSettings.VisualizationLatencyCorrection.TotalMilliseconds.ToString();
+      trackBarVisualizationLatencyCorrection.Value = (int)Settings.VisualizationLatencyCorrection.TotalMilliseconds / 25 + 20;
+      lblVisualizationLatencyCorrection.Text = Settings.VisualizationLatencyCorrection.TotalMilliseconds.ToString();
 
-      chkVisualizationUseAGC.Checked = BassPlayerSettings.VisualizationUseAGC;
+      chkVisualizationUseAGC.Checked = Settings.VisualizationUseAGC;
     }
 
     #endregion
@@ -79,14 +79,14 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
     {
       cboWMPEffectPresets.Items.Clear();
 
-      BassPlayerSettings.VisualizationType = VisualizationType.None;
-      BassPlayerSettings.WMPEffectClsId = "";
+      Settings.VisualizationType = VisualizationType.None;
+      Settings.WMPEffectClsId = "";
 
       InstalledEffectInfo effectInfo = (InstalledEffectInfo)cboWMPEffects.SelectedItem;
       if (effectInfo.InstalledEffect != null)
       {
-        BassPlayerSettings.VisualizationType = VisualizationType.WMP;
-        BassPlayerSettings.WMPEffectClsId = effectInfo.InstalledEffect.ClsId;
+        Settings.VisualizationType = VisualizationType.WMP;
+        Settings.WMPEffectClsId = effectInfo.InstalledEffect.ClsId;
 
         WMPEffect wmpEffect = WMPEffect.SelectEffect(effectInfo.InstalledEffect, Handle);
         if (wmpEffect != null)
@@ -96,12 +96,12 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
             Preset preset = wmpEffect.Presets[index];
             cboWMPEffectPresets.Items.Add(preset.Name);
 
-            if (index == BassPlayerSettings.WMPEffectPreset)
+            if (index == Settings.WMPEffectPreset)
               cboWMPEffectPresets.SelectedIndex = index;
           }
 
-          if (cboWMPEffectPresets.Items.Count > BassPlayerSettings.WMPEffectPreset)
-            cboWMPEffectPresets.SelectedIndex = BassPlayerSettings.WMPEffectPreset;
+          if (cboWMPEffectPresets.Items.Count > Settings.WMPEffectPreset)
+            cboWMPEffectPresets.SelectedIndex = Settings.WMPEffectPreset;
 
           wmpEffect.Release();
         }
@@ -114,24 +114,24 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
 
     private void cboWMPEffectPresets_SelectedIndexChanged(object sender, EventArgs e)
     {
-      BassPlayerSettings.WMPEffectPreset = cboWMPEffectPresets.SelectedIndex;
+      Settings.WMPEffectPreset = cboWMPEffectPresets.SelectedIndex;
     }
 
     private void nudWMPEffectFps_ValueChanged(object sender, EventArgs e)
     {
-      BassPlayerSettings.WMPEffectFps = Convert.ToInt32(nudWMPEffectFps.Value);
+      Settings.WMPEffectFps = Convert.ToInt32(nudWMPEffectFps.Value);
     }
 
     private void trackBarVisualizationLatency_ValueChanged(object sender, EventArgs e)
     {
       int value = (trackBarVisualizationLatencyCorrection.Value - 20) * 25;
-      BassPlayerSettings.VisualizationLatencyCorrection = TimeSpan.FromMilliseconds(value);
+      Settings.VisualizationLatencyCorrection = TimeSpan.FromMilliseconds(value);
       lblVisualizationLatencyCorrection.Text = value.ToString();
     }
 
     private void chkVisualizationUseAGC_CheckedChanged(object sender, EventArgs e)
     {
-      BassPlayerSettings.VisualizationUseAGC = chkVisualizationUseAGC.Checked;
+      Settings.VisualizationUseAGC = chkVisualizationUseAGC.Checked;
     }
 
     #endregion

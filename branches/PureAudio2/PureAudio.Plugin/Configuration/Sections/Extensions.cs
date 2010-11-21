@@ -46,9 +46,9 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
       base.ReadSettings(form);
       DisplayExtList();
 
-      chkUseForCDDA.Checked = BassPlayerSettings.UseForCDDA;
-      chkUseForWebStream.Checked = BassPlayerSettings.UseForWebStream;
-      chkUseForLastFMWebStream.Checked = BassPlayerSettings.UseForLastFMWebStream;
+      chkUseForCDDA.Checked = Settings.UseForCDDA;
+      chkUseForWebStream.Checked = Settings.UseForWebStream;
+      chkUseForLastFMWebStream.Checked = Settings.UseForLastFMWebStream;
     }
 
     #endregion
@@ -88,24 +88,24 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
       DialogResult result = MessageBox.Show(this, "Do you want to restore the default extensionlist?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
       if (result == DialogResult.Yes)
       {
-        BassPlayerSettings.SupportedExtensions = BassPlayerSettings.Defaults.SupportedExtensions;
+        Settings.SupportedExtensions = PureAudioSettings.Defaults.SupportedExtensions;
         DisplayExtList();
       }
     }
 
     private void chkUseForCDDA_CheckedChanged(object sender, EventArgs e)
     {
-      BassPlayerSettings.UseForCDDA = chkUseForCDDA.Checked;
+      Settings.UseForCDDA = chkUseForCDDA.Checked;
     }
 
     private void chkUseForWebStream_CheckedChanged(object sender, EventArgs e)
     {
-      BassPlayerSettings.UseForWebStream = chkUseForWebStream.Checked;
+      Settings.UseForWebStream = chkUseForWebStream.Checked;
     }
 
     private void chkUseForLastFMWebStream_CheckedChanged(object sender, EventArgs e)
     {
-      BassPlayerSettings.UseForLastFMWebStream = chkUseForLastFMWebStream.Checked;
+      Settings.UseForLastFMWebStream = chkUseForLastFMWebStream.Checked;
     }
 
     private void Extensions_Validating(object sender, CancelEventArgs e)
@@ -117,7 +117,7 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
           ext += ",";
         ext += item.Text;
       }
-      BassPlayerSettings.SupportedExtensions = ext;
+      Settings.SupportedExtensions = ext;
     }
 
     #endregion
@@ -126,7 +126,7 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
 
     private void DisplayExtList()
     {
-      string[] ext = BassPlayerSettings.SupportedExtensions.Split(new string[] { "," }, StringSplitOptions.None);
+      string[] ext = Settings.SupportedExtensions.Split(new string[] { "," }, StringSplitOptions.None);
 
       lvExtensions.Items.Clear();
       for (int i = 0; i < ext.Length; i++)

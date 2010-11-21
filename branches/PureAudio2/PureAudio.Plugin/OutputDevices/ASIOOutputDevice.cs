@@ -21,13 +21,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Media.Players.BassPlayer.ASIOInterop;
+using MediaPortal.Plugins.PureAudio.ASIOInterop;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Mix;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     private partial class OutputDeviceManager
     {
@@ -45,7 +45,7 @@ namespace MediaPortal.Plugins.PureAudio
           /// </summary>
           /// <param name="player">Reference to containing IPlayer object.</param>
           /// <returns>The new instance.</returns>
-          public static ASIOOutputDevice Create(BassPlayerSettings settings)
+          public static ASIOOutputDevice Create(PureAudioSettings settings)
           {
             ASIOOutputDevice outputDevice = new ASIOOutputDevice(settings);
             outputDevice.Initialize();
@@ -66,7 +66,7 @@ namespace MediaPortal.Plugins.PureAudio
 
           private AsioDriver _Driver;
           private AutoResetEvent _STAThreadNotify;
-          private BassPlayerSettings _Settings;
+          private PureAudioSettings _Settings;
           private BassStream _InputStream;
           private BassStream _MixerStream;
           private BassStreamFader _Fader;
@@ -162,7 +162,7 @@ namespace MediaPortal.Plugins.PureAudio
 
             _InputStream = stream;
 
-            if (_Settings.ASIOFirstChan == BassPlayerSettings.Constants.Auto)
+            if (_Settings.ASIOFirstChan == PureAudioSettings.Constants.Auto)
               _FirstOutputChannel = 0;
             else
               _FirstOutputChannel = _Settings.ASIOFirstChan;
@@ -170,7 +170,7 @@ namespace MediaPortal.Plugins.PureAudio
             _FirstOutputChannel = Math.Max(_FirstOutputChannel, 0);
             _FirstOutputChannel = Math.Min(_FirstOutputChannel, _Driver.OutputChannels.Length - 1);
 
-            if (_Settings.ASIOLastChan == BassPlayerSettings.Constants.Auto)
+            if (_Settings.ASIOLastChan == PureAudioSettings.Constants.Auto)
               _LastOutputChannel = _Driver.OutputChannels.Length;
             else
               _LastOutputChannel = _Settings.ASIOLastChan;
@@ -320,7 +320,7 @@ namespace MediaPortal.Plugins.PureAudio
 
           #region Private members
 
-          private ASIOOutputDevice(BassPlayerSettings settings)
+          private ASIOOutputDevice(PureAudioSettings settings)
           {
             _Settings = settings;
           }
@@ -435,7 +435,7 @@ namespace MediaPortal.Plugins.PureAudio
           private int GetMinASIORate()
           {
             int minimumRate;
-            if (_Settings.ASIOMinRate == BassPlayerSettings.Constants.Auto)
+            if (_Settings.ASIOMinRate == PureAudioSettings.Constants.Auto)
             {
               Log.Debug("Auto-detecting minimum supported ASIO samplerate");
 
@@ -467,7 +467,7 @@ namespace MediaPortal.Plugins.PureAudio
           private int GetMaxASIORate()
           {
             int maximumRate;
-            if (_Settings.ASIOMaxRate == BassPlayerSettings.Constants.Auto)
+            if (_Settings.ASIOMaxRate == PureAudioSettings.Constants.Auto)
             {
               Log.Debug("Auto-detecting maximum supported ASIO samplerate");
 

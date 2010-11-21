@@ -26,7 +26,7 @@ using Un4seen.Bass.Misc;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     private partial class InputSourceHolder : IDisposable
     {
@@ -37,7 +37,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="mediaItem">The mediaItem to be handled by the instance.</param>
       /// <returns>The new instance.</returns>
-      public static InputSourceHolder Create(BassPlayerSettings settings, IInputSource inputSource)
+      public static InputSourceHolder Create(PureAudioSettings settings, IInputSource inputSource)
       {
         InputSourceHolder instance = new InputSourceHolder(settings, inputSource);
         instance.Initialize();
@@ -49,7 +49,7 @@ namespace MediaPortal.Plugins.PureAudio
       #region Fields
 
       private IInputSource _InputSource;
-      private BassPlayerSettings _Settings;
+      private PureAudioSettings _Settings;
       private BassStream _OutputStream;
       private DSP_Gain _ScalingGainDSP;
 
@@ -95,7 +95,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private Members
 
-      private InputSourceHolder(BassPlayerSettings settings, IInputSource inputSource)
+      private InputSourceHolder(PureAudioSettings settings, IInputSource inputSource)
       {
         _Settings = settings;
         _InputSource = inputSource;

@@ -25,7 +25,7 @@ using Un4seen.Bass;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     private partial class OutputDeviceManager
     {
@@ -43,7 +43,7 @@ namespace MediaPortal.Plugins.PureAudio
           /// </summary>
           /// <param name="player">Reference to containing IPlayer object.</param>
           /// <returns>The new instance.</returns>
-          public static DirectXOutputDevice Create(BassPlayerSettings settings)
+          public static DirectXOutputDevice Create(PureAudioSettings settings)
           {
             DirectXOutputDevice outputDevice = new DirectXOutputDevice(settings);
             outputDevice.Initialize();
@@ -62,7 +62,7 @@ namespace MediaPortal.Plugins.PureAudio
 
           #region Fields
 
-          private BassPlayerSettings _Settings;
+          private PureAudioSettings _Settings;
           private BassStream _InputStream;
           private BassStream _OutputStream;
           private STREAMPROC _StreamWriteProcDelegate;
@@ -227,7 +227,7 @@ namespace MediaPortal.Plugins.PureAudio
 
           #region Private members
 
-          private DirectXOutputDevice(BassPlayerSettings settings)
+          private DirectXOutputDevice(PureAudioSettings settings)
           {
             _Settings = settings;
           }
@@ -326,7 +326,7 @@ namespace MediaPortal.Plugins.PureAudio
             string deviceName = _Settings.DirectSoundDevice;
             int deviceNo;
 
-            if (String.IsNullOrEmpty(deviceName) || deviceName == BassPlayerSettings.Defaults.DirectSoundDevice)
+            if (String.IsNullOrEmpty(deviceName) || deviceName == PureAudioSettings.Defaults.DirectSoundDevice)
             {
               Log.Info("Initializing default DirectSound device");
               deviceNo = 1;

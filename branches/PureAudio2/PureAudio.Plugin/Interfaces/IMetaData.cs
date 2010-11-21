@@ -24,7 +24,7 @@ using System;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     /// <summary>
     /// Provides metadata for an inputsource.

@@ -80,20 +80,20 @@ namespace MediaPortal.Plugins.PureAudio.Configuration
 
     #region public members
 
-    private PureAudioPlayer _player = new PureAudioPlayer();
+    private Player _player = new Player();
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.Extensions sectionExtensions;
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedASIO sectionAdvancedASIO;
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.AdvancedDirectSound sectionAdvancedDirectSound;
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.Advanced sectionAdvanced;
     private MediaPortal.Plugins.PureAudio.Configuration.Sections.Visualizations sectionVisualizations;
   
-    public PureAudioPlayer Player
+    public Player Player
     {
       get { return _player; }
     }
 
-    private BassPlayerSettings _settings = new BassPlayerSettings();
-    public BassPlayerSettings Settings
+    private PureAudioSettings _settings = new PureAudioSettings();
+    public PureAudioSettings Settings
     {
       get { return _settings; }
     }

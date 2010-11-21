@@ -47,7 +47,7 @@ namespace MediaPortal.Plugins.PureAudio.Configuration.Sections
       return (ConfigurationForm)FindForm();
     }
 
-    protected BassPlayerSettings BassPlayerSettings
+    protected PureAudioSettings Settings
     {
       get
       {

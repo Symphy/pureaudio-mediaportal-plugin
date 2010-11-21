@@ -22,7 +22,7 @@ using System;
 
 namespace MediaPortal.Plugins.PureAudio
 {
-  public partial class PureAudioPlayer
+  public partial class Player
   {
     /// <summary>
     /// Represents a single playbacksession. 
@@ -39,7 +39,7 @@ namespace MediaPortal.Plugins.PureAudio
       /// </summary>
       /// <param name="player">Reference to containing IPlayer object.</param>
       /// <returns>The new instance.</returns>
-      public static PlaybackSession Create(PureAudioPlayer player, int channels, int sampleRate, bool isPassThrough)
+      public static PlaybackSession Create(Player player, int channels, int sampleRate, bool isPassThrough)
       {
         PlaybackSession playbackSession = new PlaybackSession(player, channels, sampleRate, isPassThrough);
         playbackSession.Initialize();
@@ -50,7 +50,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Fields
 
-      private PureAudioPlayer _Player;
+      private Player _Player;
       private int _Channels;
       private int _SampleRate;
       private bool _IsPassThrough;
@@ -116,7 +116,7 @@ namespace MediaPortal.Plugins.PureAudio
 
       #region Private members
 
-      private PlaybackSession(PureAudioPlayer player, int channels, int sampleRate, bool isPassThrough)
+      private PlaybackSession(Player player, int channels, int sampleRate, bool isPassThrough)
       {
         _Player = player;
         _Channels = channels;

@@ -22,19 +22,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MediaPortal.Plugins.PureAudio
+namespace MediaPortal.Plugins.PureAudio.Visualization
 {
   public class VisualizationFactory
   {
-    public static VisualizationFactory Create(BassPlayerSettings settings)
+    public static VisualizationFactory Create(PureAudioSettings settings)
     {
       VisualizationFactory factory = new VisualizationFactory(settings);
       return factory;
     }
 
-    private BassPlayerSettings settings;
+    private PureAudioSettings settings;
 
-    public VisualizationFactory(BassPlayerSettings settings)
+    public VisualizationFactory(PureAudioSettings settings)
     {
       this.settings = settings;
     }
