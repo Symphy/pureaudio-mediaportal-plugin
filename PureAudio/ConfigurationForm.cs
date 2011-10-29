@@ -20,20 +20,13 @@
 
 using System;
 using System.Drawing;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using System.Text;
-using System.IO;
 using MediaPortal.GUI.Library;
-using MediaPortal.Player.PureAudio;
 using Un4seen.Bass;
-using Un4seen.Bass.AddOn.Vis;
 using MediaPortal.Player.PureAudio.Asio;
 using BlueWave.Interop.Asio;
 using System.Diagnostics;
-using Microsoft.Win32;
 using WMPEffects.Interop;
 
 namespace MediaPortal.Player.PureAudio

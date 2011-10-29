@@ -34,6 +34,7 @@ using MediaPortal.GUI.Library;
 using MediaPortal.Player.DSP;
 using MediaPortal.Player.PureAudio;
 using MediaPortal.Services;
+using Action = MediaPortal.GUI.Library.Action;
 
 namespace MediaPortal.Player.PureAudio
 {
