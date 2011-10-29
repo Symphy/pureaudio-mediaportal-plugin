@@ -1,14 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureAudio", "PureAudio\PureAudio.csproj", "{C3EB77F9-1FF8-4F5C-8DBF-ECA287D780D8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{9F86A997-B101-4676-99F7-BF457EB776A3}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ASIO.Interop", "ASIO.Interop\ASIO.Interop.vcproj", "{2EC0CE30-4934-4856-A64C-75316F98393E}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WMPEffects.Interop", "WMPEffects.Interop\WMPEffects.Interop.vcproj", "{C6978A0C-4C54-4E53-AB39-F28E7A541581}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{2AE0D116-54FE-4EB8-AA24-BC7143759093}"
 	ProjectSection(SolutionItems) = preProject
 		Doc\Readme.txt = Doc\Readme.txt
@@ -18,6 +10,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 	ProjectSection(SolutionItems) = preProject
 		Dependencies\SetDirectories.bat = Dependencies\SetDirectories.bat
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureAudio", "PureAudio\PureAudio.csproj", "{C3EB77F9-1FF8-4F5C-8DBF-ECA287D780D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{9F86A997-B101-4676-99F7-BF457EB776A3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ASIO.Interop", "ASIO.Interop\ASIO.Interop.vcproj", "{2EC0CE30-4934-4856-A64C-75316F98393E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WMPEffects.Interop", "WMPEffects.Interop\WMPEffects.Interop.vcproj", "{C6978A0C-4C54-4E53-AB39-F28E7A541581}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
