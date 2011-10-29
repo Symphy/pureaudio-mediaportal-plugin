@@ -141,8 +141,47 @@ Click Next to continue or Cancel to exit Setup.</Value>
     </Items>
   </Sections>
   <Dependencies>
-    <Items />
+    <Items>
+      <DependencyItem>
+        <Type>MediaPortal</Type>
+        <Id />
+        <MinVersion>
+          <Major>1</Major>
+          <Minor>1</Minor>
+          <Build>6</Build>
+          <Revision>27644</Revision>
+        </MinVersion>
+        <MaxVersion>
+          <Major>1</Major>
+          <Minor>1</Minor>
+          <Build>6</Build>
+          <Revision>27644</Revision>
+        </MaxVersion>
+        <WarnOnly>false</WarnOnly>
+        <Message>requires MediaPortal version 1.1.6.27644 to 1.1.6.27644.</Message>
+        <Name>MediaPortal</Name>
+      </DependencyItem>
+    </Items>
   </Dependencies>
+  <PluginDependencies>
+    <Items>
+      <PluginDependencyItem AssemblyName="PureAudio.dll">
+        <CompatibleVersion>
+          <Items>
+            <CompatibleVersionItem>
+              <MinRequiredVersion>1.1.6.27644</MinRequiredVersion>
+              <DesignedForVersion>1.1.6.27644</DesignedForVersion>
+            </CompatibleVersionItem>
+          </Items>
+        </CompatibleVersion>
+        <SubSystemsUsed>
+          <Items>
+            <SubSystemItem Name="MP.DB.Music" />
+          </Items>
+        </SubSystemsUsed>
+      </PluginDependencyItem>
+    </Items>
+  </PluginDependencies>
   <GeneralInfo>
     <Name>PureAudio </Name>
     <Id>e316da11-c3ac-4eba-bb92-570a65ad8de2</Id>
@@ -153,14 +192,14 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Version>
       <Major>0</Major>
       <Minor>2</Minor>
-      <Build>2</Build>
+      <Build>4</Build>
       <Revision>0</Revision>
     </Version>
     <ExtensionDescription>Advanced music player.</ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>http://pureaudio-mediaportal-plugin.googlecode.com/files/PureAudio_0.2.2.0_Stable.mpe1</OnlineLocation>
-    <ReleaseDate>2010-04-12T20:30:24.3018651+02:00</ReleaseDate>
+    <OnlineLocation>http://pureaudio-mediaportal-plugin.googlecode.com/files/PureAudio_0.2.4.0_Stable.mpe1</OnlineLocation>
+    <ReleaseDate>2011-10-29T19:30:24</ReleaseDate>
     <Tags>audio,asio,gapless,bitperfect,replaygain</Tags>
     <Location>D:\Development\MediaPortal\SVN\PureAudio\trunk\MPE\PureAudio_[Version]_[DevelopmentStatus].mpe1</Location>
     <Params>
@@ -222,9 +261,10 @@ Click Next to continue or Cancel to exit Setup.</Value>
   </UniqueFileList>
   <ProjectSettings>
     <FolderGroups />
-    <ProjectFilename>D:\Development\MediaPortal\SVN\PureAudio\trunk\MPE\PureAudio.xmp2</ProjectFilename>
-    <UpdatePath1>D:\Development\MediaPortal\SVN\PureAudio\trunk\MPE\update.xml</UpdatePath1>
+    <ProjectFilename>PureAudio.xmp2</ProjectFilename>
+    <UpdatePath1>C:\Users\Mike\Documents\Code\pureaudio-mediaportal-plugin-clean\MPE\update.xml</UpdatePath1>
     <UpdatePath2 />
     <UpdatePath3 />
   </ProjectSettings>
+  <IsSkin>false</IsSkin>
 </PackageClass>

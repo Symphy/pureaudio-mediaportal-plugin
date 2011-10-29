@@ -16,7 +16,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <PublishUrl>http://localhost/PureAudio/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -31,6 +31,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,14 +56,20 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bass.Net, Version=2.4.4.3, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
+    <Reference Include="ASIO.Interop">
+      <HintPath>..\Dependencies\ASIO.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Bass.Net, Version=2.4.7.2, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Bass.Net.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="BassRegistration, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\BassRegistration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Common.Utils">
+      <HintPath>..\Dependencies\Common.Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Core, Version=1.1.1.25536, Culture=neutral, processorArchitecture=x86">
@@ -77,6 +84,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Utils.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="WMPEffects.Interop">
+      <HintPath>..\Dependencies\WMPEffects.Interop.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -140,16 +150,6 @@
     <None Include="PreBuild.bat" />
     <None Include="PostBuild.bat" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ASIO.Interop\ASIO.Interop.vcxproj">
-      <Project>{2EC0CE30-4934-4856-A64C-75316F98393E}</Project>
-      <Name>ASIO.Interop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WMPEffects.Interop\WMPEffects.Interop.vcxproj">
-      <Project>{C6978A0C-4C54-4E53-AB39-F28E7A541581}</Project>
-      <Name>WMPEffects.Interop</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -159,7 +159,9 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)PostBuild.bat $(SolutionDir) $(ConfigurationName)</PostBuildEvent>
-    <PreBuildEvent>$(ProjectDir)PreBuild.bat $(SolutionDir) $(ConfigurationName)</PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
