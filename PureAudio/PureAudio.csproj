@@ -159,9 +159,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PostBuildEvent>$(ProjectDir)PostBuild.bat $(SolutionDir) $(ConfigurationName)</PostBuildEvent>
+    <PreBuildEvent>$(ProjectDir)PreBuild.bat $(SolutionDir) $(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -14,6 +14,10 @@ rem //
 rem // You should have received a copy of the GNU General Public License
 rem // along with MediaPortal. If not, see <http://www.gnu.org/licenses/>.
 
+rem ------------------------------------------------------------------------------------------------------
+rem Usage: call as project pre-build event: $(ProjectDir)PreBuild.bat $(SolutionDir) $(ConfigurationName)
+rem ------------------------------------------------------------------------------------------------------
+
 set MPDIR=
 call "%1\Dependencies\SetDirectories.bat"
 
@@ -21,5 +25,3 @@ copy "%MPDIR%\Bass.Net.dll" "%1\Dependencies"
 copy "%MPDIR%\BassRegistration.dll" "%1\Dependencies"
 copy "%MPDIR%\Core.dll" "%1\Dependencies"
 copy "%MPDIR%\Utils.dll" "%1\Dependencies"
-
-
