@@ -14,6 +14,10 @@ rem //
 rem // You should have received a copy of the GNU General Public License
 rem // along with MediaPortal. If not, see <http://www.gnu.org/licenses/>.
 
+rem -------------------------------------------------------------------------------------------------------
+rem Usage: call as project post-build event: $(ProjectDir)PostBuild.bat $(SolutionDir) $(ConfigurationName)
+rem -------------------------------------------------------------------------------------------------------
+
 set MPDIR=
 call "%1\Dependencies\SetDirectories.bat"
 

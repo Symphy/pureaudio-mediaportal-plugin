@@ -15,7 +15,7 @@ rem // You should have received a copy of the GNU General Public License
 rem // along with MediaPortal. If not, see <http://www.gnu.org/licenses/>.
 
 rem Root folder of a MediaPortal installation or build (that is the folder containing MediaPortal.exe).
-set MPDIR=D:\Development\MediaPortal\SVN\MediaPortal\tags\Release 1.1.1\mediaportal\xbmc\bin\Release
+set MPDIR=C:\Program Files (x86)\Team MediaPortal\MediaPortal
 
 rem Root folder of a ASIO SDK installation.
 set ASIOSDKDIR=D:\Software Archief\Development\SDK's\ASIO SDK 2.2\ASIOSDK2
