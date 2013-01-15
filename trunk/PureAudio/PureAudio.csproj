@@ -56,9 +56,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ASIO.Interop">
-      <HintPath>..\Dependencies\ASIO.Interop.dll</HintPath>
-    </Reference>
     <Reference Include="Bass.Net, Version=2.4.7.2, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Bass.Net.dll</HintPath>
@@ -84,9 +81,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Utils.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="WMPEffects.Interop">
-      <HintPath>..\Dependencies\WMPEffects.Interop.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +143,19 @@
   <ItemGroup>
     <None Include="PreBuild.bat" />
     <None Include="PostBuild.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ASIO.Interop\ASIO.Interop.vcxproj">
+      <Project>{2EC0CE30-4934-4856-A64C-75316F98393E}</Project>
+      <Name>ASIO.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WMPEffects.Interop\WMPEffects.Interop.vcxproj">
+      <Project>{C6978A0C-4C54-4E53-AB39-F28E7A541581}</Project>
+      <Name>WMPEffects.Interop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
