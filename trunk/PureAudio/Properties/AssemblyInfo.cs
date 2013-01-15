@@ -32,12 +32,9 @@ using MediaPortal.Utils;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sieds Tilstra (aka Symphy)")]
 [assembly: AssemblyProduct("MediaPortal")]
-[assembly: AssemblyCopyright("Copyright © 2010 Team MediaPortal")]
+[assembly: AssemblyCopyright("Copyright © 2013 Team MediaPortal")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-[assembly: CompatibleVersion("1.1.6.27644")]
-[assembly: UsesSubsystem("MP.DB.Music")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -56,5 +53,10 @@ using MediaPortal.Utils;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.2.4.0")]
-[assembly: AssemblyFileVersion("0.2.4.0")]
+[assembly: AssemblyVersion("0.2.4.1")]
+[assembly: AssemblyFileVersion("0.2.4.1")]
+[assembly: AssemblyInformationalVersion("0.2.5.0 beta")]
+
+[assembly: CompatibleVersion("1.2.200.0")]
+[assembly: UsesSubsystem("MP.DB.Music")]
+

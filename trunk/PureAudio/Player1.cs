@@ -139,7 +139,15 @@ namespace MediaPortal.Player.PureAudio
     {
       get
       {
-        return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        // Get all Informational Version attributes on this assembly
+        object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false);
+
+        // If there aren't any Informational Version attributes, return the assembly version
+        if (attributes.Length == 0)
+          return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        // If there is a Informational Version attribute, return its value
+        return ((AssemblyInformationalVersionAttribute)attributes[0]).InformationalVersion;
       }
     }
 
