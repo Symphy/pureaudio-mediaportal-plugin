@@ -16,6 +16,7 @@ rem // along with MediaPortal. If not, see <http://www.gnu.org/licenses/>.
 
 rem -------------------------------------------------------------------------------------------------------
 rem Usage: call as project post-build event: $(ProjectDir)PostBuild.bat $(SolutionDir) $(ConfigurationName)
+rem Remark: Visual Studio must be run as administrator to allow the files to be copied.
 rem -------------------------------------------------------------------------------------------------------
 
 set MPDIR=

@@ -12,6 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C6978A0C-4C54-4E53-AB39-F28E7A541581}</ProjectGuid>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <RootNamespace>WMPVizInterop</RootNamespace>
     <Keyword>ManagedCProj</Keyword>
   </PropertyGroup>
