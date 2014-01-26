@@ -1,5 +1,11 @@
 #summary Version history for the PureAudio MediaPortal plugin.
 
+== Version 0.2.8.0 beta ==
+=== Changes: ===
+  * Updated to work with MediaPortal 1.6.0 final.
+  * Updated to target the .NET 4.0 framework.
+  * Added WASAPI support.
+
 == Version 0.2.2.0 stable ==
 === Changes: ===
   * Available in MPEInstaller as "known extension".
