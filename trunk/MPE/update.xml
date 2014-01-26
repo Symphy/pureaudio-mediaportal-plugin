@@ -387,10 +387,10 @@
         <ExtensionDescription>Advanced music player.</ExtensionDescription>
         <VersionDescription />
         <DevelopmentStatus>Beta</DevelopmentStatus>
-        <OnlineLocation>http://pureaudio-mediaportal-plugin.googlecode.com/files/PureAudio_0.2.8.0_Beta.mpe1</OnlineLocation>
+        <OnlineLocation>http://pureaudio-mediaportal-plugin.googlecode.com/svn/Downloads/PureAudio_0.2.8.0_Beta.mpe1</OnlineLocation>
         <ReleaseDate>2014-01-26T19:30:24</ReleaseDate>
         <Tags>audio,asio,gapless,bitperfect,replaygain</Tags>
-        <Location>D:\Development\MediaPortal\SVN\PureAudio\trunk\MPE\PureAudio_[Version]_[DevelopmentStatus].mpe1</Location>
+        <Location>D:\Development\MediaPortal\SVN\PureAudio\Downloads\PureAudio_0.2.8.0_Beta.mpe1</Location>
         <Params>
           <Items>
             <SectionParam Name="Online Icon">
