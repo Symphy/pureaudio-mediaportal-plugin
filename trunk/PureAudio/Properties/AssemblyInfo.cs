@@ -28,11 +28,11 @@ using MediaPortal.Utils;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PureAudio")]
-[assembly: AssemblyDescription("ASIO Music Player Plugin")]
+[assembly: AssemblyDescription("High-End Music Player Plugin")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sieds Tilstra (aka Symphy)")]
 [assembly: AssemblyProduct("MediaPortal")]
-[assembly: AssemblyCopyright("Copyright © 2013 Team MediaPortal")]
+[assembly: AssemblyCopyright("Copyright © 2014 Team MediaPortal")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -53,10 +53,10 @@ using MediaPortal.Utils;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.2.4.1")]
-[assembly: AssemblyFileVersion("0.2.4.1")]
-[assembly: AssemblyInformationalVersion("0.2.5.0 beta")]
+[assembly: AssemblyVersion("0.2.7.1")]
+[assembly: AssemblyFileVersion("0.2.7.1")]
+[assembly: AssemblyInformationalVersion("0.2.8.0 beta")]
 
-[assembly: CompatibleVersion("1.2.200.0")]
+[assembly: CompatibleVersion("1.6.000.0")]
 [assembly: UsesSubsystem("MP.DB.Music")]
 

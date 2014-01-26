@@ -24,6 +24,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using Un4seen.Bass;
+using Un4seen.BassWasapi;
 using MediaPortal.Player.PureAudio.Asio;
 using BlueWave.Interop.Asio;
 using System.Diagnostics;
@@ -177,6 +178,23 @@ namespace MediaPortal.Player.PureAudio
     private ComboBox cboWMPVisualizations;
     private NumericUpDown nudWMPVizFps;
     private Label label2;
+    private RadioButton rbUseWASAPI;
+    private UserInterface.Controls.MPButton btnWASAPIControlPanel;
+    private ComboBox cboWASAPIDevice;
+    private CheckBox chkWASAPIExclusive;
+    private TabPage tabPageWASAPI;
+    private GroupBox groupBox13;
+    private TextBox textBox5;
+    private UserInterface.Controls.MPLabel mpLabel21;
+    private UserInterface.Controls.MPLabel mpLabel22;
+    private UserInterface.Controls.MPLabel mpLabel24;
+    private UserInterface.Controls.MPLabel mpLabel26;
+    private ComboBox cboMaxWASAPIRate;
+    private ComboBox cboMinWASAPIRate;
+    private GroupBox groupBox21;
+    private CheckBox chkWASAPIEvent;
+    private UserInterface.Controls.MPLabel lblWASAPISpeakerLayout;
+    private ComboBox cboWASAPISpeakerLayout;
     /// <summary>
     /// Required designer variable.
     /// </summary>
@@ -222,15 +240,17 @@ namespace MediaPortal.Player.PureAudio
       System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("DSP\'s");
       System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("ASIO");
       System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("WaveOut");
-      System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Advanced Settings", new System.Windows.Forms.TreeNode[] {
+      System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("WASAPI");
+      System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Advanced Settings", new System.Windows.Forms.TreeNode[] {
             treeNode7,
-            treeNode8});
-      System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("PureAudio Plugin", new System.Windows.Forms.TreeNode[] {
+            treeNode8,
+            treeNode9});
+      System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("PureAudio Plugin", new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode4,
             treeNode5,
             treeNode6,
-            treeNode9});
+            treeNode10});
       this.btnOk = new MediaPortal.UserInterface.Controls.MPButton();
       this.btnCancel = new MediaPortal.UserInterface.Controls.MPButton();
       this.mpLabel4 = new MediaPortal.UserInterface.Controls.MPLabel();
@@ -274,6 +294,10 @@ namespace MediaPortal.Player.PureAudio
       this.tabPageDevice = new System.Windows.Forms.TabPage();
       this.groupBox3 = new System.Windows.Forms.GroupBox();
       this.pnlDevice = new System.Windows.Forms.Panel();
+      this.chkWASAPIExclusive = new System.Windows.Forms.CheckBox();
+      this.btnWASAPIControlPanel = new MediaPortal.UserInterface.Controls.MPButton();
+      this.cboWASAPIDevice = new System.Windows.Forms.ComboBox();
+      this.rbUseWASAPI = new System.Windows.Forms.RadioButton();
       this.lblASIOLastChan = new MediaPortal.UserInterface.Controls.MPLabel();
       this.cboASIOLastChan = new System.Windows.Forms.ComboBox();
       this.lblASIOFirstChan = new MediaPortal.UserInterface.Controls.MPLabel();
@@ -365,9 +389,22 @@ namespace MediaPortal.Player.PureAudio
       this.tabPageDSP = new System.Windows.Forms.TabPage();
       this.groupBox16 = new System.Windows.Forms.GroupBox();
       this.textBox4 = new System.Windows.Forms.TextBox();
+      this.tabPageWASAPI = new System.Windows.Forms.TabPage();
+      this.groupBox21 = new System.Windows.Forms.GroupBox();
+      this.chkWASAPIEvent = new System.Windows.Forms.CheckBox();
+      this.groupBox13 = new System.Windows.Forms.GroupBox();
+      this.textBox5 = new System.Windows.Forms.TextBox();
+      this.mpLabel21 = new MediaPortal.UserInterface.Controls.MPLabel();
+      this.mpLabel22 = new MediaPortal.UserInterface.Controls.MPLabel();
+      this.mpLabel24 = new MediaPortal.UserInterface.Controls.MPLabel();
+      this.mpLabel26 = new MediaPortal.UserInterface.Controls.MPLabel();
+      this.cboMaxWASAPIRate = new System.Windows.Forms.ComboBox();
+      this.cboMinWASAPIRate = new System.Windows.Forms.ComboBox();
       this.tvwMenu = new System.Windows.Forms.TreeView();
       this.ctlHeader = new MediaPortal.UserInterface.Controls.MPGradientLabel();
       this.beveledLine1 = new MediaPortal.UserInterface.Controls.MPBeveledLine();
+      this.lblWASAPISpeakerLayout = new MediaPortal.UserInterface.Controls.MPLabel();
+      this.cboWASAPISpeakerLayout = new System.Windows.Forms.ComboBox();
       ((System.ComponentModel.ISupportInitialize)(this.trackBarFileBufferSize)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.trackBarPlayBackBufferSize)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.trackBarSeekIncrement)).BeginInit();
@@ -410,6 +447,9 @@ namespace MediaPortal.Player.PureAudio
       ((System.ComponentModel.ISupportInitialize)(this.trackBarWMPVizFFTFallBack)).BeginInit();
       this.tabPageDSP.SuspendLayout();
       this.groupBox16.SuspendLayout();
+      this.tabPageWASAPI.SuspendLayout();
+      this.groupBox21.SuspendLayout();
+      this.groupBox13.SuspendLayout();
       this.SuspendLayout();
       // 
       // btnOk
@@ -666,6 +706,7 @@ namespace MediaPortal.Player.PureAudio
       this.tabControl.Controls.Add(this.tabPageVisualization);
       this.tabControl.Controls.Add(this.tabPageWMPViz);
       this.tabControl.Controls.Add(this.tabPageDSP);
+      this.tabControl.Controls.Add(this.tabPageWASAPI);
       this.tabControl.Location = new System.Drawing.Point(204, 13);
       this.tabControl.Name = "tabControl";
       this.tabControl.SelectedIndex = 0;
@@ -819,6 +860,12 @@ namespace MediaPortal.Player.PureAudio
       // 
       // pnlDevice
       // 
+      this.pnlDevice.Controls.Add(this.lblWASAPISpeakerLayout);
+      this.pnlDevice.Controls.Add(this.cboWASAPISpeakerLayout);
+      this.pnlDevice.Controls.Add(this.chkWASAPIExclusive);
+      this.pnlDevice.Controls.Add(this.btnWASAPIControlPanel);
+      this.pnlDevice.Controls.Add(this.cboWASAPIDevice);
+      this.pnlDevice.Controls.Add(this.rbUseWASAPI);
       this.pnlDevice.Controls.Add(this.lblASIOLastChan);
       this.pnlDevice.Controls.Add(this.cboASIOLastChan);
       this.pnlDevice.Controls.Add(this.lblASIOFirstChan);
@@ -833,6 +880,49 @@ namespace MediaPortal.Player.PureAudio
       this.pnlDevice.Name = "pnlDevice";
       this.pnlDevice.Size = new System.Drawing.Size(397, 283);
       this.pnlDevice.TabIndex = 11;
+      // 
+      // chkWASAPIExclusive
+      // 
+      this.chkWASAPIExclusive.AutoSize = true;
+      this.chkWASAPIExclusive.Location = new System.Drawing.Point(33, 222);
+      this.chkWASAPIExclusive.Name = "chkWASAPIExclusive";
+      this.chkWASAPIExclusive.Size = new System.Drawing.Size(71, 17);
+      this.chkWASAPIExclusive.TabIndex = 42;
+      this.chkWASAPIExclusive.Text = "Exclusive";
+      this.chkWASAPIExclusive.UseVisualStyleBackColor = true;
+      this.chkWASAPIExclusive.CheckedChanged += new System.EventHandler(this.chkWASAPIExclusive_CheckedChanged);
+      // 
+      // btnWASAPIControlPanel
+      // 
+      this.btnWASAPIControlPanel.Location = new System.Drawing.Point(309, 189);
+      this.btnWASAPIControlPanel.Name = "btnWASAPIControlPanel";
+      this.btnWASAPIControlPanel.Size = new System.Drawing.Size(75, 23);
+      this.btnWASAPIControlPanel.TabIndex = 40;
+      this.btnWASAPIControlPanel.Text = "Settings...";
+      this.btnWASAPIControlPanel.UseVisualStyleBackColor = true;
+      this.btnWASAPIControlPanel.Click += new System.EventHandler(this.btnWASAPIControlPanel_Click);
+      // 
+      // cboWASAPIDevice
+      // 
+      this.cboWASAPIDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cboWASAPIDevice.FormattingEnabled = true;
+      this.cboWASAPIDevice.Location = new System.Drawing.Point(33, 191);
+      this.cboWASAPIDevice.Name = "cboWASAPIDevice";
+      this.cboWASAPIDevice.Size = new System.Drawing.Size(267, 21);
+      this.cboWASAPIDevice.TabIndex = 39;
+      this.cboWASAPIDevice.SelectedIndexChanged += new System.EventHandler(this.cboWASAPIDevice_SelectedIndexChanged);
+      // 
+      // rbUseWASAPI
+      // 
+      this.rbUseWASAPI.AutoSize = true;
+      this.rbUseWASAPI.Location = new System.Drawing.Point(14, 168);
+      this.rbUseWASAPI.Name = "rbUseWASAPI";
+      this.rbUseWASAPI.Size = new System.Drawing.Size(127, 17);
+      this.rbUseWASAPI.TabIndex = 38;
+      this.rbUseWASAPI.TabStop = true;
+      this.rbUseWASAPI.Text = "Use WASAPI device:";
+      this.rbUseWASAPI.UseVisualStyleBackColor = true;
+      this.rbUseWASAPI.CheckedChanged += new System.EventHandler(this.rbUseWASAPI_CheckedChanged);
       // 
       // lblASIOLastChan
       // 
@@ -872,7 +962,7 @@ namespace MediaPortal.Player.PureAudio
       // 
       // btnMMEControlPanel
       // 
-      this.btnMMEControlPanel.Location = new System.Drawing.Point(309, 166);
+      this.btnMMEControlPanel.Location = new System.Drawing.Point(309, 139);
       this.btnMMEControlPanel.Name = "btnMMEControlPanel";
       this.btnMMEControlPanel.Size = new System.Drawing.Size(75, 23);
       this.btnMMEControlPanel.TabIndex = 8;
@@ -884,7 +974,7 @@ namespace MediaPortal.Player.PureAudio
       // 
       this.cboSoundDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.cboSoundDevice.FormattingEnabled = true;
-      this.cboSoundDevice.Location = new System.Drawing.Point(33, 168);
+      this.cboSoundDevice.Location = new System.Drawing.Point(33, 141);
       this.cboSoundDevice.Name = "cboSoundDevice";
       this.cboSoundDevice.Size = new System.Drawing.Size(267, 21);
       this.cboSoundDevice.TabIndex = 7;
@@ -893,7 +983,7 @@ namespace MediaPortal.Player.PureAudio
       // rbUseSound
       // 
       this.rbUseSound.AutoSize = true;
-      this.rbUseSound.Location = new System.Drawing.Point(14, 144);
+      this.rbUseSound.Location = new System.Drawing.Point(14, 117);
       this.rbUseSound.Name = "rbUseSound";
       this.rbUseSound.Size = new System.Drawing.Size(129, 17);
       this.rbUseSound.TabIndex = 2;
@@ -1356,8 +1446,8 @@ namespace MediaPortal.Player.PureAudio
       this.textBox2.TabIndex = 101;
       this.textBox2.TabStop = false;
       this.textBox2.Text = "Here you can define the minimum and maximum samplingrate supported by your ASIO d" +
-          "evice. Any sources beond this range are automatically resampled to the nearest s" +
-          "upported rate.";
+    "evice. Any sources beond this range are automatically resampled to the nearest s" +
+    "upported rate.";
       // 
       // mpLabel20
       // 
@@ -1590,7 +1680,7 @@ namespace MediaPortal.Player.PureAudio
       this.textBox1.TabIndex = 37;
       this.textBox1.TabStop = false;
       this.textBox1.Text = "Automatic Gain Control amplifies lower volumes to always get maximum visualizatio" +
-          "n effects.\r\n";
+    "n effects.\r\n";
       // 
       // chkUseVizAGC
       // 
@@ -1614,7 +1704,7 @@ namespace MediaPortal.Player.PureAudio
       this.textBox6.TabIndex = 35;
       this.textBox6.TabStop = false;
       this.textBox6.Text = "If visualization is lagging behind sound, decrease this value. If sound is laggin" +
-          "g behind visualization, increase this value.";
+    "g behind visualization, increase this value.";
       // 
       // mpLabel9
       // 
@@ -1693,7 +1783,7 @@ namespace MediaPortal.Player.PureAudio
       this.textBox9.TabIndex = 45;
       this.textBox9.TabStop = false;
       this.textBox9.Text = "The spectrum fallback is the time it takes for a value in the frequence spectrum " +
-          "to fall back from 0 dB to whatever is set as minimum.";
+    "to fall back from 0 dB to whatever is set as minimum.";
       // 
       // textBox8
       // 
@@ -1706,7 +1796,7 @@ namespace MediaPortal.Player.PureAudio
       this.textBox8.TabIndex = 44;
       this.textBox8.TabStop = false;
       this.textBox8.Text = "The spectrum minimum is the minimum for frequency spectrum values to become visib" +
-          "le.";
+    "le.";
       // 
       // chkWMPVizFFTHalf
       // 
@@ -1822,7 +1912,121 @@ namespace MediaPortal.Player.PureAudio
       this.textBox4.TabIndex = 35;
       this.textBox4.TabStop = false;
       this.textBox4.Text = "The DSP\'s to use can be selected and configured in the \"Music/Music DSP\" section " +
-          "of MediaPortal setup. Supported are VST plugins and WinAmp DSP plugins.";
+    "of MediaPortal setup. Supported are VST plugins and WinAmp DSP plugins.";
+      // 
+      // tabPageWASAPI
+      // 
+      this.tabPageWASAPI.Controls.Add(this.groupBox21);
+      this.tabPageWASAPI.Controls.Add(this.groupBox13);
+      this.tabPageWASAPI.Location = new System.Drawing.Point(4, 25);
+      this.tabPageWASAPI.Name = "tabPageWASAPI";
+      this.tabPageWASAPI.Size = new System.Drawing.Size(503, 319);
+      this.tabPageWASAPI.TabIndex = 12;
+      this.tabPageWASAPI.Text = "WASAPI";
+      this.tabPageWASAPI.UseVisualStyleBackColor = true;
+      // 
+      // groupBox21
+      // 
+      this.groupBox21.Controls.Add(this.chkWASAPIEvent);
+      this.groupBox21.Location = new System.Drawing.Point(3, 5);
+      this.groupBox21.Name = "groupBox21";
+      this.groupBox21.Size = new System.Drawing.Size(497, 160);
+      this.groupBox21.TabIndex = 4;
+      this.groupBox21.TabStop = false;
+      this.groupBox21.Text = "Advanced WASAPI settings";
+      // 
+      // chkWASAPIEvent
+      // 
+      this.chkWASAPIEvent.AutoSize = true;
+      this.chkWASAPIEvent.Location = new System.Drawing.Point(12, 19);
+      this.chkWASAPIEvent.Name = "chkWASAPIEvent";
+      this.chkWASAPIEvent.Size = new System.Drawing.Size(216, 17);
+      this.chkWASAPIEvent.TabIndex = 1;
+      this.chkWASAPIEvent.Text = "Enable event-driven buffering (preferred)";
+      this.chkWASAPIEvent.UseVisualStyleBackColor = true;
+      this.chkWASAPIEvent.CheckedChanged += new System.EventHandler(this.chkWASAPIEvent_CheckedChanged);
+      // 
+      // groupBox13
+      // 
+      this.groupBox13.Controls.Add(this.textBox5);
+      this.groupBox13.Controls.Add(this.mpLabel21);
+      this.groupBox13.Controls.Add(this.mpLabel22);
+      this.groupBox13.Controls.Add(this.mpLabel24);
+      this.groupBox13.Controls.Add(this.mpLabel26);
+      this.groupBox13.Controls.Add(this.cboMaxWASAPIRate);
+      this.groupBox13.Controls.Add(this.cboMinWASAPIRate);
+      this.groupBox13.Location = new System.Drawing.Point(3, 171);
+      this.groupBox13.Name = "groupBox13";
+      this.groupBox13.Size = new System.Drawing.Size(497, 140);
+      this.groupBox13.TabIndex = 3;
+      this.groupBox13.TabStop = false;
+      this.groupBox13.Text = "WASAPI exclusive mode supported samplingrates";
+      // 
+      // textBox5
+      // 
+      this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.None;
+      this.textBox5.Location = new System.Drawing.Point(12, 19);
+      this.textBox5.Multiline = true;
+      this.textBox5.Name = "textBox5";
+      this.textBox5.ReadOnly = true;
+      this.textBox5.Size = new System.Drawing.Size(479, 43);
+      this.textBox5.TabIndex = 101;
+      this.textBox5.TabStop = false;
+      this.textBox5.Text = "Here you can define the minimum and maximum samplingrate supported by your WASAPI" +
+    " device in exclusive mode. Any sources beond this range are automatically resamp" +
+    "led to the nearest supported rate.";
+      // 
+      // mpLabel21
+      // 
+      this.mpLabel21.Location = new System.Drawing.Point(201, 71);
+      this.mpLabel21.Name = "mpLabel21";
+      this.mpLabel21.Size = new System.Drawing.Size(50, 24);
+      this.mpLabel21.TabIndex = 35;
+      this.mpLabel21.Text = "kHz";
+      // 
+      // mpLabel22
+      // 
+      this.mpLabel22.Location = new System.Drawing.Point(201, 98);
+      this.mpLabel22.Name = "mpLabel22";
+      this.mpLabel22.Size = new System.Drawing.Size(50, 24);
+      this.mpLabel22.TabIndex = 34;
+      this.mpLabel22.Text = "kHz";
+      // 
+      // mpLabel24
+      // 
+      this.mpLabel24.Location = new System.Drawing.Point(25, 98);
+      this.mpLabel24.Name = "mpLabel24";
+      this.mpLabel24.Size = new System.Drawing.Size(66, 24);
+      this.mpLabel24.TabIndex = 31;
+      this.mpLabel24.Text = "Maximum:";
+      // 
+      // mpLabel26
+      // 
+      this.mpLabel26.Location = new System.Drawing.Point(25, 71);
+      this.mpLabel26.Name = "mpLabel26";
+      this.mpLabel26.Size = new System.Drawing.Size(66, 24);
+      this.mpLabel26.TabIndex = 30;
+      this.mpLabel26.Text = "Minimum:";
+      // 
+      // cboMaxWASAPIRate
+      // 
+      this.cboMaxWASAPIRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cboMaxWASAPIRate.FormattingEnabled = true;
+      this.cboMaxWASAPIRate.Location = new System.Drawing.Point(97, 95);
+      this.cboMaxWASAPIRate.Name = "cboMaxWASAPIRate";
+      this.cboMaxWASAPIRate.Size = new System.Drawing.Size(98, 21);
+      this.cboMaxWASAPIRate.TabIndex = 3;
+      this.cboMaxWASAPIRate.SelectedIndexChanged += new System.EventHandler(this.cboMaxWASAPIRate_SelectedIndexChanged);
+      // 
+      // cboMinWASAPIRate
+      // 
+      this.cboMinWASAPIRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cboMinWASAPIRate.FormattingEnabled = true;
+      this.cboMinWASAPIRate.Location = new System.Drawing.Point(97, 68);
+      this.cboMinWASAPIRate.Name = "cboMinWASAPIRate";
+      this.cboMinWASAPIRate.Size = new System.Drawing.Size(98, 21);
+      this.cboMinWASAPIRate.TabIndex = 2;
+      this.cboMinWASAPIRate.SelectedIndexChanged += new System.EventHandler(this.cboMinWASAPIRate_SelectedIndexChanged);
       // 
       // tvwMenu
       // 
@@ -1845,12 +2049,14 @@ namespace MediaPortal.Player.PureAudio
       treeNode7.Text = "ASIO";
       treeNode8.Name = "NodeWaveOut";
       treeNode8.Text = "WaveOut";
-      treeNode9.Name = "NodeAdvanced";
-      treeNode9.Text = "Advanced Settings";
-      treeNode10.Name = "NodeRoot";
-      treeNode10.Text = "PureAudio Plugin";
+      treeNode9.Name = "NodeWASAPI";
+      treeNode9.Text = "WASAPI";
+      treeNode10.Name = "NodeAdvanced";
+      treeNode10.Text = "Advanced Settings";
+      treeNode11.Name = "NodeRoot";
+      treeNode11.Text = "PureAudio Plugin";
       this.tvwMenu.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode10});
+            treeNode11});
       this.tvwMenu.Size = new System.Drawing.Size(185, 336);
       this.tvwMenu.TabIndex = 1;
       this.tvwMenu.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwMenu_AfterSelect);
@@ -1878,6 +2084,24 @@ namespace MediaPortal.Player.PureAudio
       this.beveledLine1.TabIndex = 6;
       this.beveledLine1.TabStop = false;
       // 
+      // lblWASAPISpeakerLayout
+      // 
+      this.lblWASAPISpeakerLayout.Location = new System.Drawing.Point(52, 242);
+      this.lblWASAPISpeakerLayout.Name = "lblWASAPISpeakerLayout";
+      this.lblWASAPISpeakerLayout.Size = new System.Drawing.Size(121, 18);
+      this.lblWASAPISpeakerLayout.TabIndex = 43;
+      this.lblWASAPISpeakerLayout.Text = "Speaker configuration:";
+      // 
+      // cboWASAPISpeakerLayout
+      // 
+      this.cboWASAPISpeakerLayout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cboWASAPISpeakerLayout.FormattingEnabled = true;
+      this.cboWASAPISpeakerLayout.Location = new System.Drawing.Point(202, 239);
+      this.cboWASAPISpeakerLayout.Name = "cboWASAPISpeakerLayout";
+      this.cboWASAPISpeakerLayout.Size = new System.Drawing.Size(98, 21);
+      this.cboWASAPISpeakerLayout.TabIndex = 41;
+      this.cboWASAPISpeakerLayout.SelectedIndexChanged += new System.EventHandler(this.cboWASAPISpeakerLayout_SelectedIndexChanged);
+      // 
       // ConfigurationForm
       // 
       this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -1896,8 +2120,8 @@ namespace MediaPortal.Player.PureAudio
       this.ShowInTaskbar = false;
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "PureAudio Player Configuration";
-      this.Load += new System.EventHandler(this.ConfigurationForm_Load);
       this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ConfigurationForm_FormClosed);
+      this.Load += new System.EventHandler(this.ConfigurationForm_Load);
       ((System.ComponentModel.ISupportInitialize)(this.trackBarFileBufferSize)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.trackBarPlayBackBufferSize)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.trackBarSeekIncrement)).EndInit();
@@ -1956,6 +2180,11 @@ namespace MediaPortal.Player.PureAudio
       this.tabPageDSP.ResumeLayout(false);
       this.groupBox16.ResumeLayout(false);
       this.groupBox16.PerformLayout();
+      this.tabPageWASAPI.ResumeLayout(false);
+      this.groupBox21.ResumeLayout(false);
+      this.groupBox21.PerformLayout();
+      this.groupBox13.ResumeLayout(false);
+      this.groupBox13.PerformLayout();
       this.ResumeLayout(false);
 
     }
@@ -1980,6 +2209,13 @@ namespace MediaPortal.Player.PureAudio
         cboASIODevice.Items.Add(driver.Name);
       }
 
+      BASS_WASAPI_DEVICEINFO[] wasapiDevices = BassWasapi.BASS_WASAPI_GetDeviceInfos();
+      for (int i = 0; i < wasapiDevices.Length; i++)
+      {
+        if (wasapiDevices[i].IsEnabled && !wasapiDevices[i].IsInput)
+          cboWASAPIDevice.Items.Add(wasapiDevices[i].name);
+      }
+
       cboSoundDevice.Items.Add(ConfigProfile.Defaults.DirectSoundDevice);
       BASS_DEVICEINFO[] soundDevices = Bass.BASS_GetDeviceInfos();
       for (int i = 0; i < soundDevices.Length; i++)
@@ -1988,6 +2224,13 @@ namespace MediaPortal.Player.PureAudio
         if (i != 0)
           cboSoundDevice.Items.Add(soundDevices[i].name);
       }
+
+      // Should match MediaPortal.Player.PureAudio.SpeakerLayout enum.
+      cboWASAPISpeakerLayout.Items.Add("Mono");
+      cboWASAPISpeakerLayout.Items.Add("Stereo");
+      cboWASAPISpeakerLayout.Items.Add("Quadraphonic");
+      cboWASAPISpeakerLayout.Items.Add("5.1 Surround");
+      cboWASAPISpeakerLayout.Items.Add("7.1 Surround");
 
       // Should match MediaPortal.Player.PureAudio.PlayBackMode enum
       cboDefaultPlayBackMode.Items.Add("Normal");
@@ -2029,6 +2272,7 @@ namespace MediaPortal.Player.PureAudio
 					"48000",
 				};
       cboMinASIORate.Items.AddRange(rates);
+      cboMinWASAPIRate.Items.AddRange(rates);
 
       rates = new object[]{
 					"Auto",
@@ -2040,10 +2284,13 @@ namespace MediaPortal.Player.PureAudio
 					"192000"
 				};
       cboMaxASIORate.Items.AddRange(rates);
+      cboMaxWASAPIRate.Items.AddRange(rates);
 
-      rbUseASIO.Checked = _Profile.UseASIO;
-      rbUseSound.Checked = !_Profile.UseASIO;
+      rbUseASIO.Checked = (_Profile.OutputMode == OutputMode.ASIO);
+      rbUseSound.Checked = (_Profile.OutputMode == OutputMode.DirectSound);
+      rbUseWASAPI.Checked = (_Profile.OutputMode == OutputMode.WASAPI);
 
+      cboWASAPISpeakerLayout.SelectedIndex = (int)_Profile.WASAPISpeakerLayout;
       cboDefaultPlayBackMode.SelectedIndex = (int)_Profile.DefaultPlayBackMode;
       cboMonoUpMix.SelectedIndex = (int)_Profile.MonoUpMix;
       cboStereoUpMix.SelectedIndex = (int)_Profile.StereoUpMix;
@@ -2060,22 +2307,26 @@ namespace MediaPortal.Player.PureAudio
       else
         cboMinASIORate.SelectedItem = _Profile.ForceMinASIORate.ToString();
 
+
+      if (_Profile.ForceMaxWASAPIRate == 0)
+        cboMaxWASAPIRate.SelectedItem = "Auto";
+      else
+        cboMaxWASAPIRate.SelectedItem = _Profile.ForceMaxWASAPIRate.ToString();
+
+      if (_Profile.ForceMinWASAPIRate == 0)
+        cboMinWASAPIRate.SelectedItem = "Auto";
+      else
+        cboMinWASAPIRate.SelectedItem = _Profile.ForceMinWASAPIRate.ToString();
+
       cboASIODevice.SelectedItem = _Profile.ASIODevice;
       cboSoundDevice.SelectedItem = _Profile.DirectSoundDevice;
+      cboWASAPIDevice.SelectedItem = _Profile.WASAPIDevice;
+
 
       nudWMPVizFps.DataBindings.Add("Value", _Profile, "WMPVizFps");
 
-      //chkDoSoftStop.DataBindings.Add("Checked", _Profile, "DoSoftStop");
-      //chkUseMaxASIOBufferSize.DataBindings.Add("Checked", _Profile, "UseMaxASIOBufferSize");
-      //chkUseOverSampling.DataBindings.Add("Checked", _Profile, "UseOverSampling");
-      //chkWMPVizFFTHalf.DataBindings.Add("Checked", _Profile, "WMPVizFFTHalf");
-      //chkUseVizAGC.DataBindings.Add("Checked", _Profile, "UseVizAGC");
-      //chkUseForCDDA.DataBindings.Add("Checked", _Profile, "UseForCDDA");
-      //chkUseForWebStream.DataBindings.Add("Checked", _Profile, "UseForWebStream");
-      //chkUseForLastFMWebStream.DataBindings.Add("Checked", _Profile, "UseForLastFMWebStream");
-      //chkUseReplayGain.DataBindings.Add("Checked", _Profile, "UseReplayGain");
-      //chkUseRGAlbumGain.DataBindings.Add("Checked", _Profile, "UseRGAlbumGain");
-
+      chkWASAPIEvent.Checked = _Profile.WASAPIEvent;
+      chkWASAPIExclusive.Checked = _Profile.WASAPIExclusive;
       chkDoSoftStop.Checked = _Profile.DoSoftStop;
       chkUseMaxASIOBufferSize.Checked = _Profile.UseMaxASIOBufferSize;
       chkUseOverSampling.Checked = _Profile.UseOverSampling;
@@ -2114,8 +2365,16 @@ namespace MediaPortal.Player.PureAudio
       cboASIOFirstChan.DataBindings.Add("Enabled", rbUseASIO, "Checked");
       cboASIOLastChan.DataBindings.Add("Enabled", rbUseASIO, "Checked");
 
+      cboWASAPIDevice.DataBindings.Add("Enabled", rbUseWASAPI, "Checked");
+      btnWASAPIControlPanel.DataBindings.Add("Enabled", rbUseWASAPI, "Checked");
+      chkWASAPIExclusive.DataBindings.Add("Enabled", rbUseWASAPI, "Checked");
+      
+      cboWASAPISpeakerLayout.DataBindings.Add("Enabled", rbUseWASAPI, "Checked");
+      lblWASAPISpeakerLayout.DataBindings.Add("Enabled", rbUseWASAPI, "Checked");
+
       cboSoundDevice.DataBindings.Add("Enabled", rbUseSound, "Checked");
       btnMMEControlPanel.DataBindings.Add("Enabled", rbUseSound, "Checked");
+
       pnlSoftStopDuration.DataBindings.Add("Enabled", chkDoSoftStop, "Checked");
 
       DisplayExtList();
@@ -2202,6 +2461,9 @@ namespace MediaPortal.Player.PureAudio
         case "NodeASIO":
           tabControl.SelectedTab = tabPageASIO;
           break;
+        case "NodeWASAPI":
+          tabControl.SelectedTab = tabPageWASAPI;
+          break;
       }
     }
 
@@ -2219,7 +2481,12 @@ namespace MediaPortal.Player.PureAudio
 
     private void rbUseASIO_CheckedChanged(object sender, EventArgs e)
     {
-      _Profile.UseASIO = rbUseASIO.Checked;
+      _Profile.OutputMode = OutputMode.ASIO;
+    }
+
+    private void rbUseWASAPI_CheckedChanged(object sender, EventArgs e)
+    {
+      _Profile.OutputMode = OutputMode.WASAPI;
     }
 
     private void btnASIOControlPanel_Click(object sender, EventArgs e)
@@ -2234,6 +2501,11 @@ namespace MediaPortal.Player.PureAudio
     }
 
     private void btnMMEControlPanel_Click(object sender, EventArgs e)
+    {
+      Process.Start("mmsys.cpl");
+    }
+
+    private void btnWASAPIControlPanel_Click(object sender, EventArgs e)
     {
       Process.Start("mmsys.cpl");
     }
@@ -2290,6 +2562,16 @@ namespace MediaPortal.Player.PureAudio
     private void cboSoundDevice_SelectedIndexChanged(object sender, EventArgs e)
     {
       _Profile.DirectSoundDevice = cboSoundDevice.SelectedItem.ToString();
+    }
+
+    private void cboWASAPIDevice_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      _Profile.WASAPIDevice = cboWASAPIDevice.SelectedItem.ToString();
+    }
+
+    private void cboWASAPISpeakerLayout_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      _Profile.WASAPISpeakerLayout = (SpeakerLayout)cboWASAPISpeakerLayout.SelectedIndex;
     }
 
     private void cboDefaultPlayBackMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -2558,6 +2840,11 @@ namespace MediaPortal.Player.PureAudio
       _Profile.WMPVizPreset = cboWMPVisualizationPresets.SelectedIndex;
     }
 
+    private void chkWASAPIExclusive_CheckedChanged(object sender, EventArgs e)
+    {
+      _Profile.WASAPIExclusive = chkWASAPIExclusive.Checked;
+    }
+
     private void chkDoSoftStop_CheckedChanged(object sender, EventArgs e)
     {
       _Profile.DoSoftStop = chkDoSoftStop.Checked;
@@ -2583,6 +2870,11 @@ namespace MediaPortal.Player.PureAudio
       _Profile.UseMaxASIOBufferSize = chkUseMaxASIOBufferSize.Checked;
     }
 
+    private void chkWASAPIEvent_CheckedChanged(object sender, EventArgs e)
+    {
+      _Profile.WASAPIEvent = chkWASAPIEvent.Checked;
+    }
+
     private void chkUseOverSampling_CheckedChanged(object sender, EventArgs e)
     {
       _Profile.UseOverSampling = chkUseOverSampling.Checked;
@@ -2601,6 +2893,24 @@ namespace MediaPortal.Player.PureAudio
     private void chkWMPVizFFTHalf_CheckedChanged(object sender, EventArgs e)
     {
       _Profile.WMPVizFFTHalf = chkWMPVizFFTHalf.Checked;
+    }
+
+    private void cboMaxWASAPIRate_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      string value = cboMaxWASAPIRate.SelectedItem.ToString();
+      if (value == "Auto")
+        _Profile.ForceMaxWASAPIRate = 0;
+      else
+        _Profile.ForceMaxWASAPIRate = Convert.ToInt32(value);
+    }
+
+    private void cboMinWASAPIRate_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      string value = cboMinWASAPIRate.SelectedItem.ToString();
+      if (value == "Auto")
+        _Profile.ForceMinWASAPIRate = 0;
+      else
+        _Profile.ForceMinWASAPIRate = Convert.ToInt32(value);
     }
   }
 }
