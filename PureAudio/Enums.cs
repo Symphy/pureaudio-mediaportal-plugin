@@ -113,4 +113,20 @@ namespace MediaPortal.Player.PureAudio
     None = 0,
     WMP = 1
   }
+
+  public enum SpeakerLayout
+  {
+    Mono = 0,
+    Stereo = 1,
+    QuadraphonicPhonic = 2,
+    FiveDotOne = 3,
+    SevenDotOne = 4
+  }
+
+  public enum OutputMode
+  {
+    DirectSound = 0,
+    WASAPI = 1,
+    ASIO = 2
+  }
 }

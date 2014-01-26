@@ -26,6 +26,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Un4seen.Bass;
+using Un4seen.BassWasapi;
 using Un4seen.Bass.AddOn.Cd;
 using Un4seen.Bass.AddOn.Fx;
 using Un4seen.Bass.AddOn.Mix;
@@ -82,6 +83,7 @@ namespace MediaPortal.Player.PureAudio
     private int _NextDataStream = 0;
     private int _ASIOOutputStream = 0;
     private int _DSOutputStream = 0;
+    private int _WASAPIOutputStream = 0;
     private int _SinkStream = 0;
     private int _VizRawStream = 0;
     private int _VizStream = 0;
@@ -116,6 +118,10 @@ namespace MediaPortal.Player.PureAudio
 
     private int _ASIODeviceNumber = -1;
     private AsioEngine _ASIOEngine = null;
+
+    private int _WASAPIDeviceNumber = -1;
+    private BassWasapiHandler _WASAPIHandler = null;
+
     private AudioRingBuffer _Buffer = null;
     private int _BufferUpdateThreshold = 90;
     private int _BufferUpdateThresholdBytes = 0;
@@ -394,7 +400,7 @@ namespace MediaPortal.Player.PureAudio
           // network buffersize for webstreams should be larger then the playbackbuffer.
           // To insure a stable playback-start.
           int netBufferSize = _Profile.PlayBackBufferSize;
-          if (!_Profile.UseASIO)
+          if (_Profile.OutputMode == OutputMode.DirectSound)
             netBufferSize += _Profile.BASSPlayBackBufferSize;
 
           // Minimize at default value.
@@ -425,7 +431,13 @@ namespace MediaPortal.Player.PureAudio
     public void Dispose()
     {
       StopThreads();
-      _ASIOEngine.Dispose();
+
+      if (_WASAPIHandler != null)
+        _WASAPIHandler.Dispose();
+
+      if (_ASIOEngine != null)
+        _ASIOEngine.Dispose();
+
       BassWaDsp.BASS_WADSP_Free();
       Bass.BASS_Free();
     }
@@ -881,7 +893,7 @@ namespace MediaPortal.Player.PureAudio
         }
 
         result =
-            InitDevice() &&
+            PrepareDevice() &&
             InitBuffer() &&
             InitSinkStream() &&
             InitMixerStream() &&
@@ -890,7 +902,7 @@ namespace MediaPortal.Player.PureAudio
             InitWADSPPlugins() &&
             InitOutputStream() &&
             InitVizStream() &&
-            InitASIOHandler() &&
+            InitDevice() &&
             SetReplayGain();
       }
 
@@ -939,7 +951,7 @@ namespace MediaPortal.Player.PureAudio
 
       if (_State == PlayState.Playing)
       {
-        if (!_Profile.UseASIO && isAutoStop)
+        if ((_Profile.OutputMode == OutputMode.DirectSound) && isAutoStop)
           // The stop is triggered because there was no new track queued;
           // Keep playing until the BASS buffer is also outputted.
           Thread.Sleep(_Profile.BASSPlayBackBufferSize);
@@ -948,10 +960,25 @@ namespace MediaPortal.Player.PureAudio
       }
 
       _State = PlayState.Stopped;
-      if (_Profile.UseASIO)
+
+      switch (_Profile.OutputMode)
       {
-        Log.Debug("Stopping session: releasing ASIO device...");
-        _ASIOEngine.ReleaseDriver();
+        case OutputMode.WASAPI:
+          {
+            Log.Debug("Stopping session: releasing WASAPI device...");
+            _WASAPIHandler.Dispose();
+            break;
+          }
+        case OutputMode.ASIO:
+          {
+            Log.Debug("Stopping session: releasing ASIO device...");
+            _ASIOEngine.ReleaseDriver();
+            break;
+          }
+        case OutputMode.DirectSound:
+          {
+            break;
+          }
       }
 
       if (_WADSPHandles.Count > 0)
@@ -998,7 +1025,10 @@ namespace MediaPortal.Player.PureAudio
       Log.Debug("Stopping session: freeing _VizStream...");
       FreeStream(ref _VizRawStream);
 
-      Log.Debug("Stopping session: freeing _OutputMixerStream...");
+      Log.Debug("Stopping session: freeing _WASAPIOutputStream...");
+      FreeStream(ref _WASAPIOutputStream);
+
+      Log.Debug("Stopping session: freeing _ASIOOutputStream...");
       FreeStream(ref _ASIOOutputStream);
 
       Log.Debug("Stopping session: freeing _DSOutputStream...");
@@ -1054,7 +1084,7 @@ namespace MediaPortal.Player.PureAudio
     {
       _TotalLatencyMS = _Buffer.Delay - _ReadOffsetMS + _VSTDelayMS;
 
-      if (!_Profile.UseASIO)
+      if (_Profile.OutputMode == OutputMode.DirectSound)
         _TotalLatencyMS += _Profile.BASSPlayBackBufferSize;
 
       Log.Debug("Calculated total latency: {0}ms", _TotalLatencyMS);
@@ -1308,14 +1338,28 @@ namespace MediaPortal.Player.PureAudio
       return mixMatrix;
     }
 
-    private bool InitDevice()
+    private bool PrepareDevice()
     {
-      bool result;
+      bool result = false;
 
-      if (_Profile.UseASIO)
-        result = InitASIODevice();
-      else
-        result = InitDirectSoundDevice();
+      switch (_Profile.OutputMode)
+      {
+        case OutputMode.WASAPI:
+          {
+            result = PrepareDevice_WASAPI();
+            break;
+          }
+        case OutputMode.ASIO:
+          {
+            result = PrepareDevice_ASIO();
+            break;
+          }
+        case OutputMode.DirectSound:
+          {
+            result = PrepareDevice_DirectSound();
+            break;
+          }
+      }
 
       if (result && _DebugMode)
       {
@@ -1326,7 +1370,72 @@ namespace MediaPortal.Player.PureAudio
       return result;
     }
 
-    private bool InitASIODevice()
+    private bool PrepareDevice_WASAPI()
+    {
+      Log.Debug("Initializing WASAPI device: {0}...", _Profile.WASAPIDevice);
+
+      _WASAPIDeviceNumber = -1;
+      BASS_WASAPI_DEVICEINFO[] devices = BassWasapi.BASS_WASAPI_GetDeviceInfos();
+      for (int i = 0; i < devices.Length; i++)
+      {
+        if (devices[i].name == _Profile.WASAPIDevice)
+        {
+          _WASAPIDeviceNumber = i;
+          break;
+        }
+      }
+
+      bool result = (_WASAPIDeviceNumber > -1);
+      if (!result)
+        HandleError(ErrorCode.MiscError, "Specified WASAPI device not found.");
+
+      if (result)
+      {
+        Log.Info("Using WASAPI Device {0}", _Profile.WASAPIDevice);
+        BASS_WASAPI_DEVICEINFO wasapiDeviceInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo(_WASAPIDeviceNumber);
+
+        _DeviceInfo = new WASAPIDeviceInfo(wasapiDeviceInfo, _Profile.WASAPIExclusive, GetMinExclWASAPIRate(), GetMaxExclWASAPIRate(), GetExclWASAPIChannels());
+      }
+
+      return result;
+    }
+
+    private int GetExclWASAPIChannels()
+    {
+      switch (_Profile.WASAPISpeakerLayout)
+      {
+        case SpeakerLayout.Mono:
+          return 1;
+        case SpeakerLayout.Stereo:
+          return 2;
+        case SpeakerLayout.QuadraphonicPhonic:
+          return 4;
+        case SpeakerLayout.FiveDotOne:
+          return 6;
+        case SpeakerLayout.SevenDotOne:
+          return 8;
+        default:
+          return 2;
+      }
+    }
+
+    private int GetMinExclWASAPIRate()
+    {
+      if (_Profile.ForceMinWASAPIRate == 0)
+        return 8000;
+      else
+        return _Profile.ForceMinWASAPIRate;
+    }
+
+    private int GetMaxExclWASAPIRate()
+    {
+      if (_Profile.ForceMaxWASAPIRate == 0)
+        return 192000;
+      else
+        return _Profile.ForceMaxWASAPIRate;
+    }
+
+    private bool PrepareDevice_ASIO()
     {
       Log.Debug("Initializing ASIO device: {0}...", _Profile.ASIODevice);
 
@@ -1459,7 +1568,7 @@ namespace MediaPortal.Player.PureAudio
       return latency;
     }
 
-    private bool InitDirectSoundDevice()
+    private bool PrepareDevice_DirectSound()
     {
       Log.Debug("Initializing DirectSound device: {0}...", _Profile.DirectSoundDevice);
 
@@ -1536,13 +1645,37 @@ namespace MediaPortal.Player.PureAudio
       return result;
     }
 
+    private bool InitDevice()
+    {
+      bool result = false;
+
+      switch (_Profile.OutputMode)
+      {
+        case OutputMode.WASAPI:
+          {
+            result = InitDevice_WASAPI();
+            break;
+          }
+        case OutputMode.ASIO:
+          {
+            result = InitDevice_ASIO();
+            break;
+          }
+        case OutputMode.DirectSound:
+          {
+            break;
+          }
+      }
+      return result;
+    }
+
     private bool InitBuffer()
     {
       int channels = _DataStreamInfo.BASSChannelInfo.chans;
       int samplingRate = _DataStreamInfo.BASSChannelInfo.freq;
 
       _ReadOffsetMS = VizLatencyCorrectionRangeMS;
-      if (!_Profile.UseASIO)
+      if (_Profile.OutputMode == OutputMode.DirectSound)
         _ReadOffsetMS += _Profile.BASSPlayBackBufferSize;
 
       _ReadOffsetBytes = AudioRingBuffer.CalculateLength(samplingRate, channels, _ReadOffsetMS);
@@ -1581,11 +1714,24 @@ namespace MediaPortal.Player.PureAudio
 
     private void ClearBASSPlayBackBuffer()
     {
-      if (_Profile.UseASIO)
-        _ASIOEngine.ClearOutputBuffers();
-      else
-        //Bass.BASS_ChannelSetPosition(_OutputMixerStream, 0);
-        Bass.BASS_ChannelSetPosition(_DSOutputStream, 0);
+      switch (_Profile.OutputMode)
+      {
+        case OutputMode.WASAPI:
+          {
+            Bass.BASS_ChannelSetPosition(_WASAPIOutputStream, 0);
+            break;
+          }
+        case OutputMode.ASIO:
+          {
+            _ASIOEngine.ClearOutputBuffers();
+            break;
+          }
+        case OutputMode.DirectSound:
+          {
+            Bass.BASS_ChannelSetPosition(_DSOutputStream, 0);
+            break;
+          }
+      }
     }
 
     private void ClearVSTBuffers()
@@ -1632,7 +1778,7 @@ namespace MediaPortal.Player.PureAudio
       int inputChannels = _DataStreamInfo.BASSChannelInfo.chans;
       int outputChannels;
 
-      if (_Profile.UseASIO)
+      if (_Profile.OutputMode == OutputMode.ASIO)
       {
         int first = _Profile.ASIOFirstChan;
         int last = _Profile.ASIOLastChan;
@@ -1831,13 +1977,20 @@ namespace MediaPortal.Player.PureAudio
 
     private bool InitOutputStream()
     {
-      if (_Profile.UseASIO)
-        return InitASIOOutputStream();
-      else
-        return InitDSOutputStream();
+      switch (_Profile.OutputMode)
+      {
+        case OutputMode.DirectSound:
+          return InitOutputStream_DirectSound();
+        case OutputMode.WASAPI:
+          return InitOutputStream_WASAPI();
+        case OutputMode.ASIO:
+          return InitOutputStream_ASIO();
+        default:
+          return false;
+      }
     }
 
-    private bool InitDSOutputStream()
+    private bool InitOutputStream_DirectSound()
     {
       Log.Debug("Creating DS outputstream...");
 
@@ -1858,17 +2011,14 @@ namespace MediaPortal.Player.PureAudio
       return result;
     }
 
-    private bool InitASIOOutputStream()
+    private bool InitOutputStream_ASIO()
     {
       Log.Debug("Creating outputmixerstream...");
 
       BASSFlag streamFlags =
           BASSFlag.BASS_MIXER_NONSTOP |
-          BASSFlag.BASS_SAMPLE_FLOAT;
-
-      if (_Profile.UseASIO)
-        // Stream -must- be BASS_STREAM_DECODE for ASIO
-        streamFlags |= BASSFlag.BASS_STREAM_DECODE;
+          BASSFlag.BASS_SAMPLE_FLOAT |
+          BASSFlag.BASS_STREAM_DECODE;
 
       BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(_MixerStream);
 
@@ -1908,6 +2058,57 @@ namespace MediaPortal.Player.PureAudio
         if (!result)
           HandleBassError("BassMix.BASS_Mixer_StreamAddChannel");
       }
+      return result;
+    }
+
+    private bool InitOutputStream_WASAPI()
+    {
+      Log.Debug("Creating WASAPI outputstream...");
+
+      BASSFlag streamFlags =
+        BASSFlag.BASS_STREAM_DECODE |
+        BASSFlag.BASS_MIXER_NONSTOP |
+        BASSFlag.BASS_SAMPLE_FLOAT;
+
+      BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(_MixerStream);
+
+      int inputFreq = info.freq;
+      int outputFreq = inputFreq;
+      if (CurrentUsesOverSampling)
+      {
+        int newFreq = outputFreq * 2;
+        if (newFreq <= _DeviceInfo.MaxRate)
+          outputFreq = newFreq;
+        else
+          Log.Info("Oversampling disabled: samplingrate of {0} is not supported by device...", newFreq);
+      }
+
+      if (_DebugMode && outputFreq != inputFreq)
+        Log.Info("Oversampling {0} -> {1}...", new object[] { inputFreq, outputFreq });
+
+      _WASAPIOutputStream = BassMix.BASS_Mixer_StreamCreate(
+          outputFreq,
+          info.chans,
+          streamFlags);
+
+      bool result = (_WASAPIOutputStream != 0);
+      if (!result)
+        HandleBassError("BassMix.BASS_Mixer_StreamCreate");
+
+      if (result)
+      {
+        Log.Debug("Plugging mixerstream into outputmixer...");
+
+        // Bass 2.3: BASS_MIXER_NORAMPIN is required because when using floating streams it never reaches 100% apparently.
+        result = BassMix.BASS_Mixer_StreamAddChannel(
+            _WASAPIOutputStream,
+            _MixerStream,
+            BASSFlag.BASS_MIXER_NORAMPIN);
+
+        if (!result)
+          HandleBassError("BassMix.BASS_Mixer_StreamAddChannel");
+      }
+
       return result;
     }
 
@@ -1992,9 +2193,41 @@ namespace MediaPortal.Player.PureAudio
       return result;
     }
 
-    private bool InitASIOHandler()
+    private bool InitDevice_WASAPI()
     {
-      if (_Profile.UseASIO)
+      if (_Profile.OutputMode == OutputMode.WASAPI)
+      {
+        Log.Debug("Initializing WASAPI handler...");
+
+        BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(_WASAPIOutputStream);
+
+        _WASAPIHandler = new BassWasapiHandler(_WASAPIDeviceNumber, _Profile.WASAPIExclusive, true, _Profile.WASAPIEvent, info.freq, info.chans, 0f, 0f);
+        bool result = (_WASAPIHandler != null);
+        if (!result)
+          HandleWasapiHandlerError("ctor");
+
+        if (result)
+        {
+          result = _WASAPIHandler.AddOutputSource(_WASAPIOutputStream, BASSFlag.BASS_DEFAULT);
+          if (!result)
+            HandleWasapiHandlerError("AddOutputSource");
+        }
+
+        if (result)
+        {
+          result = _WASAPIHandler.Init();
+          if (!result)
+            HandleWasapiHandlerError("Init");
+        }
+        return result;
+      }
+      else
+        return true;
+    }
+
+    private bool InitDevice_ASIO()
+    {
+      if (_Profile.OutputMode == OutputMode.ASIO)
       {
         Log.Debug("Initializing ASIO handler...");
 
@@ -2146,7 +2379,7 @@ namespace MediaPortal.Player.PureAudio
               }
             }
           }
-          if (result && !_Profile.UseASIO)
+          if (result && _Profile.OutputMode == OutputMode.DirectSound)
           {
             if (!Bass.BASS_ChannelUpdate(_DSOutputStream, 0))
             {
@@ -2234,10 +2467,18 @@ namespace MediaPortal.Player.PureAudio
       // Fading on _OutputMixerStream does not work with ASIO, but when using WaveOut
       // is fades actually after the BASS playbackbuffer, which eliminates the delay we would
       // have otherwise.
-      if (_Profile.UseASIO)
-        return _MixerStream;
-      else
-        return _DSOutputStream;
+
+      switch (_Profile.OutputMode)
+      {
+        case OutputMode.DirectSound:
+          return _DSOutputStream;
+        case OutputMode.WASAPI:
+          return _MixerStream;
+        case OutputMode.ASIO:
+          return _MixerStream;
+        default:
+          return 0;
+      }
     }
 
     private void PrepareFadeIn()
@@ -2291,54 +2532,88 @@ namespace MediaPortal.Player.PureAudio
       _StopWatch.Reset();
       _StopWatch.Start();
 
-      if (_Profile.UseASIO)
+      bool result = false;
+      switch (_Profile.OutputMode)
       {
-        Log.Debug("Starting ASIO...");
+        case OutputMode.DirectSound:
+          {
+            Log.Debug("Starting output...");
 
-        bool result = _ASIOEngine.Start();
-        if (!result)
-          HandleAsioEngineError("Start");
+            result = Bass.BASS_ChannelPlay(_DSOutputStream, false);
+            if (!result)
+              HandleBassError("Bass.BASS_ChannelPlay");
 
-        return result;
+            break;
+          }
+        case OutputMode.WASAPI:
+          {
+            Log.Debug("Starting WASAPI...");
+
+            result = _WASAPIHandler.Start();
+            if (!result)
+              HandleWasapiHandlerError("Start");
+
+            break;
+          }
+        case OutputMode.ASIO:
+          {
+            Log.Debug("Starting ASIO...");
+
+            result = _ASIOEngine.Start();
+            if (!result)
+              HandleAsioEngineError("Start");
+
+            break;
+          }
+        default:
+          break;
       }
-      else
-      {
-        Log.Debug("Starting output...");
 
-        //bool result = Bass.BASS_ChannelPlay(_OutputMixerStream, false);
-        bool result = Bass.BASS_ChannelPlay(_DSOutputStream, false);
-        if (!result)
-          HandleBassError("Bass.BASS_ChannelPlay");
-
-        return result;
-      }
+      return result;
     }
 
     private bool StopBass()
     {
       _StopWatch.Stop();
 
-      if (_Profile.UseASIO)
+      bool result = false;
+      switch (_Profile.OutputMode)
       {
-        Log.Debug("stopping ASIO...");
+        case OutputMode.DirectSound:
+          {
+            Log.Debug("Stopping output...");
 
-        bool result = _ASIOEngine.Stop();
-        if (!result)
-          HandleAsioEngineError("Stop");
+            result = Bass.BASS_ChannelStop(_DSOutputStream);
+            if (!result)
+              HandleBassError("Bass.BASS_ChannelStop");
 
-        return result;
+            break;
+          }
+        case OutputMode.WASAPI:
+          {
+            Log.Debug("Stopping WASAPI...");
+
+            result = _WASAPIHandler.Stop();
+            if (!result)
+              HandleWasapiHandlerError("Stop");
+
+            break;
+          }
+        case OutputMode.ASIO:
+          {
+            Log.Debug("stopping ASIO...");
+
+            result = _ASIOEngine.Stop();
+            if (!result)
+              HandleAsioEngineError("Stop");
+
+            break;
+          }
+        default:
+          break;
       }
-      else
-      {
-        Log.Debug("Stopping output...");
 
-        //bool result = Bass.BASS_ChannelStop(_OutputMixerStream);
-        bool result = Bass.BASS_ChannelStop(_DSOutputStream);
-        if (!result)
-          HandleBassError("Bass.BASS_ChannelStop");
-
-        return result;
-      }
+      return result;
     }
 
     private void CreateCurrentStream()
@@ -2552,7 +2827,7 @@ namespace MediaPortal.Player.PureAudio
       {
         GetStreamMetaTags(tagPtr);
       }
-      
+
       //// BASS_SYNC_META delivers a pointer to the metadata in data parameter...
       //if (data != 0)
       //{
@@ -2632,6 +2907,11 @@ namespace MediaPortal.Player.PureAudio
     private void HandleBassError(string methodName)
     {
       HandleError(ErrorCode.MiscError, "PureAudio: {0}() failed: {1}", methodName, Bass.BASS_ErrorGetCode());
+    }
+
+    private void HandleWasapiHandlerError(string methodName)
+    {
+      HandleError(ErrorCode.MiscError, "PureAudio: _WASAPIHandler.{0} failed: {1}.", methodName, Bass.BASS_ErrorGetCode());
     }
 
     private void HandleAsioEngineError(string methodName)

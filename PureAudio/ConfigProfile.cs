@@ -45,8 +45,11 @@ namespace MediaPortal.Player.PureAudio
       public const string FiveDotOneUpMix = "FiveDotOneUpMix";
       public const string ForceMaxASIORate = "ForceMaxASIORate";
       public const string ForceMinASIORate = "ForceMinASIORate";
+      public const string ForceMaxWASAPIRate = "ForceMaxWASAPIRate";
+      public const string ForceMinWASAPIRate = "ForceMinWASAPIRate";
       public const string GapLength = "GapLength";
       public const string MonoUpMix = "MonoUpMix";
+      public const string OutputMode = "OutputMode";
       public const string PlayBackBufferSize = "Delay";
       public const string QuadraphonicUpMix = "QuadraphonicUpMix";
       public const string SeekIncrement = "SeekIncrement";
@@ -56,7 +59,6 @@ namespace MediaPortal.Player.PureAudio
       public const string SonVizSlowFade = "SonVizSlowFade";
       public const string SonVizWaveSkipCount = "SonVizWaveSkipCount";
       public const string StereoUpMix = "StereoUpMix";
-      public const string UseASIO = "UseASIO";
       public const string UseForCDDA = "UseForCDDA";
       public const string UseForWebStream = "UseForWebStream";
       public const string UseForLastFMWebStream = "UseForLastFMWebStream";
@@ -67,12 +69,19 @@ namespace MediaPortal.Player.PureAudio
       public const string UseVizAGC = "UseVizAGC";
       public const string VizLatencyCorrection = "VizLatencyCorrection";
       public const string VizType = "VizType";
+      public const string WASAPIDevice = "WASAPIDevice";
+      public const string WASAPIEvent = "WASAPIEvent";
+      public const string WASAPIExclusive = "WASAPIExclusive";
+      public const string WASAPISpeakerLayout = "WASAPISpeakerLayout";
       public const string WMPVizClsId = "WMPVizClsId";
       public const string WMPVizPreset = "WMPVizPreset";
       public const string WMPVizFps = "WMPVizFps";
       public const string WMPVizFFTFallBack = "WMPVizFFTFallBack";
       public const string WMPVizFFTMinimum = "WMPVizFFTMinimum";
       public const string WMPVizFFTHalf = "WMPVizFFTHalf";
+      
+      // for backwards compatibility
+      public const string UseASIO = "UseASIO";
     }
 
     public static class Defaults
@@ -90,8 +99,11 @@ namespace MediaPortal.Player.PureAudio
       public const int FiveDotOneUpMix = (int)MediaPortal.Player.PureAudio.FiveDotOneUpMix.None;
       public const int ForceMaxASIORate = 0; // kHz
       public const int ForceMinASIORate = 0; // kHz
+      public const int ForceMaxWASAPIRate = 0; // kHz
+      public const int ForceMinWASAPIRate = 0; // kHz
       public const int GapLength = 1000; //ms
       public const int MonoUpMix = (int)MediaPortal.Player.PureAudio.MonoUpMix.Stereo;
+      public const int OutputMode = (int)MediaPortal.Player.PureAudio.OutputMode.DirectSound;
       public const int PlayBackBufferSize = 2000; //ms
       public const int QuadraphonicUpMix = (int)MediaPortal.Player.PureAudio.QuadraphonicUpMix.None;
       public const int SeekIncrement = 20; // sec
@@ -101,7 +113,6 @@ namespace MediaPortal.Player.PureAudio
       public const int SonVizSlowFade = 24;
       public const int SonVizWaveSkipCount = 0;
       public const int StereoUpMix = (int)MediaPortal.Player.PureAudio.StereoUpMix.None;
-      public const bool UseASIO = false;
       public const bool UseBassDSPGain = false;
       public const bool UseBassDSPDynAmp = false;
       public const bool UseBassDSPComp = false;
@@ -115,6 +126,10 @@ namespace MediaPortal.Player.PureAudio
       public const bool UseVizAGC = true;
       public const int VizLatencyCorrection = 0; //ms
       public const int VizType = (int)VisualizationType.None;
+      public const string WASAPIDevice = "";
+      public const bool WASAPIEvent = true;
+      public const bool WASAPIExclusive = true;
+      public const int WASAPISpeakerLayout = (int)SpeakerLayout.Stereo;
       public const string WMPVizClsId = "";
       public const int WMPVizPreset = 0;
       public const int WMPVizFps = 30;
@@ -175,9 +190,12 @@ namespace MediaPortal.Player.PureAudio
     public FiveDotOneUpMix FiveDotOneUpMix { get; set; }
     public int ForceMaxASIORate { get; set; }
     public int ForceMinASIORate { get; set; }
+    public int ForceMaxWASAPIRate { get; set; }
+    public int ForceMinWASAPIRate { get; set; }
     public int GapLength { get; set; }
     public MonoUpMix MonoUpMix { get; set; }
     public int PlayBackBufferSize { get; set; }
+    public OutputMode OutputMode { get; set; }
     public QuadraphonicUpMix QuadraphonicUpMix { get; set; }
     public int SeekIncrement { get; set; }
     public int SoftStopDuration { get; set; }
@@ -186,7 +204,6 @@ namespace MediaPortal.Player.PureAudio
     public int SonVizSlowFade { get; set; }
     public int SonVizWaveSkipCount { get; set; }
     public StereoUpMix StereoUpMix { get; set; }
-    public bool UseASIO { get; set; }
     public bool UseBassDSPGain { get; set; }
     public bool UseBassDSPDynAmp { get; set; }
     public bool UseBassDSPComp { get; set; }
@@ -200,6 +217,10 @@ namespace MediaPortal.Player.PureAudio
     public bool UseVizAGC { get; set; }
     public int VizLatencyCorrection { get; set; }
     public int VizType { get; set; }
+    public string WASAPIDevice { get; set; }
+    public bool WASAPIEvent { get; set; }
+    public bool WASAPIExclusive { get; set; }
+    public SpeakerLayout WASAPISpeakerLayout { get; set; }
     public string WMPVizClsId { get; set; }
     public int WMPVizPreset { get; set; }
     public int WMPVizFps { get; set; }
@@ -231,8 +252,11 @@ namespace MediaPortal.Player.PureAudio
       FiveDotOneUpMix = (FiveDotOneUpMix)Defaults.FiveDotOneUpMix;
       ForceMaxASIORate = Defaults.ForceMaxASIORate;
       ForceMinASIORate = Defaults.ForceMinASIORate;
+      ForceMaxWASAPIRate = Defaults.ForceMaxWASAPIRate;
+      ForceMinWASAPIRate = Defaults.ForceMinWASAPIRate;
       GapLength = Defaults.GapLength; //msec
       MonoUpMix = (MonoUpMix)Defaults.MonoUpMix;
+      OutputMode = (OutputMode)Defaults.OutputMode;
       PlayBackBufferSize = Defaults.PlayBackBufferSize; //msec
       QuadraphonicUpMix = (QuadraphonicUpMix)Defaults.QuadraphonicUpMix;
       SeekIncrement = Defaults.SeekIncrement; //sec
@@ -242,7 +266,6 @@ namespace MediaPortal.Player.PureAudio
       SonVizSlowFade = Defaults.SonVizSlowFade;
       SonVizWaveSkipCount = Defaults.SonVizWaveSkipCount;
       StereoUpMix = (StereoUpMix)Defaults.StereoUpMix;
-      UseASIO = Defaults.UseASIO;
       UseBassDSPGain = Defaults.UseBassDSPGain;
       UseBassDSPDynAmp = Defaults.UseBassDSPDynAmp;
       UseBassDSPComp = Defaults.UseBassDSPComp;
@@ -255,8 +278,11 @@ namespace MediaPortal.Player.PureAudio
       UseRGAlbumGain = Defaults.UseRGAlbumGain;
       UseVizAGC = Defaults.UseVizAGC;
       VizLatencyCorrection = Defaults.VizLatencyCorrection;
-
       VizType = Defaults.VizType;
+      WASAPIDevice = Defaults.WASAPIDevice;
+      WASAPIEvent = Defaults.WASAPIEvent;
+      WASAPIExclusive = Defaults.WASAPIExclusive;
+      WASAPISpeakerLayout = (SpeakerLayout)Defaults.WASAPISpeakerLayout;
       WMPVizClsId = Defaults.WMPVizClsId;
       WMPVizPreset = Defaults.WMPVizPreset;
       WMPVizFps = Defaults.WMPVizFps;
@@ -305,8 +331,20 @@ namespace MediaPortal.Player.PureAudio
         ForceMinASIORate =
           xmlreader.GetValueAsInt(section, PropNames.ForceMinASIORate, Defaults.ForceMinASIORate);
 
+        ForceMaxWASAPIRate =
+          xmlreader.GetValueAsInt(section, PropNames.ForceMaxWASAPIRate, Defaults.ForceMaxWASAPIRate);
+
+        ForceMinWASAPIRate =
+          xmlreader.GetValueAsInt(section, PropNames.ForceMinWASAPIRate, Defaults.ForceMinWASAPIRate);
+
         MonoUpMix = (MonoUpMix)
           xmlreader.GetValueAsInt(section, PropNames.MonoUpMix, Defaults.MonoUpMix);
+
+        OutputMode = (OutputMode)
+          xmlreader.GetValueAsInt(section, PropNames.OutputMode, Defaults.OutputMode);
+
+        if (xmlreader.GetValueAsBool(section, PropNames.UseASIO, false))
+          OutputMode = OutputMode.ASIO;
 
         PlayBackBufferSize =
           xmlreader.GetValueAsInt(section, PropNames.PlayBackBufferSize, Defaults.PlayBackBufferSize);
@@ -338,9 +376,6 @@ namespace MediaPortal.Player.PureAudio
         StereoUpMix = (StereoUpMix)
           xmlreader.GetValueAsInt(section, PropNames.StereoUpMix, Defaults.StereoUpMix);
 
-        UseASIO =
-          xmlreader.GetValueAsBool(section, PropNames.UseASIO, Defaults.UseASIO);
-
         UseForCDDA =
           xmlreader.GetValueAsBool(section, PropNames.UseForCDDA, Defaults.UseForCDDA);
 
@@ -370,6 +405,18 @@ namespace MediaPortal.Player.PureAudio
 
         VizType =
           xmlreader.GetValueAsInt(section, PropNames.VizType, Defaults.VizType);
+
+        WASAPIDevice =
+          xmlreader.GetValueAsString(section, PropNames.WASAPIDevice, Defaults.WASAPIDevice);
+
+        WASAPIEvent =
+          xmlreader.GetValueAsBool(section, PropNames.WASAPIEvent, Defaults.WASAPIEvent);
+
+        WASAPIExclusive =
+          xmlreader.GetValueAsBool(section, PropNames.WASAPIExclusive, Defaults.WASAPIExclusive);
+
+        WASAPISpeakerLayout = (SpeakerLayout)
+          xmlreader.GetValueAsInt(section, PropNames.WASAPISpeakerLayout, Defaults.WASAPISpeakerLayout);
 
         WMPVizClsId =
           xmlreader.GetValueAsString(section, PropNames.WMPVizClsId, Defaults.WMPVizClsId);
@@ -445,7 +492,10 @@ namespace MediaPortal.Player.PureAudio
         xmlWriter.SetValue(section, PropNames.GapLength, GapLength);
         xmlWriter.SetValue(section, PropNames.ForceMaxASIORate, ForceMaxASIORate);
         xmlWriter.SetValue(section, PropNames.ForceMinASIORate, ForceMinASIORate);
+        xmlWriter.SetValue(section, PropNames.ForceMaxWASAPIRate, ForceMaxWASAPIRate);
+        xmlWriter.SetValue(section, PropNames.ForceMinWASAPIRate, ForceMinWASAPIRate);
         xmlWriter.SetValue(section, PropNames.MonoUpMix, (int)MonoUpMix);
+        xmlWriter.SetValue(section, PropNames.OutputMode, (int)OutputMode);
         xmlWriter.SetValue(section, PropNames.PlayBackBufferSize, PlayBackBufferSize);
         xmlWriter.SetValue(section, PropNames.QuadraphonicUpMix, (int)QuadraphonicUpMix);
         xmlWriter.SetValue(section, PropNames.SeekIncrement, SeekIncrement);
@@ -456,7 +506,6 @@ namespace MediaPortal.Player.PureAudio
         xmlWriter.SetValue(section, PropNames.SonVizWaveSkipCount, SonVizWaveSkipCount);
         xmlWriter.SetValue(section, PropNames.DirectSoundDevice, DirectSoundDevice);
         xmlWriter.SetValue(section, PropNames.StereoUpMix, (int)StereoUpMix);
-        xmlWriter.SetValueAsBool(section, PropNames.UseASIO, UseASIO);
         xmlWriter.SetValueAsBool(section, PropNames.UseForCDDA, UseForCDDA);
         xmlWriter.SetValueAsBool(section, PropNames.UseForWebStream, UseForWebStream);
         xmlWriter.SetValueAsBool(section, PropNames.UseForLastFMWebStream, UseForLastFMWebStream);
@@ -467,9 +516,17 @@ namespace MediaPortal.Player.PureAudio
         xmlWriter.SetValueAsBool(section, PropNames.UseVizAGC, UseVizAGC);
         xmlWriter.SetValue(section, PropNames.VizLatencyCorrection, VizLatencyCorrection);
         xmlWriter.SetValue(section, PropNames.VizType, VizType);
+        xmlWriter.SetValue(section, PropNames.WASAPIDevice, WASAPIDevice);
+        xmlWriter.SetValueAsBool(section, PropNames.WASAPIEvent, WASAPIEvent);
+        xmlWriter.SetValueAsBool(section, PropNames.WASAPIExclusive, WASAPIExclusive);
+        xmlWriter.SetValue(section, PropNames.WASAPISpeakerLayout, (int)WASAPISpeakerLayout);
         xmlWriter.SetValue(section, PropNames.WMPVizClsId, WMPVizClsId);
         xmlWriter.SetValue(section, PropNames.WMPVizPreset, WMPVizPreset);
         xmlWriter.SetValue(section, PropNames.WMPVizFps, WMPVizFps);
+
+        // For backwards compatibility
+        xmlWriter.SetValueAsBool(section, PropNames.UseASIO, false);
+
         //xmlWriter.SetValue(section, PropNames.WMPVizFFTFallBack, WMPVizFFTFallBack);
         //xmlWriter.SetValueAsBool(section, PropNames.WMPVizFFTHalf, WMPVizFFTHalf);
         //xmlWriter.SetValue(section, PropNames.WMPVizFFTMinimum, WMPVizFFTMinimum);
