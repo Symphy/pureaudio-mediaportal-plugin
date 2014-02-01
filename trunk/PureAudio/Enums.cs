@@ -93,6 +93,13 @@ namespace MediaPortal.Player.PureAudio
 		SevenDotOne = 1,
 	}
 
+  public enum FiveDotZeroUpMix
+  {
+    None = 0,
+    FiveDotOne = 1,
+    SevenDotOne = 2,
+  }
+
   public enum QuadraphonicUpMix
   {
     None = 0,

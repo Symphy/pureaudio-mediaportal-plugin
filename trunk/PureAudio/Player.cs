@@ -25,14 +25,11 @@ using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 using System.Drawing;
-using System.Timers;
 using System.Windows.Forms;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Cd;
 using MediaPortal.Configuration;
 using MediaPortal.GUI.Library;
-using MediaPortal.Player.DSP;
-using MediaPortal.Player.PureAudio;
 using MediaPortal.Services;
 using Action = MediaPortal.GUI.Library.Action;
 

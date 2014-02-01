@@ -14,15 +14,15 @@ rem //
 rem // You should have received a copy of the GNU General Public License
 rem // along with MediaPortal. If not, see <http://www.gnu.org/licenses/>.
 
-rem -------------------------------------------------------------------------------------------------------
-rem Usage: call as project post-build event: $(ProjectDir)PostBuild.bat $(SolutionDir) $(ConfigurationName)
+rem -------------------------------------------------------------------------------------------------------------
+rem Usage: call as project post-build event: "$(ProjectDir)PostBuild.bat" "$(SolutionDir)" "$(ConfigurationName)"
 rem Remark: Visual Studio must be run as administrator to allow the files to be copied.
-rem -------------------------------------------------------------------------------------------------------
+rem -------------------------------------------------------------------------------------------------------------
 
 set MPDIR=
-call "%1\Dependencies\SetDirectories.bat"
+call "%~1\Dependencies\SetDirectories.bat"
 
-copy "%1\Bin\%2\PureAudio.dll" "%MPDIR%\plugins\ExternalPlayers"
-copy "%1\Bin\%2\ASIO.Interop.dll" "%MPDIR%\plugins\ExternalPlayers"
-copy "%1\Bin\%2\WMPEffects.Interop.dll" "%MPDIR%\plugins\ExternalPlayers"
+copy "%~1\Bin\%2\PureAudio.dll" "%MPDIR%\plugins\ExternalPlayers"
+copy "%~1\Bin\%2\ASIO.Interop.dll" "%MPDIR%\plugins\ExternalPlayers"
+copy "%~1\Bin\%2\WMPEffects.Interop.dll" "%MPDIR%\plugins\ExternalPlayers"
 

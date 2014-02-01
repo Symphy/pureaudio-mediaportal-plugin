@@ -19,9 +19,7 @@
 #endregion
 
 using System;
-using System.Threading;
 using Un4seen.Bass;
-using Un4seen.BassAsio;
 using Un4seen.BassWasapi;
 using MediaPortal.Player.PureAudio.Asio;
 
@@ -29,69 +27,6 @@ namespace MediaPortal.Player.PureAudio
 {
 	public partial class BASSPlayer
 	{
-		private class Command
-		{
-			private Delegate _method;
-			private object _arg1 = null;
-			private object _arg2 = null;
-			private object _result = null;
-			ManualResetEvent _event = new ManualResetEvent(false);
-
-			public WaitHandle WaitHandle
-			{
-				get
-				{
-					return _event;
-				}
-			}
-
-			public bool Result
-			{
-				get
-				{
-					if (_result == null)
-						return false;
-					else
-						return (bool)_result;
-				}
-			}
-
-			public Command(Delegate method)
-			{
-				_method = method;
-			}
-
-			public Command(Delegate method, object arg)
-			{
-				_method = method;
-				_arg1 = arg;
-			}
-
-			public Command(Delegate method, object arg1, object arg2)
-			{
-				_method = method;
-				_arg1 = arg1;
-				_arg2 = arg2;
-			}
-
-			internal void Invoke()
-			{
-				if (_arg2 != null)
-				{
-					_result = _method.DynamicInvoke(new object[2] { _arg1, _arg2 });
-				}
-				else if (_arg1 != null)
-				{
-					_result = _method.DynamicInvoke(new object[1] { _arg1 });
-				}
-				else
-				{
-					_result = _method.DynamicInvoke(null);
-				}
-				_event.Set();
-			}
-		}
-
     public class WASAPIDeviceInfo : DeviceInfo
     {
       private int _Channels = 8;
@@ -239,31 +174,5 @@ namespace MediaPortal.Player.PureAudio
           Latency);
       }
     }
-
-		public struct CurrentStreamInfo
-		{
-			public BASS_CHANNELINFO BASSChannelInfo;
-			public bool PassThrough;
-		}
-	}
-
-	public struct FileType
-	{
-		public FileMainType FileMainType;
-		public FileSubType FileSubType;
-	}
-
-	public struct ReplayGainInfo
-	{
-		public float? AlbumGain;
-		public float? AlbumPeak;
-		public float? TrackGain;
-		public float? TrackPeak;
-	}
-
-	public struct LastErrorInfo
-	{
-		public ErrorCode ErrorCode;
-		public String Message;
 	}
 }

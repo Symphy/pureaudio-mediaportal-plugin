@@ -21,7 +21,6 @@
 using System;
 using System.Threading;
 using Un4seen.Bass.Misc;
-using MediaPortal.GUI.Library;
 
 namespace MediaPortal.Player.PureAudio
 {

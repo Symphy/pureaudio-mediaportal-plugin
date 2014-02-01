@@ -38,7 +38,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyCopyrightAttribute("Copyright © 2014 Team MediaPortal")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
-[assembly:AssemblyVersionAttribute("0.2.7.1")];
+[assembly:AssemblyVersionAttribute("0.2.7.2")];
 [assembly:ComVisible(false)];
 [assembly:CLSCompliantAttribute(true)];
 [assembly:SecurityPermission(SecurityAction::RequestMinimum, UnmanagedCode = true)];

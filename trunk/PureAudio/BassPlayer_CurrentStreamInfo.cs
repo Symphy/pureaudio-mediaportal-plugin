@@ -18,33 +18,16 @@
 
 #endregion
 
-using System;
+using Un4seen.Bass;
 
 namespace MediaPortal.Player.PureAudio
 {
-	public partial class PureAudioPlugin : IExternalPlayer
+	public partial class BASSPlayer
 	{
-		public class WebStreamInfo
+		public struct CurrentStreamInfo
 		{
-			public string Genre = null;
-			public string Title = null;
-			public string Album = null;
-			public string Artist = null;
-
-			public void Reset()
-			{
-				Genre = null;
-				Title = null;
-				Album = null;
-				Artist = null;
-			}
-		}
-		public enum PlayState
-		{
-			Init,
-			Playing,
-			Paused,
-			Ended
+			public BASS_CHANNELINFO BASSChannelInfo;
+			public bool PassThrough;
 		}
 	}
 }
