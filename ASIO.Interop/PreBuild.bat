@@ -15,8 +15,8 @@ rem // You should have received a copy of the GNU General Public License
 rem // along with MediaPortal. If not, see <http://www.gnu.org/licenses/>.
 
 set ASIOSDKDIR=
-call "%1\Dependencies\SetDirectories.bat"
+call "%~1\Dependencies\SetDirectories.bat"
 
-copy "%ASIOSDKDIR%\common\asio.h" "%1\Dependencies"
+copy "%ASIOSDKDIR%\common\asio.h" "%~1\Dependencies"
 
 

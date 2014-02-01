@@ -18,12 +18,10 @@
 
 #endregion
 
-using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using MediaPortal.Configuration;
-using MediaPortal.GUI.Library;
 
 namespace MediaPortal.Player.PureAudio
 {
@@ -43,6 +41,7 @@ namespace MediaPortal.Player.PureAudio
       public const string DoSoftStop = "DoSoftStop";
       public const string Extensions = "Extensions";
       public const string FiveDotOneUpMix = "FiveDotOneUpMix";
+      public const string FiveDotZeroUpMix = "FiveDotZeroUpMix";
       public const string ForceMaxASIORate = "ForceMaxASIORate";
       public const string ForceMinASIORate = "ForceMinASIORate";
       public const string ForceMaxWASAPIRate = "ForceMaxWASAPIRate";
@@ -97,6 +96,7 @@ namespace MediaPortal.Player.PureAudio
       public const string DirectSoundDevice = "Default Sound Device";
       public const bool DoSoftStop = true;
       public const int FiveDotOneUpMix = (int)MediaPortal.Player.PureAudio.FiveDotOneUpMix.None;
+      public const int FiveDotZeroUpMix = (int)MediaPortal.Player.PureAudio.FiveDotZeroUpMix.FiveDotOne;
       public const int ForceMaxASIORate = 0; // kHz
       public const int ForceMinASIORate = 0; // kHz
       public const int ForceMaxWASAPIRate = 0; // kHz
@@ -188,6 +188,7 @@ namespace MediaPortal.Player.PureAudio
     public bool DoSoftStop { get; set; }
     public string Extensions { get; set; }
     public FiveDotOneUpMix FiveDotOneUpMix { get; set; }
+    public FiveDotZeroUpMix FiveDotZeroUpMix { get; set; }
     public int ForceMaxASIORate { get; set; }
     public int ForceMinASIORate { get; set; }
     public int ForceMaxWASAPIRate { get; set; }
@@ -250,6 +251,7 @@ namespace MediaPortal.Player.PureAudio
       DoSoftStop = Defaults.DoSoftStop;
       Extensions = Defaults.Extensions;
       FiveDotOneUpMix = (FiveDotOneUpMix)Defaults.FiveDotOneUpMix;
+      FiveDotZeroUpMix = (FiveDotZeroUpMix)Defaults.FiveDotZeroUpMix;
       ForceMaxASIORate = Defaults.ForceMaxASIORate;
       ForceMinASIORate = Defaults.ForceMinASIORate;
       ForceMaxWASAPIRate = Defaults.ForceMaxWASAPIRate;
@@ -321,6 +323,9 @@ namespace MediaPortal.Player.PureAudio
 
         FiveDotOneUpMix = (FiveDotOneUpMix)
           xmlreader.GetValueAsInt(section, PropNames.FiveDotOneUpMix, Defaults.FiveDotOneUpMix);
+
+        FiveDotZeroUpMix = (FiveDotZeroUpMix)
+          xmlreader.GetValueAsInt(section, PropNames.FiveDotZeroUpMix, Defaults.FiveDotZeroUpMix);
 
         GapLength =
           xmlreader.GetValueAsInt(section, PropNames.GapLength, Defaults.GapLength);
@@ -489,6 +494,7 @@ namespace MediaPortal.Player.PureAudio
         xmlWriter.SetValueAsBool(section, PropNames.DoSoftStop, DoSoftStop);
         xmlWriter.SetValue(section, PropNames.Extensions, Extensions);
         xmlWriter.SetValue(section, PropNames.FiveDotOneUpMix, (int)FiveDotOneUpMix);
+        xmlWriter.SetValue(section, PropNames.FiveDotZeroUpMix, (int)FiveDotZeroUpMix);
         xmlWriter.SetValue(section, PropNames.GapLength, GapLength);
         xmlWriter.SetValue(section, PropNames.ForceMaxASIORate, ForceMaxASIORate);
         xmlWriter.SetValue(section, PropNames.ForceMinASIORate, ForceMinASIORate);

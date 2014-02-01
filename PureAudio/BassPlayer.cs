@@ -28,7 +28,6 @@ using System.Windows.Forms;
 using Un4seen.Bass;
 using Un4seen.BassWasapi;
 using Un4seen.Bass.AddOn.Cd;
-using Un4seen.Bass.AddOn.Fx;
 using Un4seen.Bass.AddOn.Mix;
 using Un4seen.Bass.AddOn.Vst;
 using Un4seen.Bass.AddOn.WaDsp;
@@ -76,6 +75,7 @@ namespace MediaPortal.Player.PureAudio
     private STREAMPROC _StreamWriteProcDelegate = null;
     private STREAMPROC _VizRawStreamWriteProcDelegate = null;
     private STREAMPROC _DSOutputStreamWriteProcDelegate = null;
+    private WASAPIPROC _WasapiProcDelegate = null;
 
     private int _CurrentStream = 0;
     private int _DataStream = 0;
@@ -120,7 +120,6 @@ namespace MediaPortal.Player.PureAudio
     private AsioEngine _ASIOEngine = null;
 
     private int _WASAPIDeviceNumber = -1;
-    private BassWasapiHandler _WASAPIHandler = null;
 
     private AudioRingBuffer _Buffer = null;
     private int _BufferUpdateThreshold = 90;
@@ -264,6 +263,7 @@ namespace MediaPortal.Player.PureAudio
       _VizRawStreamWriteProcDelegate = new STREAMPROC(VizRawStreamWriteProc);
       _DSOutputStreamWriteProcDelegate = new STREAMPROC(DSOutputStreamWriteProc);
       _MetaTagSyncProcDelegate = new SYNCPROC(StreamMetaTagSyncProc);
+      _WasapiProcDelegate = new WASAPIPROC(WasApiProc);
 
       // Make sure threads are stopped in case Dispose does not get called.
       Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
@@ -432,8 +432,7 @@ namespace MediaPortal.Player.PureAudio
     {
       StopThreads();
 
-      if (_WASAPIHandler != null)
-        _WASAPIHandler.Dispose();
+      BassWasapi.BASS_WASAPI_Free();
 
       if (_ASIOEngine != null)
         _ASIOEngine.Dispose();
@@ -966,7 +965,7 @@ namespace MediaPortal.Player.PureAudio
         case OutputMode.WASAPI:
           {
             Log.Debug("Stopping session: releasing WASAPI device...");
-            _WASAPIHandler.Dispose();
+            BassWasapi.BASS_WASAPI_Free();
             break;
           }
         case OutputMode.ASIO:
@@ -1103,241 +1102,6 @@ namespace MediaPortal.Player.PureAudio
       _GapBytesLeft = 0;
     }
 
-    private float[,] CreateMixingMatrix(int inputChannels)
-    {
-      Log.Debug("Creating mixing matrix...");
-      switch (inputChannels)
-      {
-        case 1:
-          return CreateMonoUpMixMatrix();
-        case 2:
-          return CreateStereoUpMixMatrix();
-        case 4:
-          return CreateQuadraphonicUpMixMatrix();
-        case 6:
-          return CreateFiveDotOneUpMixMatrix();
-        default:
-          return null;
-      }
-    }
-
-    private float[,] CreateQuadraphonicUpMixMatrix()
-    {
-      float[,] mixMatrix = null;
-
-      switch (_Profile.QuadraphonicUpMix)
-      {
-        case QuadraphonicUpMix.None:
-          break;
-
-        case QuadraphonicUpMix.FiveDotOne:
-          // Channel 1: left front out = left front in
-          // Channel 2: right front out = right front in
-          // Channel 3: centre out = left/right front in
-          // Channel 4: LFE out = left/right front in
-          // Channel 5: left surround out = left surround in
-          // Channel 6: right surround out = right surround in
-          mixMatrix = new float[6, 4];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 1] = 1;
-          mixMatrix[2, 0] = 0.5f;
-          mixMatrix[2, 1] = 0.5f;
-          mixMatrix[3, 0] = 0.5f;
-          mixMatrix[3, 1] = 0.5f;
-          mixMatrix[4, 2] = 1;
-          mixMatrix[5, 3] = 1;
-
-          break;
-
-        case QuadraphonicUpMix.SevenDotOne:
-          // Channel 1: left front out = left front in
-          // Channel 2: right front out = right front in
-          // Channel 3: center out = left/right front in
-          // Channel 4: LFE out = left/right front in
-          // Channel 5: left surround out = left surround in
-          // Channel 6: right surround out = right surround in
-          // Channel 7: left back out = left surround in
-          // Channel 8: right back out = right surround in
-          mixMatrix = new float[8, 4];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 1] = 1;
-          mixMatrix[2, 0] = 0.5f;
-          mixMatrix[2, 1] = 0.5f;
-          mixMatrix[3, 0] = 0.5f;
-          mixMatrix[3, 1] = 0.5f;
-          mixMatrix[4, 2] = 1;
-          mixMatrix[5, 3] = 1;
-          mixMatrix[6, 2] = 1;
-          mixMatrix[7, 3] = 1;
-
-          break;
-      }
-      return mixMatrix;
-    }
-
-    private float[,] CreateFiveDotOneUpMixMatrix()
-    {
-      float[,] mixMatrix = null;
-      switch (_Profile.FiveDotOneUpMix)
-      {
-        case FiveDotOneUpMix.None:
-          break;
-
-        case FiveDotOneUpMix.SevenDotOne:
-          mixMatrix = new float[8, 6];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 1] = 1;
-          mixMatrix[2, 2] = 1;
-          mixMatrix[3, 3] = 1;
-          mixMatrix[4, 4] = 1;
-          mixMatrix[5, 5] = 1;
-          mixMatrix[6, 4] = 1;
-          mixMatrix[7, 5] = 1;
-
-          break;
-      }
-      return mixMatrix;
-    }
-
-    private float[,] CreateMonoUpMixMatrix()
-    {
-      float[,] mixMatrix = null;
-
-      switch (_Profile.MonoUpMix)
-      {
-        case MonoUpMix.None:
-          break;
-
-        case MonoUpMix.Stereo:
-          // Channel 1: left front out = in
-          // Channel 2: right front out = in
-          mixMatrix = new float[2, 1];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 0] = 1;
-
-          break;
-
-        case MonoUpMix.QuadraphonicPhonic:
-          // Channel 1: left front out = in
-          // Channel 2: right front out = in
-          // Channel 3: left rear out = in
-          // Channel 4: right rear out = in
-          mixMatrix = new float[4, 1];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 0] = 1;
-          mixMatrix[2, 0] = 1;
-          mixMatrix[3, 0] = 1;
-
-          break;
-
-        case MonoUpMix.FiveDotOne:
-          // Channel 1: left front out = in
-          // Channel 2: right front out = in
-          // Channel 3: centre out = in
-          // Channel 4: LFE out = in
-          // Channel 5: left rear/side out = in
-          // Channel 6: right rear/side out = in
-          mixMatrix = new float[6, 1];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 0] = 1;
-          mixMatrix[2, 0] = 1;
-          mixMatrix[3, 0] = 1;
-          mixMatrix[4, 0] = 1;
-          mixMatrix[5, 0] = 1;
-
-          break;
-
-        case MonoUpMix.SevenDotOne:
-          // Channel 1: left front out = in
-          // Channel 2: right front out = in
-          // Channel 3: centre out = in
-          // Channel 4: LFE out = in
-          // Channel 5: left rear/side out = in
-          // Channel 6: right rear/side out = in
-          // Channel 7: left-rear center out = in
-          // Channel 8: right-rear center out = in
-          mixMatrix = new float[8, 1];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 0] = 1;
-          mixMatrix[2, 0] = 1;
-          mixMatrix[3, 0] = 1;
-          mixMatrix[4, 0] = 1;
-          mixMatrix[5, 0] = 1;
-          mixMatrix[6, 0] = 1;
-          mixMatrix[7, 0] = 1;
-
-          break;
-      }
-      return mixMatrix;
-    }
-
-    private float[,] CreateStereoUpMixMatrix()
-    {
-      float[,] mixMatrix = null;
-
-      switch (_Profile.StereoUpMix)
-      {
-        case StereoUpMix.None:
-          break;
-
-        case StereoUpMix.QuadraphonicPhonic:
-          // Channel 1: left front out = left in
-          // Channel 2: right front out = right in
-          // Channel 3: left rear out = left in
-          // Channel 4: right rear out = right in
-          mixMatrix = new float[4, 2];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 1] = 1;
-          mixMatrix[2, 0] = 1;
-          mixMatrix[3, 1] = 1;
-
-          break;
-
-        case StereoUpMix.FiveDotOne:
-          // Channel 1: left front out = left in
-          // Channel 2: right front out = right in
-          // Channel 3: centre out = left/right in
-          // Channel 4: LFE out = left/right in
-          // Channel 5: left rear/side out = left in
-          // Channel 6: right rear/side out = right in
-          mixMatrix = new float[6, 2];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 1] = 1;
-          mixMatrix[2, 0] = 0.5f;
-          mixMatrix[2, 1] = 0.5f;
-          mixMatrix[3, 0] = 0.5f;
-          mixMatrix[3, 1] = 0.5f;
-          mixMatrix[4, 0] = 1;
-          mixMatrix[5, 1] = 1;
-
-          break;
-
-        case StereoUpMix.SevenDotOne:
-          // Channel 1: left front out = left in
-          // Channel 2: right front out = right in
-          // Channel 3: centre out = left/right in
-          // Channel 4: LFE out = left/right in
-          // Channel 5: left rear/side out = left in
-          // Channel 6: right rear/side out = right in
-          // Channel 7: left-rear center out = left in
-          // Channel 8: right-rear center out = right in
-          mixMatrix = new float[8, 2];
-          mixMatrix[0, 0] = 1;
-          mixMatrix[1, 1] = 1;
-          mixMatrix[2, 0] = 0.5f;
-          mixMatrix[2, 1] = 0.5f;
-          mixMatrix[3, 0] = 0.5f;
-          mixMatrix[3, 1] = 0.5f;
-          mixMatrix[4, 0] = 1;
-          mixMatrix[5, 1] = 1;
-          mixMatrix[6, 0] = 1;
-          mixMatrix[7, 1] = 1;
-
-          break;
-      }
-      return mixMatrix;
-    }
-
     private bool PrepareDevice()
     {
       bool result = false;
@@ -1391,7 +1155,10 @@ namespace MediaPortal.Player.PureAudio
 
       if (result)
       {
-        Log.Info("Using WASAPI Device {0}", _Profile.WASAPIDevice);
+        string sharedDescr = _Profile.WASAPIExclusive ? "exclusive" : "shared";
+        string eventDescr = _Profile.WASAPIEvent ? "pull" : "push";
+
+        Log.Info("Using WASAPI Device {0}, {1}, {2}", _Profile.WASAPIDevice, sharedDescr, eventDescr);
         BASS_WASAPI_DEVICEINFO wasapiDeviceInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo(_WASAPIDeviceNumber);
 
         _DeviceInfo = new WASAPIDeviceInfo(wasapiDeviceInfo, _Profile.WASAPIExclusive, GetMinExclWASAPIRate(), GetMaxExclWASAPIRate(), GetExclWASAPIChannels());
@@ -1805,7 +1572,7 @@ namespace MediaPortal.Player.PureAudio
       if (outputChannels > inputChannels)
       {
         // Upmix
-        mixMatrix = CreateMixingMatrix(inputChannels);
+        mixMatrix = MixingMatrixHelper.CreateMixingMatrix(inputChannels, _Profile);
         if (mixMatrix != null)
           outputChannels = Math.Min(mixMatrix.GetLength(0), outputChannels);
         else
@@ -2197,28 +1964,22 @@ namespace MediaPortal.Player.PureAudio
     {
       if (_Profile.OutputMode == OutputMode.WASAPI)
       {
-        Log.Debug("Initializing WASAPI handler...");
+        Log.Debug("Initializing WASAPI device...");
 
         BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(_WASAPIOutputStream);
 
-        _WASAPIHandler = new BassWasapiHandler(_WASAPIDeviceNumber, _Profile.WASAPIExclusive, true, _Profile.WASAPIEvent, info.freq, info.chans, 0f, 0f);
-        bool result = (_WASAPIHandler != null);
+        BASSWASAPIInit flags = BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
+
+        if (_Profile.WASAPIExclusive)
+          flags |= BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE;
+
+        if (_Profile.WASAPIEvent)
+          flags |= BASSWASAPIInit.BASS_WASAPI_EVENT;
+
+        bool result = BassWasapi.BASS_WASAPI_Init(_WASAPIDeviceNumber, info.freq, info.chans, flags, 0.01f, 0f, _WasapiProcDelegate, IntPtr.Zero);
         if (!result)
-          HandleWasapiHandlerError("ctor");
-
-        if (result)
-        {
-          result = _WASAPIHandler.AddOutputSource(_WASAPIOutputStream, BASSFlag.BASS_DEFAULT);
-          if (!result)
-            HandleWasapiHandlerError("AddOutputSource");
-        }
-
-        if (result)
-        {
-          result = _WASAPIHandler.Init();
-          if (!result)
-            HandleWasapiHandlerError("Init");
-        }
+          HandleWasapiHandlerError("BASS_WASAPI_Init");
+        
         return result;
       }
       else
@@ -2549,9 +2310,9 @@ namespace MediaPortal.Player.PureAudio
           {
             Log.Debug("Starting WASAPI...");
 
-            result = _WASAPIHandler.Start();
+            result = BassWasapi.BASS_WASAPI_Start();
             if (!result)
-              HandleWasapiHandlerError("Start");
+              HandleWasapiHandlerError("BASS_WASAPI_Start");
 
             break;
           }
@@ -2593,10 +2354,10 @@ namespace MediaPortal.Player.PureAudio
           {
             Log.Debug("Stopping WASAPI...");
 
-            result = _WASAPIHandler.Stop();
+            result = BassWasapi.BASS_WASAPI_Stop(false);
             if (!result)
-              HandleWasapiHandlerError("Stop");
-
+              HandleWasapiHandlerError("BASS_WASAPI_Stop");
+            
             break;
           }
         case OutputMode.ASIO:
@@ -2924,6 +2685,13 @@ namespace MediaPortal.Player.PureAudio
       _LastError.ErrorCode = errorCode;
       _LastError.Message = String.Format(message, args);
       Log.Error(_LastError.Message);
+    }
+    
+    private int WasApiProc(IntPtr buffer, int length, IntPtr user)
+    {
+      int read = Bass.BASS_ChannelGetData(_WASAPIOutputStream, buffer, length);
+      // ignore errors (read = -1)
+      return read > 0 ? read : 0;
     }
   }
 }

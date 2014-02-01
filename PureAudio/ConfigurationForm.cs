@@ -195,6 +195,9 @@ namespace MediaPortal.Player.PureAudio
     private CheckBox chkWASAPIEvent;
     private UserInterface.Controls.MPLabel lblWASAPISpeakerLayout;
     private ComboBox cboWASAPISpeakerLayout;
+    private GroupBox groupBox22;
+    private ComboBox cboFiveDotZeroUpMix;
+    private UserInterface.Controls.MPLabel mpLabel28;
     /// <summary>
     /// Required designer variable.
     /// </summary>
@@ -230,27 +233,27 @@ namespace MediaPortal.Player.PureAudio
     /// </summary>
     private void InitializeComponent()
     {
-      System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Output Device");
-      System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Upmixing");
-      System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Extensions");
-      System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("General Settings", new System.Windows.Forms.TreeNode[] {
-            treeNode2,
-            treeNode3});
-      System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Visualizations");
-      System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("DSP\'s");
-      System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("ASIO");
-      System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("WaveOut");
-      System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("WASAPI");
-      System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Advanced Settings", new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode8,
-            treeNode9});
-      System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("PureAudio Plugin", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode4,
-            treeNode5,
-            treeNode6,
-            treeNode10});
+      System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Output Device");
+      System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Upmixing");
+      System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("Extensions");
+      System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("General Settings", new System.Windows.Forms.TreeNode[] {
+            treeNode24,
+            treeNode25});
+      System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("Visualizations");
+      System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("DSP\'s");
+      System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("ASIO");
+      System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("WaveOut");
+      System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("WASAPI");
+      System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("Advanced Settings", new System.Windows.Forms.TreeNode[] {
+            treeNode29,
+            treeNode30,
+            treeNode31});
+      System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("PureAudio Plugin", new System.Windows.Forms.TreeNode[] {
+            treeNode23,
+            treeNode26,
+            treeNode27,
+            treeNode28,
+            treeNode32});
       this.btnOk = new MediaPortal.UserInterface.Controls.MPButton();
       this.btnCancel = new MediaPortal.UserInterface.Controls.MPButton();
       this.mpLabel4 = new MediaPortal.UserInterface.Controls.MPLabel();
@@ -294,6 +297,8 @@ namespace MediaPortal.Player.PureAudio
       this.tabPageDevice = new System.Windows.Forms.TabPage();
       this.groupBox3 = new System.Windows.Forms.GroupBox();
       this.pnlDevice = new System.Windows.Forms.Panel();
+      this.lblWASAPISpeakerLayout = new MediaPortal.UserInterface.Controls.MPLabel();
+      this.cboWASAPISpeakerLayout = new System.Windows.Forms.ComboBox();
       this.chkWASAPIExclusive = new System.Windows.Forms.CheckBox();
       this.btnWASAPIControlPanel = new MediaPortal.UserInterface.Controls.MPButton();
       this.cboWASAPIDevice = new System.Windows.Forms.ComboBox();
@@ -403,8 +408,9 @@ namespace MediaPortal.Player.PureAudio
       this.tvwMenu = new System.Windows.Forms.TreeView();
       this.ctlHeader = new MediaPortal.UserInterface.Controls.MPGradientLabel();
       this.beveledLine1 = new MediaPortal.UserInterface.Controls.MPBeveledLine();
-      this.lblWASAPISpeakerLayout = new MediaPortal.UserInterface.Controls.MPLabel();
-      this.cboWASAPISpeakerLayout = new System.Windows.Forms.ComboBox();
+      this.groupBox22 = new System.Windows.Forms.GroupBox();
+      this.cboFiveDotZeroUpMix = new System.Windows.Forms.ComboBox();
+      this.mpLabel28 = new MediaPortal.UserInterface.Controls.MPLabel();
       ((System.ComponentModel.ISupportInitialize)(this.trackBarFileBufferSize)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.trackBarPlayBackBufferSize)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.trackBarSeekIncrement)).BeginInit();
@@ -450,6 +456,7 @@ namespace MediaPortal.Player.PureAudio
       this.tabPageWASAPI.SuspendLayout();
       this.groupBox21.SuspendLayout();
       this.groupBox13.SuspendLayout();
+      this.groupBox22.SuspendLayout();
       this.SuspendLayout();
       // 
       // btnOk
@@ -881,6 +888,24 @@ namespace MediaPortal.Player.PureAudio
       this.pnlDevice.Size = new System.Drawing.Size(397, 283);
       this.pnlDevice.TabIndex = 11;
       // 
+      // lblWASAPISpeakerLayout
+      // 
+      this.lblWASAPISpeakerLayout.Location = new System.Drawing.Point(52, 242);
+      this.lblWASAPISpeakerLayout.Name = "lblWASAPISpeakerLayout";
+      this.lblWASAPISpeakerLayout.Size = new System.Drawing.Size(121, 18);
+      this.lblWASAPISpeakerLayout.TabIndex = 43;
+      this.lblWASAPISpeakerLayout.Text = "Speaker configuration:";
+      // 
+      // cboWASAPISpeakerLayout
+      // 
+      this.cboWASAPISpeakerLayout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cboWASAPISpeakerLayout.FormattingEnabled = true;
+      this.cboWASAPISpeakerLayout.Location = new System.Drawing.Point(202, 239);
+      this.cboWASAPISpeakerLayout.Name = "cboWASAPISpeakerLayout";
+      this.cboWASAPISpeakerLayout.Size = new System.Drawing.Size(98, 21);
+      this.cboWASAPISpeakerLayout.TabIndex = 41;
+      this.cboWASAPISpeakerLayout.SelectedIndexChanged += new System.EventHandler(this.cboWASAPISpeakerLayout_SelectedIndexChanged);
+      // 
       // chkWASAPIExclusive
       // 
       this.chkWASAPIExclusive.AutoSize = true;
@@ -1076,6 +1101,7 @@ namespace MediaPortal.Player.PureAudio
       // 
       // tabPageUpmixing
       // 
+      this.tabPageUpmixing.Controls.Add(this.groupBox22);
       this.tabPageUpmixing.Controls.Add(this.groupBox20);
       this.tabPageUpmixing.Controls.Add(this.groupBox15);
       this.tabPageUpmixing.Controls.Add(this.groupBox10);
@@ -1150,7 +1176,7 @@ namespace MediaPortal.Player.PureAudio
       // 
       this.groupBox10.Controls.Add(this.cboFiveDotOneUpMix);
       this.groupBox10.Controls.Add(this.mpLabel25);
-      this.groupBox10.Location = new System.Drawing.Point(3, 186);
+      this.groupBox10.Location = new System.Drawing.Point(3, 246);
       this.groupBox10.Name = "groupBox10";
       this.groupBox10.Size = new System.Drawing.Size(497, 54);
       this.groupBox10.TabIndex = 3;
@@ -1164,7 +1190,7 @@ namespace MediaPortal.Player.PureAudio
       this.cboFiveDotOneUpMix.Location = new System.Drawing.Point(92, 19);
       this.cboFiveDotOneUpMix.Name = "cboFiveDotOneUpMix";
       this.cboFiveDotOneUpMix.Size = new System.Drawing.Size(215, 21);
-      this.cboFiveDotOneUpMix.TabIndex = 4;
+      this.cboFiveDotOneUpMix.TabIndex = 5;
       this.cboFiveDotOneUpMix.SelectedIndexChanged += new System.EventHandler(this.cboFiveDotOneUpMix_SelectedIndexChanged);
       // 
       // mpLabel25
@@ -2033,30 +2059,30 @@ namespace MediaPortal.Player.PureAudio
       this.tvwMenu.HideSelection = false;
       this.tvwMenu.Location = new System.Drawing.Point(13, 13);
       this.tvwMenu.Name = "tvwMenu";
-      treeNode1.Name = "NodeDevice";
-      treeNode1.Text = "Output Device";
-      treeNode2.Name = "NodeUpmixing";
-      treeNode2.Text = "Upmixing";
-      treeNode3.Name = "NodeExtensions";
-      treeNode3.Text = "Extensions";
-      treeNode4.Name = "NodeGeneral";
-      treeNode4.Text = "General Settings";
-      treeNode5.Name = "NodeVisualizations";
-      treeNode5.Text = "Visualizations";
-      treeNode6.Name = "NodeDSP";
-      treeNode6.Text = "DSP\'s";
-      treeNode7.Name = "NodeASIO";
-      treeNode7.Text = "ASIO";
-      treeNode8.Name = "NodeWaveOut";
-      treeNode8.Text = "WaveOut";
-      treeNode9.Name = "NodeWASAPI";
-      treeNode9.Text = "WASAPI";
-      treeNode10.Name = "NodeAdvanced";
-      treeNode10.Text = "Advanced Settings";
-      treeNode11.Name = "NodeRoot";
-      treeNode11.Text = "PureAudio Plugin";
+      treeNode23.Name = "NodeDevice";
+      treeNode23.Text = "Output Device";
+      treeNode24.Name = "NodeUpmixing";
+      treeNode24.Text = "Upmixing";
+      treeNode25.Name = "NodeExtensions";
+      treeNode25.Text = "Extensions";
+      treeNode26.Name = "NodeGeneral";
+      treeNode26.Text = "General Settings";
+      treeNode27.Name = "NodeVisualizations";
+      treeNode27.Text = "Visualizations";
+      treeNode28.Name = "NodeDSP";
+      treeNode28.Text = "DSP\'s";
+      treeNode29.Name = "NodeASIO";
+      treeNode29.Text = "ASIO";
+      treeNode30.Name = "NodeWaveOut";
+      treeNode30.Text = "WaveOut";
+      treeNode31.Name = "NodeWASAPI";
+      treeNode31.Text = "WASAPI";
+      treeNode32.Name = "NodeAdvanced";
+      treeNode32.Text = "Advanced Settings";
+      treeNode33.Name = "NodeRoot";
+      treeNode33.Text = "PureAudio Plugin";
       this.tvwMenu.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode11});
+            treeNode33});
       this.tvwMenu.Size = new System.Drawing.Size(185, 336);
       this.tvwMenu.TabIndex = 1;
       this.tvwMenu.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwMenu_AfterSelect);
@@ -2084,23 +2110,34 @@ namespace MediaPortal.Player.PureAudio
       this.beveledLine1.TabIndex = 6;
       this.beveledLine1.TabStop = false;
       // 
-      // lblWASAPISpeakerLayout
+      // groupBox22
       // 
-      this.lblWASAPISpeakerLayout.Location = new System.Drawing.Point(52, 242);
-      this.lblWASAPISpeakerLayout.Name = "lblWASAPISpeakerLayout";
-      this.lblWASAPISpeakerLayout.Size = new System.Drawing.Size(121, 18);
-      this.lblWASAPISpeakerLayout.TabIndex = 43;
-      this.lblWASAPISpeakerLayout.Text = "Speaker configuration:";
+      this.groupBox22.Controls.Add(this.cboFiveDotZeroUpMix);
+      this.groupBox22.Controls.Add(this.mpLabel28);
+      this.groupBox22.Location = new System.Drawing.Point(3, 186);
+      this.groupBox22.Name = "groupBox22";
+      this.groupBox22.Size = new System.Drawing.Size(497, 54);
+      this.groupBox22.TabIndex = 15;
+      this.groupBox22.TabStop = false;
+      this.groupBox22.Text = "Upmixing for 5.0 sources";
       // 
-      // cboWASAPISpeakerLayout
+      // cboFiveDotZeroUpMix
       // 
-      this.cboWASAPISpeakerLayout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-      this.cboWASAPISpeakerLayout.FormattingEnabled = true;
-      this.cboWASAPISpeakerLayout.Location = new System.Drawing.Point(202, 239);
-      this.cboWASAPISpeakerLayout.Name = "cboWASAPISpeakerLayout";
-      this.cboWASAPISpeakerLayout.Size = new System.Drawing.Size(98, 21);
-      this.cboWASAPISpeakerLayout.TabIndex = 41;
-      this.cboWASAPISpeakerLayout.SelectedIndexChanged += new System.EventHandler(this.cboWASAPISpeakerLayout_SelectedIndexChanged);
+      this.cboFiveDotZeroUpMix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cboFiveDotZeroUpMix.FormattingEnabled = true;
+      this.cboFiveDotZeroUpMix.Location = new System.Drawing.Point(92, 19);
+      this.cboFiveDotZeroUpMix.Name = "cboFiveDotZeroUpMix";
+      this.cboFiveDotZeroUpMix.Size = new System.Drawing.Size(215, 21);
+      this.cboFiveDotZeroUpMix.TabIndex = 4;
+      this.cboFiveDotZeroUpMix.SelectedIndexChanged += new System.EventHandler(this.cboFiveDotZeroUpMix_SelectedIndexChanged);
+      // 
+      // mpLabel28
+      // 
+      this.mpLabel28.Location = new System.Drawing.Point(6, 23);
+      this.mpLabel28.Name = "mpLabel28";
+      this.mpLabel28.Size = new System.Drawing.Size(80, 18);
+      this.mpLabel28.TabIndex = 14;
+      this.mpLabel28.Text = "Upmix to:";
       // 
       // ConfigurationForm
       // 
@@ -2185,6 +2222,7 @@ namespace MediaPortal.Player.PureAudio
       this.groupBox21.PerformLayout();
       this.groupBox13.ResumeLayout(false);
       this.groupBox13.PerformLayout();
+      this.groupBox22.ResumeLayout(false);
       this.ResumeLayout(false);
 
     }
@@ -2250,6 +2288,11 @@ namespace MediaPortal.Player.PureAudio
       cboStereoUpMix.Items.Add("7.1 Surround");
 
       // Should match MediaPortal.Player.PureAudio.FiveDotOneUpMix enum.
+      cboFiveDotZeroUpMix.Items.Add("No upmixing");
+      cboFiveDotZeroUpMix.Items.Add("5.1 Surround");
+      cboFiveDotZeroUpMix.Items.Add("7.1 Surround");
+
+      // Should match MediaPortal.Player.PureAudio.FiveDotOneUpMix enum.
       cboFiveDotOneUpMix.Items.Add("No upmixing");
       cboFiveDotOneUpMix.Items.Add("7.1 Surround");
 
@@ -2295,6 +2338,7 @@ namespace MediaPortal.Player.PureAudio
       cboMonoUpMix.SelectedIndex = (int)_Profile.MonoUpMix;
       cboStereoUpMix.SelectedIndex = (int)_Profile.StereoUpMix;
       cboQuadraphonicUpMix.SelectedIndex = (int)_Profile.QuadraphonicUpMix;
+      cboFiveDotZeroUpMix.SelectedIndex = (int)_Profile.FiveDotZeroUpMix;
       cboFiveDotOneUpMix.SelectedIndex = (int)_Profile.FiveDotOneUpMix;
 
       if (_Profile.ForceMaxASIORate == 0)
@@ -2592,6 +2636,11 @@ namespace MediaPortal.Player.PureAudio
     private void cboStereoUpMix_SelectedIndexChanged(object sender, EventArgs e)
     {
       _Profile.StereoUpMix = (StereoUpMix)cboStereoUpMix.SelectedIndex;
+    }
+
+    private void cboFiveDotZeroUpMix_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      _Profile.FiveDotZeroUpMix = (FiveDotZeroUpMix)cboFiveDotZeroUpMix.SelectedIndex;
     }
 
     private void cboFiveDotOneUpMix_SelectedIndexChanged(object sender, EventArgs e)
