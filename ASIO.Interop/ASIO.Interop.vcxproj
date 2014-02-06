@@ -49,7 +49,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
-      <Command>"$(ProjectDir)PreBuild.bat" "$(SolutionDir)" $(Configuration)</Command>
+      <Command>"$(ProjectDir)PreBuild.bat" "$(SolutionDir)"</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -72,7 +72,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
-      <Command>"$(ProjectDir)PreBuild.bat" "$(SolutionDir)" $(Configuration)</Command>
+      <Command>"$(ProjectDir)PreBuild.bat" "$(SolutionDir)"</Command>
     </PreBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
