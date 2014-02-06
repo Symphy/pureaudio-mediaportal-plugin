@@ -1,4 +1,4 @@
-﻿using MediaPortal.GUI.Library;
+﻿using System;
 
 namespace MediaPortal.Player.PureAudio
 {

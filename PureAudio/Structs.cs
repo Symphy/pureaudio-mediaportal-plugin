@@ -22,23 +22,42 @@ using System;
 
 namespace MediaPortal.Player.PureAudio
 {
-	public struct FileType
-	{
-		public FileMainType FileMainType;
-		public FileSubType FileSubType;
-	}
+  public struct FileType
+  {
+    public FileMainType FileMainType;
+    public FileSubType FileSubType;
 
-	public struct ReplayGainInfo
-	{
-		public float? AlbumGain;
-		public float? AlbumPeak;
-		public float? TrackGain;
-		public float? TrackPeak;
-	}
+    public override string ToString()
+    {
+      return String.Format("{0}/{1}", FileMainType, FileSubType);
+    }
+  }
 
-	public struct LastErrorInfo
-	{
-		public ErrorCode ErrorCode;
-		public String Message;
-	}
+  public struct ReplayGainInfo
+  {
+    public float? AlbumGain;
+    public float? AlbumPeak;
+    public float? TrackGain;
+    public float? TrackPeak;
+
+    public override string ToString()
+    {
+      return String.Format("Track Gain={0}dB, Track Peak={1}, Album Gain={2}dB, Album Peak={3}",
+        TrackGain,
+        TrackPeak,
+        AlbumGain,
+        AlbumPeak);
+    }
+  }
+
+  public struct LastErrorInfo
+  {
+    public ErrorCode ErrorCode;
+    public String Message;
+
+    public override string ToString()
+    {
+      return String.Format("{0} {1}", ErrorCode, Message);
+    }
+  }
 }

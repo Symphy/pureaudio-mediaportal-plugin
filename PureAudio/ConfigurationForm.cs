@@ -37,7 +37,7 @@ namespace MediaPortal.Player.PureAudio
   /// </summary>
   public class ConfigurationForm : System.Windows.Forms.Form
   {
-    private PureAudioPlugin _player = new PureAudioPlugin();
+    private PureAudioPlugin _pureAudioPlugin;
     private ConfigProfile _Profile = new ConfigProfile();
     private AsioEngine _asioEngine = new AsioEngine();
 
@@ -205,9 +205,15 @@ namespace MediaPortal.Player.PureAudio
 
     public ConfigurationForm()
     {
-      //
       // Required for Windows Form Designer support
-      //
+      InitializeComponent();
+    }
+
+    public ConfigurationForm(PureAudioPlugin plugin)
+    {
+      _pureAudioPlugin = plugin;
+
+      // Required for Windows Form Designer support
       InitializeComponent();
     }
 
@@ -2423,10 +2429,13 @@ namespace MediaPortal.Player.PureAudio
 
       DisplayExtList();
 
-      lblPlayerName.Text = _player.PlayerName;
-      lblDescription.Text = _player.Description();
-      lblVersion.Text = _player.VersionNumber;
-      lblAuthorName.Text = _player.AuthorName;
+      if (_pureAudioPlugin != null)
+      {
+        lblPlayerName.Text = _pureAudioPlugin.PlayerName;
+        lblDescription.Text = _pureAudioPlugin.Description();
+        lblVersion.Text = _pureAudioPlugin.VersionNumber;
+        lblAuthorName.Text = _pureAudioPlugin.AuthorName;
+      }
 
       cboWMPVisualizations.Items.Add(new InstalledEffectInfo("None"));
       InstalledEffect[] installedEffects = WMPEffect.InstalledEffects;
@@ -2786,7 +2795,6 @@ namespace MediaPortal.Player.PureAudio
 
     private void ConfigurationForm_FormClosed(object sender, FormClosedEventArgs e)
     {
-      _player.RealDispose();
       _asioEngine.Dispose();
     }
 

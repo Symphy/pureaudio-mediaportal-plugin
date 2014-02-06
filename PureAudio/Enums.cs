@@ -31,14 +31,6 @@ namespace MediaPortal.Player.PureAudio
 		DTS14Bit
 	}
 
-	public enum BassDSPDynAmpPreset
-	{
-		None = 0,
-		Soft = 1,
-		Medium = 2,
-		Hard = 3
-	}
-
 	public enum PlayState
 	{
 		Buffering,

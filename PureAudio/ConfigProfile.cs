@@ -53,10 +53,6 @@ namespace MediaPortal.Player.PureAudio
       public const string QuadraphonicUpMix = "QuadraphonicUpMix";
       public const string SeekIncrement = "SeekIncrement";
       public const string SoftStopDuration = "SoftStopDuration";
-      public const string SonVizFFTAmp = "SonVizFFTAmp";
-      public const string SonVizFFTSkipCount = "SonVizFFTSkipCount";
-      public const string SonVizSlowFade = "SonVizSlowFade";
-      public const string SonVizWaveSkipCount = "SonVizWaveSkipCount";
       public const string StereoUpMix = "StereoUpMix";
       public const string UseForCDDA = "UseForCDDA";
       public const string UseForWebStream = "UseForWebStream";
@@ -88,9 +84,6 @@ namespace MediaPortal.Player.PureAudio
       public const string ASIODevice = "";
       public const int ASIOFirstChan = -1;
       public const int ASIOLastChan = -1;
-      public const double BassDSPGainDb = 0;
-      public const int BassDSPDynAmpPreset = (int)MediaPortal.Player.PureAudio.BassDSPDynAmpPreset.None;
-      public const double BassDSPCompThresholdDb = 0;
       public const int BASSPlayBackBufferSize = 200; //ms
       public const int DefaultPlayBackMode = 0;
       public const string DirectSoundDevice = "Default Sound Device";
@@ -108,14 +101,7 @@ namespace MediaPortal.Player.PureAudio
       public const int QuadraphonicUpMix = (int)MediaPortal.Player.PureAudio.QuadraphonicUpMix.None;
       public const int SeekIncrement = 20; // sec
       public const int SoftStopDuration = 500; //ms
-      public const int SonVizFFTAmp = 48;
-      public const int SonVizFFTSkipCount = 0;
-      public const int SonVizSlowFade = 24;
-      public const int SonVizWaveSkipCount = 0;
       public const int StereoUpMix = (int)MediaPortal.Player.PureAudio.StereoUpMix.None;
-      public const bool UseBassDSPGain = false;
-      public const bool UseBassDSPDynAmp = false;
-      public const bool UseBassDSPComp = false;
       public const bool UseMaxASIOBufferSize = true;
       public const bool UseForCDDA = true;
       public const bool UseForWebStream = true;
@@ -179,9 +165,6 @@ namespace MediaPortal.Player.PureAudio
     public string ASIODevice { get; set; }
     public int ASIOFirstChan { get; set; }
     public int ASIOLastChan { get; set; }
-    public double BassDSPGainDb { get; set; }
-    public BassDSPDynAmpPreset BassDSPDynAmpPreset { get; set; }
-    public double BassDSPCompThresholdDb { get; set; }
     public int BASSPlayBackBufferSize { get; set; }
     public PlayBackMode DefaultPlayBackMode { get; set; }
     public string DirectSoundDevice { get; set; }
@@ -200,14 +183,7 @@ namespace MediaPortal.Player.PureAudio
     public QuadraphonicUpMix QuadraphonicUpMix { get; set; }
     public int SeekIncrement { get; set; }
     public int SoftStopDuration { get; set; }
-    public int SonVizFFTAmp { get; set; }
-    public int SonVizFFTSkipCount { get; set; }
-    public int SonVizSlowFade { get; set; }
-    public int SonVizWaveSkipCount { get; set; }
     public StereoUpMix StereoUpMix { get; set; }
-    public bool UseBassDSPGain { get; set; }
-    public bool UseBassDSPDynAmp { get; set; }
-    public bool UseBassDSPComp { get; set; }
     public bool UseForCDDA { get; set; }
     public bool UseForWebStream { get; set; }
     public bool UseForLastFMWebStream { get; set; }
@@ -243,9 +219,6 @@ namespace MediaPortal.Player.PureAudio
       ASIOFirstChan = Defaults.ASIOFirstChan;
       ASIOLastChan = Defaults.ASIOLastChan;
       BASSPlayBackBufferSize = Defaults.BASSPlayBackBufferSize; //msec
-      BassDSPGainDb = Defaults.BassDSPGainDb;
-      BassDSPDynAmpPreset = (BassDSPDynAmpPreset)Defaults.BassDSPDynAmpPreset;
-      BassDSPCompThresholdDb = Defaults.BassDSPCompThresholdDb;
       DefaultPlayBackMode = (PlayBackMode)Defaults.DefaultPlayBackMode;
       DirectSoundDevice = Defaults.DirectSoundDevice;
       DoSoftStop = Defaults.DoSoftStop;
@@ -263,14 +236,7 @@ namespace MediaPortal.Player.PureAudio
       QuadraphonicUpMix = (QuadraphonicUpMix)Defaults.QuadraphonicUpMix;
       SeekIncrement = Defaults.SeekIncrement; //sec
       SoftStopDuration = Defaults.SoftStopDuration;  //msec
-      SonVizFFTAmp = Defaults.SonVizFFTAmp;
-      SonVizFFTSkipCount = Defaults.SonVizFFTSkipCount;
-      SonVizSlowFade = Defaults.SonVizSlowFade;
-      SonVizWaveSkipCount = Defaults.SonVizWaveSkipCount;
       StereoUpMix = (StereoUpMix)Defaults.StereoUpMix;
-      UseBassDSPGain = Defaults.UseBassDSPGain;
-      UseBassDSPDynAmp = Defaults.UseBassDSPDynAmp;
-      UseBassDSPComp = Defaults.UseBassDSPComp;
       UseForCDDA = Defaults.UseForCDDA;
       UseForWebStream = Defaults.UseForWebStream;
       UseForLastFMWebStream = Defaults.UseForLastFMWebStream;
@@ -295,7 +261,6 @@ namespace MediaPortal.Player.PureAudio
 
     public void LoadSettings()
     {
-      //using (Profile.Settings xmlreader = new Profile.MPSettings())
       using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, ConfigFile)))
       {
         string section = ConfigSection;
@@ -362,18 +327,6 @@ namespace MediaPortal.Player.PureAudio
 
         SoftStopDuration =
           xmlreader.GetValueAsInt(section, PropNames.SoftStopDuration, Defaults.SoftStopDuration);
-
-        SonVizFFTAmp =
-          xmlreader.GetValueAsInt(section, PropNames.SonVizFFTAmp, Defaults.SonVizFFTAmp);
-
-        SonVizFFTSkipCount =
-          xmlreader.GetValueAsInt(section, PropNames.SonVizFFTSkipCount, Defaults.SonVizFFTSkipCount);
-
-        SonVizSlowFade =
-          xmlreader.GetValueAsInt(section, PropNames.SonVizSlowFade, Defaults.SonVizSlowFade);
-
-        SonVizWaveSkipCount =
-          xmlreader.GetValueAsInt(section, PropNames.SonVizWaveSkipCount, Defaults.SonVizWaveSkipCount);
 
         DirectSoundDevice =
           xmlreader.GetValueAsString(section, PropNames.DirectSoundDevice, Defaults.DirectSoundDevice);
@@ -481,7 +434,6 @@ namespace MediaPortal.Player.PureAudio
 
     public void SaveSettings()
     {
-      //using (Profile.Settings xmlWriter = new Profile.MPSettings())
       using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, ConfigFile)))
       {
         string section = ConfigSection;
@@ -506,10 +458,6 @@ namespace MediaPortal.Player.PureAudio
         xmlWriter.SetValue(section, PropNames.QuadraphonicUpMix, (int)QuadraphonicUpMix);
         xmlWriter.SetValue(section, PropNames.SeekIncrement, SeekIncrement);
         xmlWriter.SetValue(section, PropNames.SoftStopDuration, SoftStopDuration);
-        xmlWriter.SetValue(section, PropNames.SonVizFFTAmp, SonVizFFTAmp);
-        xmlWriter.SetValue(section, PropNames.SonVizFFTSkipCount, SonVizFFTSkipCount);
-        xmlWriter.SetValue(section, PropNames.SonVizSlowFade, SonVizSlowFade);
-        xmlWriter.SetValue(section, PropNames.SonVizWaveSkipCount, SonVizWaveSkipCount);
         xmlWriter.SetValue(section, PropNames.DirectSoundDevice, DirectSoundDevice);
         xmlWriter.SetValue(section, PropNames.StereoUpMix, (int)StereoUpMix);
         xmlWriter.SetValueAsBool(section, PropNames.UseForCDDA, UseForCDDA);

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureAudio", "PureAudio\Pure
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ASIO.Interop", "ASIO.Interop\ASIO.Interop.vcxproj", "{2EC0CE30-4934-4856-A64C-75316F98393E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{9F86A997-B101-4676-99F7-BF457EB776A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureAudioTester", "Tester\PureAudioTester.csproj", "{9F86A997-B101-4676-99F7-BF457EB776A3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WMPEffects.Interop", "WMPEffects.Interop\WMPEffects.Interop.vcxproj", "{C6978A0C-4C54-4E53-AB39-F28E7A541581}"
 EndProject
@@ -47,6 +47,7 @@ Global
 		{2EC0CE30-4934-4856-A64C-75316F98393E}.Release|Win32.Build.0 = Release|Win32
 		{9F86A997-B101-4676-99F7-BF457EB776A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F86A997-B101-4676-99F7-BF457EB776A3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9F86A997-B101-4676-99F7-BF457EB776A3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{9F86A997-B101-4676-99F7-BF457EB776A3}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{9F86A997-B101-4676-99F7-BF457EB776A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F86A997-B101-4676-99F7-BF457EB776A3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU

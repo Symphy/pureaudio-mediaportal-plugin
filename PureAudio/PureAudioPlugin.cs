@@ -73,28 +73,20 @@ namespace MediaPortal.Player.PureAudio
     public delegate void InternetStreamSongChangedDelegate(object sender);
     public event InternetStreamSongChangedDelegate InternetStreamSongChanged;
 
-    public delegate void LastFMSyncReceived(object sender, DateTime syncTime);
-    public event LastFMSyncReceived LastFMSync;
-
-
     private bool _Initialized = false;
-    private PlayState _State = PlayState.Init;
-    bool _NotifyPlayingFlag = true;
-    bool _DebugMode = false;
-    bool _SettingsLoaded = false;
-
-    private string _CurrentFilePath = String.Empty;
-
-    private WebStreamInfo _WebStreamInfo = new WebStreamInfo();
-    private List<int> DecoderPluginHandles = new List<int>();
-    private string[] _SupportedExtensions = null;
-    private BASSPlayer _BassPlayer = null;
+    private bool _NotifyPlayingFlag = true;
+    private bool _DebugMode = false;
+    private bool _SettingsLoaded = false;
     private bool _UseForCDDA = false;
     private bool _UseForWebStream = false;
     private bool _UseForLastFMWebStream = false;
 
-    private Dictionary<string, int> _VSTHandles = new Dictionary<string, int>();
+    private string _CurrentFilePath = String.Empty;
+    private string[] _SupportedExtensions = null;
 
+    private PlayState _State = PlayState.Init;
+    private WebStreamInfo _WebStreamInfo = new WebStreamInfo();
+    private BASSPlayer _BassPlayer = null;
     private BaseVisualizationWindow _VizWindow = null;
 
     #endregion
@@ -209,7 +201,7 @@ namespace MediaPortal.Player.PureAudio
 
     public override void ShowPlugin()
     {
-      ConfigurationForm confForm = new ConfigurationForm();
+      ConfigurationForm confForm = new ConfigurationForm(this);
       confForm.ShowDialog();
     }
 
@@ -219,10 +211,7 @@ namespace MediaPortal.Player.PureAudio
 
     public override bool Initializing
     {
-      get
-      {
-        return (_State == PlayState.Init);
-      }
+      get { return (_State == PlayState.Init); }
     }
 
     public override int PlaybackType
@@ -328,9 +317,6 @@ namespace MediaPortal.Player.PureAudio
     {
       Log.Debug("PureAudio: Play(\"{0}\") called...", filePath);
 
-      //Log.Debug("IsServerGC={0}", System.Runtime.GCSettings.IsServerGC);
-      //Log.Debug("LatencyMode={0}", System.Runtime.GCSettings.LatencyMode);
-
       bool result = true;
       try
       {
@@ -431,30 +417,10 @@ namespace MediaPortal.Player.PureAudio
 
     #region Public Instance Interface
 
-    //public BASSPlayer BackGroundPlayer
-    //{
-    //  get
-    //  {
-    //    return _BassPlayer;
-    //  }
-    //}
-
     public PureAudioPlugin()
     {
+      Log.Write += new Log.LogDelegate(Log_Write);
     }
-
-    //public PlayState State
-    //{
-    //  get
-    //  {
-    //    return _State;
-    //  }
-    //}
-
-    //public int GetCurrentVizStream()
-    //{
-    //  return _BassPlayer.GetCurrentVizStream();
-    //}
 
     public override void Dispose()
     {
@@ -464,15 +430,6 @@ namespace MediaPortal.Player.PureAudio
 
       if (!Stopped)
         Stop();
-
-      //foreach (int pluginHandle in DecoderPluginHandles)
-      //  Bass.BASS_PluginFree(pluginHandle);
-
-      //if (_BassPlayer != null)
-      //  _BassPlayer.Dispose();
-
-      //if (_VizWindow != null)
-      //  _VizWindow.Dispose();
     }
 
     #endregion
@@ -481,10 +438,7 @@ namespace MediaPortal.Player.PureAudio
 
     private bool IsStream
     {
-      get
-      {
-        return (_BassPlayer.CurrentFileType.FileMainType == FileMainType.WebStream);
-      }
+      get { return (_BassPlayer.CurrentFileType.FileMainType == FileMainType.WebStream); }
     }
 
     private bool Initialize()
@@ -497,10 +451,11 @@ namespace MediaPortal.Player.PureAudio
         Log.Info("PureAudio: Plugin version: {0}", VersionNumber);
         Log.Info("PureAudio: Initializing player ...");
 
-        LoadSettings();
-
         _BassPlayer = new BASSPlayer();
+
+        LoadSettings();
         _BassPlayer.DebugMode = _DebugMode;
+
         _BassPlayer.Ended += new BASSPlayer.EndedDelegate(_BassPlayer_Ended);
         _BassPlayer.Stopped += new BASSPlayer.StoppedDelegate(_BassPlayer_Stopped);
         _BassPlayer.StreamTagsChanged += new BASSPlayer.StreamTagsChangedDelegate(_BassPlayer_StreamTagsChanged);
@@ -509,34 +464,25 @@ namespace MediaPortal.Player.PureAudio
         _BassPlayer.SessionStarted += new BASSPlayer.SessionStartedDelegate(_BassPlayer_SessionStarted);
         _BassPlayer.MonitorProcess += new BASSPlayer.MonitorProcessDelegate(_BassPlayer_MonitorProcess);
 
-        _BassPlayer.LoadSettings();
-
-        _SavedFullScreenHandler = g_Player.ShowFullScreenWindowVideo;
-        g_Player.ShowFullScreenWindowVideo = new g_Player.ShowFullScreenWindowHandler(FullScreenHandler);
-
-        GUIGraphicsContext.form.Disposed += new EventHandler(OnAppFormDisposed);
-        GUIGraphicsContext.OnNewAction += new OnActionHandler(OnNewAction);
-
-        VisualizationFactory vizFactory = VisualizationFactory.Create(_BassPlayer.Profile);
-        _VizWindow = vizFactory.GetVisualizationWindow();
-
-        // VizTest
-        if (_VizWindow != null)
-        {
-          _VizWindow.Name = VizWindowName;
-          _VizWindow.Visible = false;
-
-        }
-
-        if (result)
-          result = _BassPlayer.InitBASS();
-
+        result = _BassPlayer.Initialize();
         if (result)
         {
-          LoadAudioDecoderPlugins();
+          _SavedFullScreenHandler = g_Player.ShowFullScreenWindowVideo;
+          g_Player.ShowFullScreenWindowVideo = new g_Player.ShowFullScreenWindowHandler(FullScreenHandler);
 
-          // For Bass Wma: must be set after LoadAudioDecoderPlugins()
-          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_NET_PLAYLIST, 2);
+          GUIGraphicsContext.form.Disposed += new EventHandler(OnAppFormDisposed);
+          GUIGraphicsContext.OnNewAction += new OnActionHandler(OnNewAction);
+
+          VisualizationFactory vizFactory = VisualizationFactory.Create(_BassPlayer.Profile);
+          _VizWindow = vizFactory.GetVisualizationWindow();
+
+          // VizTest
+          if (_VizWindow != null)
+          {
+            _VizWindow.Name = VizWindowName;
+            _VizWindow.Visible = false;
+
+          }
 
           Log.Info("PureAudio: Initializing complete.");
 
@@ -557,7 +503,6 @@ namespace MediaPortal.Player.PureAudio
       if (!_SettingsLoaded)
       {
         string section = ConfigProfile.ConfigSection;
-        //using (Profile.Settings xmlreader = new Profile.MPSettings())
         using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, ConfigProfile.ConfigFile)))
         {
           string ext = xmlreader.GetValueAsString(section, ConfigProfile.PropNames.Extensions, ConfigProfile.Defaults.Extensions);
@@ -576,63 +521,6 @@ namespace MediaPortal.Player.PureAudio
             _DebugMode = false;
         }
         _SettingsLoaded = true;
-      }
-    }
-
-    private void LoadAudioDecoderPlugins()
-    {
-      string appPath = System.Windows.Forms.Application.StartupPath;
-      string decoderFolderPath = Path.Combine(appPath, @"musicplayer\plugins\audio decoders");
-
-      Log.Info("PureAudio: Loading audio decoder add-ins from {0}...", decoderFolderPath);
-
-      if (!Directory.Exists(decoderFolderPath))
-      {
-        Log.Error(@"PureAudio: Unable to find \musicplayer\plugins\audio decoders folder in MediaPortal.exe path.");
-        return;
-      }
-
-      DirectoryInfo dirInfo = new DirectoryInfo(decoderFolderPath);
-      FileInfo[] decoders = dirInfo.GetFiles();
-
-      int pluginHandle = 0;
-      int decoderCount = 0;
-      int errorCount = 0;
-
-      foreach (FileInfo file in decoders)
-      {
-        if (Path.GetExtension(file.FullName).ToLower() != ".dll")
-          continue;
-
-        Log.Debug("  PureAudio: Loading: {0}", file.Name);
-        pluginHandle = Bass.BASS_PluginLoad(file.FullName);
-
-        if (pluginHandle != 0)
-        {
-          DecoderPluginHandles.Add(pluginHandle);
-          decoderCount++;
-          Log.Debug("  PureAudio: Added: {0}", file.Name);
-        }
-
-        else
-        {
-          BASSError error = Bass.BASS_ErrorGetCode();
-          if (error == BASSError.BASS_ERROR_ALREADY)
-            Log.Debug("  PureAudio: Already loaded: {0}", file.Name);
-          else
-          {
-            errorCount++;
-            Log.Error("  PureAudio: Unable to load: {0}: {1}", file.Name, error);
-          }
-        }
-      }
-
-      if (errorCount == 0)
-      {
-        if (decoderCount == 0)
-          Log.Info("PureAudio: No Audio Decoders loaded; probably already loaded.");
-        else
-          Log.Info("PureAudio: Loaded {0} Audio Decoders.", decoderCount);
       }
     }
 
@@ -668,10 +556,6 @@ namespace MediaPortal.Player.PureAudio
           Log.Debug("Connection Information: {0}", item);
         }
       }
-      //else
-      //{
-      //	album = _CurrentFilePath;
-      //}
 
       _WebStreamInfo.Album = album;
       _WebStreamInfo.Genre = genre;
@@ -701,7 +585,6 @@ namespace MediaPortal.Player.PureAudio
           Regex r1 = new Regex("( - )");
           string[] s = r1.Split(c.ToString());
           if (s.Length > 2)
-          //if (s != null)
           {
             artist = s[0];
             title = s[2];
@@ -807,9 +690,6 @@ namespace MediaPortal.Player.PureAudio
     public void RealDispose()
     {
       // See Dispose()
-
-      foreach (int pluginHandle in DecoderPluginHandles)
-        Bass.BASS_PluginFree(pluginHandle);
 
       if (_BassPlayer != null)
         _BassPlayer.Dispose();
@@ -979,6 +859,33 @@ namespace MediaPortal.Player.PureAudio
           _BassPlayer.TogglePlayBackMode();
 
           break;
+      }
+    }
+
+    void Log_Write(Log.LogType logType, string format, params object[] arg)
+    {
+      switch (logType)
+      {
+        case Log.LogType.Debug:
+          {
+            MediaPortal.GUI.Library.Log.Debug(format, arg);
+            break;
+          }
+        case Log.LogType.Info:
+          {
+            MediaPortal.GUI.Library.Log.Info(format, arg);
+            break;
+          }
+        case Log.LogType.Error:
+          {
+            MediaPortal.GUI.Library.Log.Error(format, arg);
+            break;
+          }
+        case Log.LogType.Warn:
+          {
+            MediaPortal.GUI.Library.Log.Warn(format, arg);
+            break;
+          }
       }
     }
 
