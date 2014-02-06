@@ -22,7 +22,18 @@ rem ----------------------------------------------------------------------------
 set MPDIR=
 call "%~1\Dependencies\SetDirectories.bat"
 
-copy "%~2\PureAudio.dll"          "%MPDIR%\plugins\ExternalPlayers"
-copy "%~2\ASIO.Interop.dll"       "%MPDIR%\plugins\ExternalPlayers"
-copy "%~2\WMPEffects.Interop.dll" "%MPDIR%\plugins\ExternalPlayers"
+copy "%MPDIR%\Bass.Net.dll"         "%~2"
+copy "%MPDIR%\BassRegistration.dll" "%~2"
+copy "%MPDIR%\Core.dll"             "%~2"
+copy "%MPDIR%\Utils.dll"            "%~2"
+copy "%MPDIR%\Common.Utils.dll"     "%~2"
+
+copy "%MPDIR%\bass.dll"       "%~2"
+copy "%MPDIR%\bassmix.dll"    "%~2"
+copy "%MPDIR%\bass_vst.dll"   "%~2"
+copy "%MPDIR%\basswasapi.dll" "%~2"
+copy "%MPDIR%\bass_wadsp.dll" "%~2"
+
+md "%~2\MusicPlayer\plugins\audio decoders"
+copy "%MPDIR%\MusicPlayer\plugins\audio decoders\*.*" "%~2\MusicPlayer\plugins\audio decoders"
 

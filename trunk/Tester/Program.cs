@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Tester
+namespace PureAudioTester
 {
 	static class Program
 	{
@@ -36,7 +36,7 @@ namespace Tester
 			{
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(new Form1());
+				Application.Run(new PureAudioTester());
 			}
 			catch (Exception e)
 			{

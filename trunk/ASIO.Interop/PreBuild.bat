@@ -14,6 +14,10 @@ rem //
 rem // You should have received a copy of the GNU General Public License
 rem // along with MediaPortal. If not, see <http://www.gnu.org/licenses/>.
 
+rem -------------------------------------------------------------------------------------
+rem Usage: call as project pre-build event: "$(ProjectDir)PreBuild.bat" "$(SolutionDir)"
+rem -------------------------------------------------------------------------------------
+
 set ASIOSDKDIR=
 call "%~1\Dependencies\SetDirectories.bat"
 
