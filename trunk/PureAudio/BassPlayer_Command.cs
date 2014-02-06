@@ -23,69 +23,45 @@ using System.Threading;
 
 namespace MediaPortal.Player.PureAudio
 {
-	public partial class BASSPlayer
-	{
-		private class Command
-		{
-			private Delegate _method;
-			private object _arg1 = null;
-			private object _arg2 = null;
-			private object _result = null;
-			ManualResetEvent _event = new ManualResetEvent(false);
+  public partial class BASSPlayer
+  {
+    private class Command
+    {
+      private Delegate _method;
+      private object[] _args = null;
+      private object _result = null;
+      private ManualResetEvent _event = new ManualResetEvent(false);
 
-			public WaitHandle WaitHandle
-			{
-				get
-				{
-					return _event;
-				}
-			}
+      public WaitHandle WaitHandle
+      {
+        get
+        {
+          return _event;
+        }
+      }
 
-			public bool Result
-			{
-				get
-				{
-					if (_result == null)
-						return false;
-					else
-						return (bool)_result;
-				}
-			}
+      public bool Result
+      {
+        get
+        {
+          if (_result == null)
+            return false;
+          else
+            return (bool)_result;
+        }
+      }
 
-			public Command(Delegate method)
-			{
-				_method = method;
-			}
+      public Command(Delegate method, params object[] args)
+      {
+        _method = method;
+        _args = args;
+      }
 
-			public Command(Delegate method, object arg)
-			{
-				_method = method;
-				_arg1 = arg;
-			}
-
-			public Command(Delegate method, object arg1, object arg2)
-			{
-				_method = method;
-				_arg1 = arg1;
-				_arg2 = arg2;
-			}
-
-			internal void Invoke()
-			{
-				if (_arg2 != null)
-				{
-					_result = _method.DynamicInvoke(new object[2] { _arg1, _arg2 });
-				}
-				else if (_arg1 != null)
-				{
-					_result = _method.DynamicInvoke(new object[1] { _arg1 });
-				}
-				else
-				{
-					_result = _method.DynamicInvoke(null);
-				}
-				_event.Set();
-			}
-		}
-	}
+      internal void Invoke()
+      {
+        _result = _method.DynamicInvoke(_args);
+        _event.Set();
+      }
+    }
+  }
 }

@@ -8,7 +8,7 @@
     <ProjectGuid>{C3EB77F9-1FF8-4F5C-8DBF-ECA287D780D8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PureAudio</RootNamespace>
+    <RootNamespace>MediaPortal.Player.PureAudio</RootNamespace>
     <AssemblyName>PureAudio</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -55,10 +55,35 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bass.Net, Version=2.4.7.2, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Bass.Net.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="BassRegistration, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -93,11 +118,12 @@
     </Compile>
     <Compile Include="BassPlayer_DeviceInfo.cs" />
     <Compile Include="BassPlayer_Command.cs" />
-    <Compile Include="Player_PlayState.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="MixingMatrixHelper.cs" />
     <Compile Include="OutputDevice.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Player_WebStreamInfo.cs" />
+    <Compile Include="PureAudioPlugin.cs" />
+    <Compile Include="PureAudioPlugin_PlayState.cs" />
+    <Compile Include="PureAudioPlugin_WebStreamInfo.cs" />
     <Compile Include="Structs.cs" />
     <Compile Include="EncodedStreamHelper.cs" />
     <Compile Include="Enums.cs" />
@@ -149,9 +175,6 @@
   <ItemGroup>
     <None Include="PreBuild.bat" />
     <None Include="PostBuild.bat" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ASIO.Interop\ASIO.Interop.vcxproj">

@@ -26,3 +26,4 @@ copy "%MPDIR%\BassRegistration.dll" "%~1\Dependencies"
 copy "%MPDIR%\Core.dll" "%~1\Dependencies"
 copy "%MPDIR%\Utils.dll" "%~1\Dependencies"
 copy "%MPDIR%\Common.Utils.dll" "%~1\Dependencies"
+

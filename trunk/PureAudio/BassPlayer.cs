@@ -33,9 +33,9 @@ using Un4seen.Bass.AddOn.Vst;
 using Un4seen.Bass.AddOn.WaDsp;
 using Un4seen.Bass.AddOn.Tags;
 using Un4seen.Bass.Misc;
-using MediaPortal.GUI.Library;
 using BlueWave.Interop.Asio;
 using MediaPortal.Player.PureAudio.Asio;
+using System.IO;
 
 namespace MediaPortal.Player.PureAudio
 {
@@ -60,6 +60,7 @@ namespace MediaPortal.Player.PureAudio
     private AutoResetEvent _WakeupBufferUpdateThread;
     private ManualResetEvent _BufferUpdated;
 
+    private bool _Initialized = false;
     private bool _MainThreadAbortFlag = false;
     private bool _MonitorThreadAbortFlag = false;
     private bool _BufferUpdateThreadAbortFlag = false;
@@ -101,6 +102,9 @@ namespace MediaPortal.Player.PureAudio
 
     private Dictionary<int, string> _WADSPHandles = new Dictionary<int, string>();
 
+    private List<int> _DecoderPluginHandles = new List<int>();
+    private bool _DecoderPluginsLoaded = false;
+
     private float _Duration = 0;
     private float _CurrentPosition = 0;
     private string _CurrentFilePath = String.Empty;
@@ -141,7 +145,7 @@ namespace MediaPortal.Player.PureAudio
     private int _TotalLatencyMS = 0;
     private int _VizReadOffsetBytes = 0;
     private int _VizReadOffsetMS = 0;
-    private WaitCursor _WaitCursor = null;
+    private MediaPortal.GUI.Library.WaitCursor _WaitCursor = null;
 
     private int[] SamplingRates = new int[] {
 			8000,
@@ -187,70 +191,48 @@ namespace MediaPortal.Player.PureAudio
 
     public string CurrentFilePath
     {
-      get
-      {
-        return _CurrentFilePath;
-      }
+      get { return _CurrentFilePath; }
     }
 
     public FileType CurrentFileType
     {
-      get
-      {
-        return _CurrentFileType;
-      }
+      get { return _CurrentFileType; }
     }
 
     public float CurrentPosition
     {
-      get
-      {
-        return _CurrentPosition;
-      }
+      get { return _CurrentPosition; }
     }
 
     public bool DebugMode
     {
-      get
-      {
-        return _DebugMode;
-      }
-      set
-      {
-        _DebugMode = value;
-      }
+      get { return _DebugMode; }
+      set { _DebugMode = value; }
     }
 
     public LastErrorInfo LastError
     {
-      get
-      {
-        return _LastError;
-      }
+      get { return _LastError; }
     }
 
     public PlayBackMode PlayBackMode
     {
-      get
-      {
-        return _PlayBackMode;
-      }
+      get { return _PlayBackMode; }
     }
 
     public ConfigProfile Profile
     {
-      get
-      {
-        return _Profile;
-      }
+      get { return _Profile; }
+    }
+
+    public AsioEngine AsioEngine
+    {
+      get { return _ASIOEngine; }
     }
 
     public float Duration
     {
-      get
-      {
-        return _Duration;
-      }
+      get { return _Duration; }
     }
 
     public BASSPlayer()
@@ -362,65 +344,16 @@ namespace MediaPortal.Player.PureAudio
       _VizReadOffsetBytes = AudioRingBuffer.CalculateLength(samplingRate, channels, _VizReadOffsetMS);
     }
 
-    public bool InitBASS()
+    public bool Initialize()
     {
       bool result = true;
-      if (_InitBASS)
+      if (!_Initialized)
       {
-        Log.Debug("PureAudio: Initializing BASS library...");
-
-        // Reset buit-in BASS player to:
-        // - make sure it will be properly re-initialized on next use
-        // - we have a clean surface to start with
-        if (BassMusicPlayer.Initialized)
-          BassMusicPlayer.FreeBass();
-
-        result = BassRegistration.BassRegistration.Register();
-        if (result)
-        {
-          // Initialize BASS to "no sound", in case we are going to play over 
-          // WaveOut, the selected device will be initialized in InitDSDevice()
-          result = Bass.BASS_Init(0, 44100, 0, IntPtr.Zero, Guid.Empty);
-          if (!result)
-          {
-            if (Bass.BASS_ErrorGetCode() == BASSError.BASS_ERROR_ALREADY)
-              result = true;
-            else
-              HandleBassError("Bass.BASS_Init");
-          }
-        }
-        if (result)
-        {
-          // BASS_CONFIG_UPDATEPERIOD is set in InitDSDevice in case 
-          // we are going to playback over DirectSound.
-          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0);
-          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_GVOL_STREAM, 10000);
-          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_BUFFER, _Profile.BASSPlayBackBufferSize);
-
-          // network buffersize for webstreams should be larger then the playbackbuffer.
-          // To insure a stable playback-start.
-          int netBufferSize = _Profile.PlayBackBufferSize;
-          if (_Profile.OutputMode == OutputMode.DirectSound)
-            netBufferSize += _Profile.BASSPlayBackBufferSize;
-
-          // Minimize at default value.
-          if (netBufferSize < 5000)
-            netBufferSize = 5000;
-
-          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_NET_BUFFER, netBufferSize);
-
-          // PreBuffer() takes care of this.
-          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_NET_PREBUF, 0);
-        }
-        _InitBASS = false;
+        LoadSettings();
+        result = InitBASS();
+        _Initialized = true;
       }
       return result;
-    }
-
-    public void LoadSettings()
-    {
-      _Profile.LoadSettings();
-      _PlayBackMode = _Profile.DefaultPlayBackMode;
     }
 
     public int GetCurrentVizStream()
@@ -438,6 +371,9 @@ namespace MediaPortal.Player.PureAudio
         _ASIOEngine.Dispose();
 
       BassWaDsp.BASS_WADSP_Free();
+
+      UnLoadAudioDecoderPlugins();
+
       Bass.BASS_Free();
     }
 
@@ -654,9 +590,7 @@ namespace MediaPortal.Player.PureAudio
       if (result)
       {
         _CurrentFileType = Utils.GetFileType(filePath);
-        Log.Info(String.Format("Determined file type: {0}",
-            Enum.GetName(typeof(FileMainType), _CurrentFileType.FileMainType) + "/" +
-            Enum.GetName(typeof(FileSubType), _CurrentFileType.FileSubType)));
+        Log.Info(String.Format("Determined file type: {0}", _CurrentFileType));
 
         CreateCurrentStream();
         result = (_CurrentStream != 0);
@@ -670,7 +604,7 @@ namespace MediaPortal.Player.PureAudio
       if (result)
       {
         _CurrentContentType = EncodedStreamHelper.GetStreamContentType(_CurrentStream);
-        Log.Info(String.Format("Determined stream content type: {0}", Enum.GetName(typeof(StreamContentType), _CurrentContentType)));
+        Log.Info(String.Format("Determined stream content type: {0}", _CurrentContentType));
 
         if (_CurrentFileType.FileMainType == FileMainType.WebStream)
         {
@@ -896,7 +830,6 @@ namespace MediaPortal.Player.PureAudio
             InitBuffer() &&
             InitSinkStream() &&
             InitMixerStream() &&
-            InitBassDSP() &&
             InitVSTPlugins() &&
             InitWADSPPlugins() &&
             InitOutputStream() &&
@@ -1647,12 +1580,6 @@ namespace MediaPortal.Player.PureAudio
       return result;
     }
 
-    private bool InitBassDSP()
-    {
-      // Disable: setting provided by MP are incomplete and do we really want this at all...
-      return true;
-    }
-
     private bool InitVSTPlugins()
     {
       _VSTHandles.Clear();
@@ -1717,7 +1644,7 @@ namespace MediaPortal.Player.PureAudio
       bool result = true;
       if (!CurrentNeedsPassThrough && _Profile.WADSPPlugins.Count > 0)
       {
-        BassWaDsp.BASS_WADSP_Init(GUIGraphicsContext.ActiveForm);
+        BassWaDsp.BASS_WADSP_Init(MediaPortal.GUI.Library.GUIGraphicsContext.ActiveForm);
 
         foreach (KeyValuePair<string, ConfigProfile.WADSPPlugin> plugin in _Profile.WADSPPlugins)
         {
@@ -1978,8 +1905,8 @@ namespace MediaPortal.Player.PureAudio
 
         bool result = BassWasapi.BASS_WASAPI_Init(_WASAPIDeviceNumber, info.freq, info.chans, flags, 0.01f, 0f, _WasapiProcDelegate, IntPtr.Zero);
         if (!result)
-          HandleWasapiHandlerError("BASS_WASAPI_Init");
-        
+          HandleBassError("BASS_WASAPI_Init");
+
         return result;
       }
       else
@@ -2312,7 +2239,7 @@ namespace MediaPortal.Player.PureAudio
 
             result = BassWasapi.BASS_WASAPI_Start();
             if (!result)
-              HandleWasapiHandlerError("BASS_WASAPI_Start");
+              HandleBassError("BASS_WASAPI_Start");
 
             break;
           }
@@ -2356,8 +2283,8 @@ namespace MediaPortal.Player.PureAudio
 
             result = BassWasapi.BASS_WASAPI_Stop(false);
             if (!result)
-              HandleWasapiHandlerError("BASS_WASAPI_Stop");
-            
+              HandleBassError("BASS_WASAPI_Stop");
+
             break;
           }
         case OutputMode.ASIO:
@@ -2391,7 +2318,7 @@ namespace MediaPortal.Player.PureAudio
 
         case FileMainType.WebStream:
           if (_WaitCursor == null)
-            _WaitCursor = new WaitCursor();
+            _WaitCursor = new MediaPortal.GUI.Library.WaitCursor();
 
           // In case connecting fails: retry connecting for as long as the timeout setting.
           double tryUntil = DateTime.Now.TimeOfDay.TotalMilliseconds +
@@ -2488,11 +2415,7 @@ namespace MediaPortal.Player.PureAudio
           }
         }
 
-        Log.Info("Replay Gain Data: Track Gain={0}dB, Track Peak={1}, Album Gain={2}dB, Album Peak={3}",
-            _CurrentReplayGainInfo.TrackGain,
-            _CurrentReplayGainInfo.TrackPeak,
-            _CurrentReplayGainInfo.AlbumGain,
-            _CurrentReplayGainInfo.AlbumPeak);
+        Log.Info("Replay Gain Data: {0}", _CurrentReplayGainInfo.ToString());
       }
     }
 
@@ -2670,11 +2593,6 @@ namespace MediaPortal.Player.PureAudio
       HandleError(ErrorCode.MiscError, "PureAudio: {0}() failed: {1}", methodName, Bass.BASS_ErrorGetCode());
     }
 
-    private void HandleWasapiHandlerError(string methodName)
-    {
-      HandleError(ErrorCode.MiscError, "PureAudio: _WASAPIHandler.{0} failed: {1}.", methodName, Bass.BASS_ErrorGetCode());
-    }
-
     private void HandleAsioEngineError(string methodName)
     {
       HandleError(ErrorCode.MiscError, "PureAudio: _ASIOEngine.{0} failed: {1} ({2}).", methodName, _ASIOEngine.Driver.GetErrorMessage(), _ASIOEngine.Driver.LastASIOError);
@@ -2684,9 +2602,146 @@ namespace MediaPortal.Player.PureAudio
     {
       _LastError.ErrorCode = errorCode;
       _LastError.Message = String.Format(message, args);
-      Log.Error(_LastError.Message);
+      Log.Error(_LastError.ToString());
     }
-    
+
+    private void LoadAudioDecoderPlugins()
+    {
+      if (!_DecoderPluginsLoaded)
+      {
+        string appPath = System.Windows.Forms.Application.StartupPath;
+        string decoderFolderPath = Path.Combine(appPath, @"musicplayer\plugins\audio decoders");
+
+        Log.Info("PureAudio: Loading audio decoder add-ins from {0}...", decoderFolderPath);
+
+        if (!Directory.Exists(decoderFolderPath))
+        {
+          Log.Error(@"PureAudio: Unable to find \musicplayer\plugins\audio decoders folder in MediaPortal.exe path.");
+          return;
+        }
+
+        DirectoryInfo dirInfo = new DirectoryInfo(decoderFolderPath);
+        FileInfo[] decoders = dirInfo.GetFiles();
+
+        int pluginHandle = 0;
+        int decoderCount = 0;
+        int errorCount = 0;
+
+        foreach (FileInfo file in decoders)
+        {
+          if (Path.GetExtension(file.FullName).ToLower() != ".dll")
+            continue;
+
+          Log.Debug("  PureAudio: Loading: {0}", file.Name);
+          pluginHandle = Bass.BASS_PluginLoad(file.FullName);
+
+          if (pluginHandle != 0)
+          {
+            _DecoderPluginHandles.Add(pluginHandle);
+            decoderCount++;
+            Log.Debug("  PureAudio: Added: {0}", file.Name);
+          }
+
+          else
+          {
+            BASSError error = Bass.BASS_ErrorGetCode();
+            if (error == BASSError.BASS_ERROR_ALREADY)
+              Log.Debug("  PureAudio: Already loaded: {0}", file.Name);
+            else
+            {
+              errorCount++;
+              Log.Error("  PureAudio: Unable to load: {0}: {1}", file.Name, error);
+            }
+          }
+        }
+
+        if (errorCount == 0)
+        {
+          if (decoderCount == 0)
+            Log.Info("PureAudio: No Audio Decoders loaded; probably already loaded.");
+          else
+            Log.Info("PureAudio: Loaded {0} Audio Decoders.", decoderCount);
+        }
+
+        _DecoderPluginsLoaded = true;
+      }
+    }
+
+    private void UnLoadAudioDecoderPlugins()
+    {
+      foreach (int pluginHandle in _DecoderPluginHandles)
+        Bass.BASS_PluginFree(pluginHandle);
+
+      _DecoderPluginHandles.Clear();
+      _DecoderPluginsLoaded = false;
+    }
+
+    private void LoadSettings()
+    {
+      _Profile.LoadSettings();
+      _PlayBackMode = _Profile.DefaultPlayBackMode;
+    }
+
+    private bool InitBASS()
+    {
+      bool result = true;
+      if (_InitBASS)
+      {
+        Log.Debug("PureAudio: Initializing BASS library...");
+
+        // Reset buit-in BASS player to:
+        // - make sure it will be properly re-initialized on next use
+        // - we have a clean surface to start with
+        if (BassMusicPlayer.Initialized)
+          BassMusicPlayer.FreeBass();
+
+        result = BassRegistration.BassRegistration.Register();
+        if (result)
+        {
+          // Initialize BASS to "no sound", in case we are going to play over 
+          // WaveOut, the selected device will be initialized in InitDSDevice()
+          result = Bass.BASS_Init(0, 44100, 0, IntPtr.Zero, Guid.Empty);
+          if (!result)
+          {
+            if (Bass.BASS_ErrorGetCode() == BASSError.BASS_ERROR_ALREADY)
+              result = true;
+            else
+              HandleBassError("Bass.BASS_Init");
+          }
+        }
+        if (result)
+        {
+          // BASS_CONFIG_UPDATEPERIOD is set in InitDSDevice in case 
+          // we are going to playback over DirectSound.
+          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0);
+          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_GVOL_STREAM, 10000);
+          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_BUFFER, _Profile.BASSPlayBackBufferSize);
+
+          // network buffersize for webstreams should be larger then the playbackbuffer.
+          // To insure a stable playback-start.
+          int netBufferSize = _Profile.PlayBackBufferSize;
+          if (_Profile.OutputMode == OutputMode.DirectSound)
+            netBufferSize += _Profile.BASSPlayBackBufferSize;
+
+          // Minimize at default value.
+          if (netBufferSize < 5000)
+            netBufferSize = 5000;
+
+          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_NET_BUFFER, netBufferSize);
+
+          // PreBuffer() takes care of this.
+          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_NET_PREBUF, 0);
+
+          LoadAudioDecoderPlugins();
+
+          // For Bass Wma: must be set after LoadAudioDecoderPlugins()
+          Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_NET_PLAYLIST, 2);
+        }
+        _InitBASS = false;
+      }
+      return result;
+    }
+
     private int WasApiProc(IntPtr buffer, int length, IntPtr user)
     {
       int read = Bass.BASS_ChannelGetData(_WASAPIOutputStream, buffer, length);
