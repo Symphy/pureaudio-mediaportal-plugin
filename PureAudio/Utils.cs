@@ -94,8 +94,8 @@ namespace MediaPortal.Player.PureAudio
 
 		private static bool IsASXFile(string filePath)
 		{
-			return (Path.GetExtension(filePath).ToLower() == ".asx");
-		}
+      return (Path.GetExtension(filePath).Equals(".asx", StringComparison.InvariantCultureIgnoreCase));
+    }
 
 		private static bool IsWebStream(string filePath)
 		{

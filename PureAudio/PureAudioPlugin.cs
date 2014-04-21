@@ -88,6 +88,7 @@ namespace MediaPortal.Player.PureAudio
     private WebStreamInfo _WebStreamInfo = new WebStreamInfo();
     private BASSPlayer _BassPlayer = null;
     private BaseVisualizationWindow _VizWindow = null;
+    private WaitCursor _WaitCursor = null;
 
     #endregion
 
@@ -329,7 +330,7 @@ namespace MediaPortal.Player.PureAudio
         result = Initialize();
         if (result)
         {
-          if (filePath.ToLower().CompareTo(_CurrentFilePath.ToLower()) == 0 && Paused)
+          if (filePath.Equals(_CurrentFilePath, StringComparison.InvariantCultureIgnoreCase) && Paused)
           {
             // Selected file is equal to current stream and is paused
             // The Pause() method will resume
@@ -463,6 +464,7 @@ namespace MediaPortal.Player.PureAudio
         _BassPlayer.SessionStopped += new BASSPlayer.SessionStoppedDelegate(_BassPlayer_SessionStopped);
         _BassPlayer.SessionStarted += new BASSPlayer.SessionStartedDelegate(_BassPlayer_SessionStarted);
         _BassPlayer.MonitorProcess += new BASSPlayer.MonitorProcessDelegate(_BassPlayer_MonitorProcess);
+        _BassPlayer.WaitCursorRequested += new BASSPlayer.WaitCursorRequestedDelegate(_BassPlayer_WaitCursorRequested);
 
         result = _BassPlayer.Initialize();
         if (result)
@@ -515,10 +517,8 @@ namespace MediaPortal.Player.PureAudio
         }
         using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
         {
-          if ((Level)Enum.Parse(typeof(Level), xmlreader.GetValueAsString("general", "loglevel", "3")) == Level.Debug)
-            _DebugMode = true;
-          else
-            _DebugMode = false;
+          Level logLevel = (Level)Enum.Parse(typeof(Level), xmlreader.GetValueAsString("general", "loglevel", "3"));
+          _DebugMode = logLevel == Level.Debug;
         }
         _SettingsLoaded = true;
       }
@@ -547,10 +547,10 @@ namespace MediaPortal.Player.PureAudio
       {
         foreach (string item in tags)
         {
-          if (item.ToLower().StartsWith("icy-name:"))
+          if (item.StartsWith("icy-name:", StringComparison.InvariantCultureIgnoreCase))
             album = item.Substring(9);
 
-          if (item.ToLower().StartsWith("icy-genre:"))
+          if (item.StartsWith("icy-genre:", StringComparison.InvariantCultureIgnoreCase))
             genre = item.Substring(10);
 
           Log.Debug("Connection Information: {0}", item);
@@ -827,6 +827,27 @@ namespace MediaPortal.Player.PureAudio
       {
         if (_VizWindow != null && _VizWindow.Visible)
           _VizWindow.Visible = false;
+      }
+    }
+
+    void _BassPlayer_WaitCursorRequested(object sender, BASSPlayer.WaitCursorRequest request)
+    {
+      switch (request)
+      {
+        case BASSPlayer.WaitCursorRequest.On:
+          if (_WaitCursor == null)
+          {
+            _WaitCursor = new WaitCursor();
+          }
+          break;
+
+        case BASSPlayer.WaitCursorRequest.Off:
+          if (_WaitCursor != null)
+          {
+            _WaitCursor.Dispose();
+            _WaitCursor = null;
+          }
+          break;
       }
     }
 

@@ -150,6 +150,8 @@ namespace MediaPortal.Player.PureAudio.Asio
       if (_Buffer.Length != bufferSize)
         Array.Resize<float>(ref _Buffer, bufferSize);
 
+      SetOptimizeValues();
+      
       return _Driver.Start();
     }
 
@@ -214,27 +216,37 @@ namespace MediaPortal.Player.PureAudio.Asio
       return command;
     }
 
+    // Storage of some values to optimize the buffer update callback
+    private int _OptBufferByteCount;
+    private int _OptLastChannel;
+    private int _OptBufferLength;
+    private Channel[] _OptChannels;
 
+    private void SetOptimizeValues()
+    {
+      _OptBufferByteCount = _Buffer.Length * 4;
+      _OptLastChannel = _FirstChannel + _ChannelCount - 1;
+      _OptBufferLength = _Buffer.Length;
+      _OptChannels = _Driver.OutputChannels;
+    }
+    
     private void _Driver_BufferUpdate(object sender, EventArgs e)
     {
-      int samplesRead = Bass.BASS_ChannelGetData(_BassStream, _Buffer, _Buffer.Length * 4) / 4;
+      int samplesRead = Bass.BASS_ChannelGetData(_BassStream, _Buffer, _OptBufferByteCount) / 4;
 
       int channelIndex = _FirstChannel;
       int channelSample = 0;
-      Channel[] channels = _Driver.OutputChannels;
-      int lastChannel = _FirstChannel + _ChannelCount - 1;
-      int bufferLength = _Buffer.Length;
 
-      for (int index = 0; index < bufferLength; index++)
+      for (int index = 0; index < _OptBufferLength; index++)
       {
-        if (channelIndex <= lastChannel)
+        //if (channelIndex <= _OptLastChannel)
           if (index < samplesRead)
-            channels[channelIndex][channelSample] = _Buffer[index];
+            _OptChannels[channelIndex][channelSample] = _Buffer[index];
           else
-            channels[channelIndex][channelSample] = 0.0f;
+            _OptChannels[channelIndex][channelSample] = 0.0f;
 
         channelIndex++;
-        if (channelIndex - _FirstChannel == _BassChannelInfo.chans)
+        if (channelIndex > _OptLastChannel)
         {
           channelIndex = _FirstChannel;
           channelSample++;
