@@ -157,8 +157,8 @@ Click Next to continue or Cancel to exit Setup.</Value>
           <Build>6</Build>
           <Revision>27644</Revision>
         </MaxVersion>
-        <WarnOnly>false</WarnOnly>
-        <Message>requires MediaPortal version 1.1.6.27644 to 1.1.6.27644.</Message>
+        <WarnOnly>true</WarnOnly>
+        <Message>This version of PureAudio  requires MediaPortal 1.2.0 Beta or higher!</Message>
         <Name>MediaPortal</Name>
       </DependencyItem>
     </Items>
@@ -169,8 +169,8 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <CompatibleVersion>
           <Items>
             <CompatibleVersionItem>
-              <MinRequiredVersion>1.6.0.0</MinRequiredVersion>
-              <DesignedForVersion>1.6.0.0</DesignedForVersion>
+              <MinRequiredVersion>1.7.0.0</MinRequiredVersion>
+              <DesignedForVersion>1.7.0.0</DesignedForVersion>
             </CompatibleVersionItem>
           </Items>
         </CompatibleVersion>
@@ -193,15 +193,15 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <Major>0</Major>
       <Minor>2</Minor>
       <Build>8</Build>
-      <Revision>0</Revision>
+      <Revision>2</Revision>
     </Version>
     <ExtensionDescription>High-End Music Player Plugin</ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Beta</DevelopmentStatus>
     <OnlineLocation>http://pureaudio-mediaportal-plugin.googlecode.com/svn/Downloads/PureAudio_0.2.8.0_Beta.mpe1</OnlineLocation>
-    <ReleaseDate>2014-01-26T19:30:24</ReleaseDate>
+    <ReleaseDate>2014-04-21T19:30:24</ReleaseDate>
     <Tags>audio,asio,gapless,bitperfect,replaygain</Tags>
-    <Location>D:\Development\MediaPortal\SVN\PureAudio\Downloads\PureAudio_0.2.8.0_Beta2.mpe1</Location>
+    <Location>D:\Development\MediaPortal\SVN\PureAudio\Downloads\PureAudio_0.2.8.2_Beta.mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">

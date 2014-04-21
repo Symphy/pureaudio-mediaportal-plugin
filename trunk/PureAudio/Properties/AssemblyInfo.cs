@@ -53,10 +53,10 @@ using MediaPortal.Utils;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.2.7.2")]
-[assembly: AssemblyFileVersion("0.2.7.2")]
-[assembly: AssemblyInformationalVersion("0.2.8.0 beta")]
+[assembly: AssemblyVersion("0.2.7.3")]
+[assembly: AssemblyFileVersion("0.2.7.3")]
+[assembly: AssemblyInformationalVersion("0.2.8.2 beta")]
 
-[assembly: CompatibleVersion("1.6.000.0")]
+[assembly: CompatibleVersion("1.7.000.0")]
 [assembly: UsesSubsystem("MP.DB.Music")]
 

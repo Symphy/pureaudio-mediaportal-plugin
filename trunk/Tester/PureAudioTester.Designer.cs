@@ -62,7 +62,7 @@ namespace PureAudioTester
       // btnStart
       // 
       this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnStart.Location = new System.Drawing.Point(635, 9);
+      this.btnStart.Location = new System.Drawing.Point(809, 9);
       this.btnStart.Name = "btnStart";
       this.btnStart.Size = new System.Drawing.Size(103, 23);
       this.btnStart.TabIndex = 0;
@@ -73,7 +73,7 @@ namespace PureAudioTester
       // btnStop
       // 
       this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnStop.Location = new System.Drawing.Point(635, 67);
+      this.btnStop.Location = new System.Drawing.Point(809, 67);
       this.btnStop.Name = "btnStop";
       this.btnStop.Size = new System.Drawing.Size(103, 23);
       this.btnStop.TabIndex = 1;
@@ -84,7 +84,7 @@ namespace PureAudioTester
       // btnPause
       // 
       this.btnPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnPause.Location = new System.Drawing.Point(635, 38);
+      this.btnPause.Location = new System.Drawing.Point(809, 38);
       this.btnPause.Name = "btnPause";
       this.btnPause.Size = new System.Drawing.Size(103, 23);
       this.btnPause.TabIndex = 2;
@@ -100,7 +100,7 @@ namespace PureAudioTester
       // btnBack
       // 
       this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnBack.Location = new System.Drawing.Point(635, 96);
+      this.btnBack.Location = new System.Drawing.Point(809, 96);
       this.btnBack.Name = "btnBack";
       this.btnBack.Size = new System.Drawing.Size(103, 23);
       this.btnBack.TabIndex = 4;
@@ -111,7 +111,7 @@ namespace PureAudioTester
       // btnForward
       // 
       this.btnForward.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnForward.Location = new System.Drawing.Point(635, 125);
+      this.btnForward.Location = new System.Drawing.Point(809, 125);
       this.btnForward.Name = "btnForward";
       this.btnForward.Size = new System.Drawing.Size(103, 23);
       this.btnForward.TabIndex = 5;
@@ -122,7 +122,7 @@ namespace PureAudioTester
       // btnToggleMode
       // 
       this.btnToggleMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnToggleMode.Location = new System.Drawing.Point(635, 154);
+      this.btnToggleMode.Location = new System.Drawing.Point(809, 154);
       this.btnToggleMode.Name = "btnToggleMode";
       this.btnToggleMode.Size = new System.Drawing.Size(103, 23);
       this.btnToggleMode.TabIndex = 6;
@@ -133,7 +133,7 @@ namespace PureAudioTester
       // btnConfig
       // 
       this.btnConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnConfig.Location = new System.Drawing.Point(635, 183);
+      this.btnConfig.Location = new System.Drawing.Point(809, 183);
       this.btnConfig.Name = "btnConfig";
       this.btnConfig.Size = new System.Drawing.Size(103, 23);
       this.btnConfig.TabIndex = 8;
@@ -146,19 +146,19 @@ namespace PureAudioTester
       this.tbEvents.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.tbEvents.BackColor = System.Drawing.SystemColors.Window;
-      this.tbEvents.Location = new System.Drawing.Point(635, 241);
+      this.tbEvents.Location = new System.Drawing.Point(609, 151);
       this.tbEvents.Multiline = true;
       this.tbEvents.Name = "tbEvents";
       this.tbEvents.ReadOnly = true;
       this.tbEvents.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-      this.tbEvents.Size = new System.Drawing.Size(103, 275);
+      this.tbEvents.Size = new System.Drawing.Size(191, 365);
       this.tbEvents.TabIndex = 11;
       // 
       // label3
       // 
       this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.label3.AutoSize = true;
-      this.label3.Location = new System.Drawing.Point(632, 225);
+      this.label3.Location = new System.Drawing.Point(606, 135);
       this.label3.Name = "label3";
       this.label3.Size = new System.Drawing.Size(43, 13);
       this.label3.TabIndex = 12;
@@ -175,13 +175,13 @@ namespace PureAudioTester
       this.tbLog.Name = "tbLog";
       this.tbLog.ReadOnly = true;
       this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-      this.tbLog.Size = new System.Drawing.Size(611, 365);
+      this.tbLog.Size = new System.Drawing.Size(588, 365);
       this.tbLog.TabIndex = 13;
       // 
       // btnGetFile
       // 
       this.btnGetFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnGetFile.Location = new System.Drawing.Point(604, 7);
+      this.btnGetFile.Location = new System.Drawing.Point(778, 7);
       this.btnGetFile.Name = "btnGetFile";
       this.btnGetFile.Size = new System.Drawing.Size(25, 23);
       this.btnGetFile.TabIndex = 14;
@@ -196,7 +196,7 @@ namespace PureAudioTester
       this.cboFileName.FormattingEnabled = true;
       this.cboFileName.Location = new System.Drawing.Point(78, 9);
       this.cboFileName.Name = "cboFileName";
-      this.cboFileName.Size = new System.Drawing.Size(520, 21);
+      this.cboFileName.Size = new System.Drawing.Size(694, 21);
       this.cboFileName.TabIndex = 15;
       this.cboFileName.Validated += new System.EventHandler(this.cboFileName_Validated);
       // 
@@ -215,6 +215,8 @@ namespace PureAudioTester
       // 
       // groupBox1
       // 
+      this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
       this.groupBox1.Controls.Add(this.label20);
       this.groupBox1.Controls.Add(this.lblCurrentFileType);
       this.groupBox1.Controls.Add(this.label6);
@@ -227,7 +229,7 @@ namespace PureAudioTester
       this.groupBox1.Controls.Add(this.lblCurrentPosition);
       this.groupBox1.Location = new System.Drawing.Point(15, 38);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(611, 92);
+      this.groupBox1.Size = new System.Drawing.Size(785, 92);
       this.groupBox1.TabIndex = 23;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Properties";
@@ -331,11 +333,11 @@ namespace PureAudioTester
       this.label7.TabIndex = 24;
       this.label7.Text = "Log:";
       // 
-      // PureAudioTest
+      // PureAudioTester
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(750, 528);
+      this.ClientSize = new System.Drawing.Size(924, 528);
       this.Controls.Add(this.label7);
       this.Controls.Add(this.groupBox1);
       this.Controls.Add(this.label4);
@@ -351,7 +353,7 @@ namespace PureAudioTester
       this.Controls.Add(this.btnPause);
       this.Controls.Add(this.btnStop);
       this.Controls.Add(this.btnStart);
-      this.Name = "PureAudioTest";
+      this.Name = "PureAudioTester";
       this.Text = "PureAudio Tester";
       this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PureAudioTest_FormClosed);
       this.Load += new System.EventHandler(this.PureAudioTest_Load);

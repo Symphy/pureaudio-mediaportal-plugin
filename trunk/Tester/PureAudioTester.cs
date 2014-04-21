@@ -44,6 +44,7 @@ namespace PureAudioTester
       _BASSPlayer.MonitorProcess += new BASSPlayer.MonitorProcessDelegate(_BASSPlayer_MonitorProcess);
       _BASSPlayer.MetaStreamTagsChanged += new BASSPlayer.MetaStreamTagsChangedDelegate(_BASSPlayer_MetaStreamTagsChanged);
       _BASSPlayer.StreamTagsChanged += new BASSPlayer.StreamTagsChangedDelegate(_BASSPlayer_StreamTagsChanged);
+      _BASSPlayer.WaitCursorRequested += new BASSPlayer.WaitCursorRequestedDelegate(_BASSPlayer_WaitCursorRequested);
       
       Log.Write += new Log.LogDelegate(Log_Write);
 
@@ -191,6 +192,11 @@ namespace PureAudioTester
     void _BASSPlayer_StreamTagsChanged(object sender, string[] tags)
     {
       LogEvent("StreamTagsChanged");
+    }
+
+    void _BASSPlayer_WaitCursorRequested(object sender, BASSPlayer.WaitCursorRequest request)
+    {
+      LogEvent(String.Format("WaitCursorRequested({0})", request));
     }
 
     void Log_Write(Log.LogType logType, string format, params object[] arg)
