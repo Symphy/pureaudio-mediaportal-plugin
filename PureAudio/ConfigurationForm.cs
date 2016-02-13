@@ -2523,13 +2523,13 @@ namespace MediaPortal.Player.PureAudio
     private void lnkDownLoad_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
       Process.Start(
-        "http://code.google.com/p/pureaudio-mediaportal-plugin");
+        "https://github.com/Symphy/pureaudio-mediaportal-plugin");
     }
 
     private void lnkForum_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
       Process.Start(
-        "http://forum.team-mediaportal.com/asio-music-player-245/");
+        "http://forum.team-mediaportal.com/forums/asio-music-player.245/");
     }
 
     private void rbUseASIO_CheckedChanged(object sender, EventArgs e)

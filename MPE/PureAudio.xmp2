@@ -164,44 +164,28 @@ Click Next to continue or Cancel to exit Setup.</Value>
     </Items>
   </Dependencies>
   <PluginDependencies>
-    <Items>
-      <PluginDependencyItem AssemblyName="PureAudio.dll">
-        <CompatibleVersion>
-          <Items>
-            <CompatibleVersionItem>
-              <MinRequiredVersion>1.7.0.0</MinRequiredVersion>
-              <DesignedForVersion>1.7.0.0</DesignedForVersion>
-            </CompatibleVersionItem>
-          </Items>
-        </CompatibleVersion>
-        <SubSystemsUsed>
-          <Items>
-            <SubSystemItem Name="MP.DB.Music" />
-          </Items>
-        </SubSystemsUsed>
-      </PluginDependencyItem>
-    </Items>
+    <Items />
   </PluginDependencies>
   <GeneralInfo>
     <Name>PureAudio </Name>
     <Id>e316da11-c3ac-4eba-bb92-570a65ad8de2</Id>
     <Author>Sieds Tilstra (Symphy)</Author>
-    <HomePage>http://pureaudio-mediaportal-plugin.googlecode.com</HomePage>
-    <ForumPage>http://forum.team-mediaportal.com/asio-music-player-245/</ForumPage>
+    <HomePage>https://github.com/Symphy/pureaudio-mediaportal-plugin</HomePage>
+    <ForumPage>http://forum.team-mediaportal.com/forums/asio-music-player.245/</ForumPage>
     <UpdateUrl>http://pureaudio-mediaportal-plugin.googlecode.com/svn/trunk/MPE/update.xml</UpdateUrl>
     <Version>
       <Major>0</Major>
       <Minor>2</Minor>
       <Build>8</Build>
-      <Revision>2</Revision>
+      <Revision>3</Revision>
     </Version>
     <ExtensionDescription>High-End Music Player Plugin</ExtensionDescription>
     <VersionDescription />
-    <DevelopmentStatus>Beta</DevelopmentStatus>
+    <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>http://pureaudio-mediaportal-plugin.googlecode.com/svn/Downloads/PureAudio_0.2.8.0_Beta.mpe1</OnlineLocation>
-    <ReleaseDate>2014-04-21T19:30:24</ReleaseDate>
+    <ReleaseDate>2016-02-13T19:30:24</ReleaseDate>
     <Tags>audio,asio,gapless,bitperfect,replaygain</Tags>
-    <Location>D:\Development\MediaPortal\SVN\PureAudio\Downloads\PureAudio_0.2.8.2_Beta.mpe1</Location>
+    <Location>D:\Development\MediaPortal\GitHub\PureAudio\trunk\MPE\PureAudio_0.2.8.3.mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">
