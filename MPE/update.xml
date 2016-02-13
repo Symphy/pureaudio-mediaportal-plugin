@@ -540,5 +540,119 @@
       </ProjectSettings>
       <IsSkin>false</IsSkin>
     </PackageClass>
+    <PackageClass>
+      <Version>2.0</Version>
+      <Groups>
+        <Items>
+          <GroupItem Name="Default">
+            <DisplayName>Default</DisplayName>
+            <DefaulChecked>true</DefaulChecked>
+            <Description>Default</Description>
+            <Files>
+              <Items />
+            </Files>
+          </GroupItem>
+        </Items>
+      </Groups>
+      <Sections>
+        <Items />
+      </Sections>
+      <Dependencies>
+        <Items>
+          <DependencyItem>
+            <Type>MediaPortal</Type>
+            <Id />
+            <MinVersion>
+              <Major>1</Major>
+              <Minor>1</Minor>
+              <Build>6</Build>
+              <Revision>27644</Revision>
+            </MinVersion>
+            <MaxVersion>
+              <Major>1</Major>
+              <Minor>1</Minor>
+              <Build>6</Build>
+              <Revision>27644</Revision>
+            </MaxVersion>
+            <WarnOnly>true</WarnOnly>
+            <Message>This version of PureAudio  requires MediaPortal 1.2.0 Beta or higher!</Message>
+            <Name>MediaPortal</Name>
+          </DependencyItem>
+        </Items>
+      </Dependencies>
+      <PluginDependencies>
+        <Items>
+          <PluginDependencyItem AssemblyName="PureAudio.dll">
+            <CompatibleVersion>
+              <Items>
+                <CompatibleVersionItem>
+                  <MinRequiredVersion>1.13.0.0</MinRequiredVersion>
+                  <DesignedForVersion>1.13.0.0</DesignedForVersion>
+                </CompatibleVersionItem>
+              </Items>
+            </CompatibleVersion>
+            <SubSystemsUsed>
+              <Items>
+                <SubSystemItem Name="MP.DB.Music" />
+              </Items>
+            </SubSystemsUsed>
+          </PluginDependencyItem>
+        </Items>
+      </PluginDependencies>
+      <GeneralInfo>
+        <Name>PureAudio </Name>
+        <Id>e316da11-c3ac-4eba-bb92-570a65ad8de2</Id>
+        <Author>Sieds Tilstra (Symphy)</Author>
+        <HomePage>https://github.com/Symphy/pureaudio-mediaportal-plugin</HomePage>
+        <ForumPage>http://forum.team-mediaportal.com/forums/asio-music-player.245/</ForumPage>
+        <UpdateUrl>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.8.3/update.xml</UpdateUrl>
+        <Version>
+          <Major>0</Major>
+          <Minor>2</Minor>
+          <Build>8</Build>
+          <Revision>3</Revision>
+        </Version>
+        <ExtensionDescription>High-End Music Player Plugin</ExtensionDescription>
+        <VersionDescription />
+        <DevelopmentStatus>Stable</DevelopmentStatus>
+        <OnlineLocation>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.8.3/PureAudio_0.2.8.3.mpe1</OnlineLocation>
+        <ReleaseDate>2016-02-13T19:30:24</ReleaseDate>
+        <Tags>audio,asio,gapless,bitperfect,replaygain</Tags>
+        <Location>D:\Development\MediaPortal\GitHub\PureAudio\trunk\MPE\PureAudio_0.2.8.3.mpe1</Location>
+        <Params>
+          <Items>
+            <SectionParam Name="Online Icon">
+              <Value />
+              <ValueType>String</ValueType>
+              <Description>The icon file of the package stored online (jpg,png,bmp)</Description>
+            </SectionParam>
+            <SectionParam Name="Configuration file">
+              <Value>%Plugins%\ExternalPlayers\PureAudio.dll</Value>
+              <ValueType>Template</ValueType>
+              <Description>The file used to configure the extension.
+ If have .exe extension the will be executed
+ If have .dll extension used like MP plugin configuration</Description>
+            </SectionParam>
+            <SectionParam Name="Online Screenshots">
+              <Value />
+              <ValueType>String</ValueType>
+              <Description>Online stored screenshot urls separated by ; </Description>
+            </SectionParam>
+            <SectionParam Name="Force to uninstall on update">
+              <Value>YES</Value>
+              <ValueType>Bool</ValueType>
+              <Description>Show dialog and force to uninstall previous version when updating an extension. Should only be disabled if you are using an NSIS/MSI installer.</Description>
+            </SectionParam>
+          </Items>
+        </Params>
+      </GeneralInfo>
+      <UniqueFileList>
+        <Items />
+      </UniqueFileList>
+      <ProjectSettings>
+        <FolderGroups />
+      </ProjectSettings>
+      <IsSkin>false</IsSkin>
+    </PackageClass>
   </Items>
 </ExtensionCollection>
