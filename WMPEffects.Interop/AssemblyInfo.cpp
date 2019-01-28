@@ -36,10 +36,10 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute("")];
 [assembly:AssemblyCompanyAttribute("Sieds Tilstra (aka Symphy)")];
 [assembly:AssemblyProductAttribute("MediaPortal")];
-[assembly:AssemblyCopyrightAttribute("Copyright © 2016 Team MediaPortal")];
+[assembly:AssemblyCopyrightAttribute("Copyright © 2019 Team MediaPortal")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
-[assembly:AssemblyVersionAttribute("0.2.8.3")];
+[assembly:AssemblyVersionAttribute("0.2.8.5")];
 
 [assembly:ComVisible(false)];
 

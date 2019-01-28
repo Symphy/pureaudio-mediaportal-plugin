@@ -1,0 +1,17 @@
+*.obj
+*.dll
+*.pdb
+*.suo
+*.sdf
+*.mpe1
+Dependencies/
+ASIO.Interop/Debug/
+ASIO.Interop/Release/
+ASIO.Interop/output/
+WMPEffects.Interop/Debug/
+WMPEffects.Interop/Release/
+WMPEffects.Interop/output/
+PureAudio/obj/
+PureAudio/obj/
+Tester/obj/
+ipch/

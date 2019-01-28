@@ -32,7 +32,7 @@ using MediaPortal.Utils;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sieds Tilstra (aka Symphy)")]
 [assembly: AssemblyProduct("MediaPortal")]
-[assembly: AssemblyCopyright("Copyright © 2016 Team MediaPortal")]
+[assembly: AssemblyCopyright("Copyright © 2019 Team MediaPortal")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -53,10 +53,10 @@ using MediaPortal.Utils;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.2.8.3")]
-[assembly: AssemblyFileVersion("0.2.8.3")]
-[assembly: AssemblyInformationalVersion("0.2.8.3")]
+[assembly: AssemblyVersion("0.2.8.5")]
+[assembly: AssemblyFileVersion("0.2.8.5")]
+[assembly: AssemblyInformationalVersion("0.2.8.5")]
 
-[assembly: CompatibleVersion("1.13.000.0")]
+[assembly: CompatibleVersion("1.21.000.0")]
 [assembly: UsesSubsystem("MP.DB.Music")]
 
