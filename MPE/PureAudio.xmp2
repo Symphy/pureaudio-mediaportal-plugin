@@ -169,8 +169,8 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <CompatibleVersion>
           <Items>
             <CompatibleVersionItem>
-              <MinRequiredVersion>1.21.0.0</MinRequiredVersion>
-              <DesignedForVersion>1.21.0.0</DesignedForVersion>
+              <MinRequiredVersion>1.25.0.0</MinRequiredVersion>
+              <DesignedForVersion>1.25.0.0</DesignedForVersion>
             </CompatibleVersionItem>
           </Items>
         </CompatibleVersion>
@@ -188,20 +188,20 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Author>Sieds Tilstra (Symphy)</Author>
     <HomePage>https://github.com/Symphy/pureaudio-mediaportal-plugin</HomePage>
     <ForumPage>http://forum.team-mediaportal.com/forums/asio-music-player.245/</ForumPage>
-    <UpdateUrl>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.8.5/update.xml</UpdateUrl>
+    <UpdateUrl>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.9.0/update.xml</UpdateUrl>
     <Version>
       <Major>0</Major>
       <Minor>2</Minor>
-      <Build>8</Build>
-      <Revision>5</Revision>
+      <Build>9</Build>
+      <Revision>0</Revision>
     </Version>
     <ExtensionDescription>High-End Music Player Plugin</ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.8.5/PureAudio_0.2.8.5.mpe1</OnlineLocation>
-    <ReleaseDate>2019-01-27T19:30:24</ReleaseDate>
+    <OnlineLocation>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.8.5/PureAudio_0.2.9.0.mpe1</OnlineLocation>
+    <ReleaseDate>2020-07-31T19:30:24</ReleaseDate>
     <Tags>audio,asio,gapless,bitperfect,replaygain</Tags>
-    <Location>D:\Development\MediaPortal\GitHub\pureaudio-mediaportal-plugin\MPE\PureAudio_0.2.8.5.mpe1</Location>
+    <Location>D:\Development\MediaPortal\GitHub\pureaudio-mediaportal-plugin\MPE\PureAudio_0.2.9.0.mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">

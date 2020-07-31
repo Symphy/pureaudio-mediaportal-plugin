@@ -24,18 +24,19 @@
 
 #pragma endregion
 
-#pragma once
-#pragma managed
-using namespace System;
-
 #include "AsioRedirect.h"
 #include "InstalledDriver.h"
 
-namespace BlueWave
+#pragma once
+#pragma managed
+
+using namespace System;
+
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			// represents an ASIO driver (also some static for all drivers)
 			public ref class AsioDriver
@@ -55,9 +56,9 @@ namespace BlueWave
 				ASIOCallbacks* _pCallbacks;
 
 				// create eventArgs instance once to pass on to bufferupdate event
-        EventArgs^ _bufferUpdateEventArgs;
+				EventArgs^ _bufferUpdateEventArgs;
 
-        // the number of input channels supported by the driver, and our max
+				// the number of input channels supported by the driver, and our max
 				int _nInputs;
 
 				// and the number of output channels
@@ -65,7 +66,7 @@ namespace BlueWave
 
 				// the buffersize we're actually using
 				int _bufferSize;
-				
+
 				// is it usefull to call outputReady each time we have updated the outputbuffers 
 				ASIOError _outputReadySupport;
 
@@ -101,25 +102,25 @@ namespace BlueWave
 			public:
 
 				// returns the installed drivers
-				static property array<InstalledDriver^>^ InstalledDrivers	{ array<InstalledDriver^>^ get(); }
+				static property array<InstalledDriver^>^ InstalledDrivers { array<InstalledDriver^>^ get(); }
 
 				// select and initialise driver
 				static AsioDriver^ SelectDriver(InstalledDriver^ installedDriver, IntPtr sysHandle);
 
-        // basic information properties
-				property int					Version					{ int get(); }
-				property String^				DriverName				{ String^ get(); }
-				property int					BufferSize				{ int get(); }
-				property BufferInfo^			Buffer					{ BufferInfo^ get(); }
-				property LatencyInfo^			Latency					{ LatencyInfo^ get(); }
-				property array<Channel^>^		InputChannels			{ array<Channel^>^ get(); }
-				property array<Channel^>^		OutputChannels			{ array<Channel^>^ get(); }
-				property ASIOError				LastASIOError			{ ASIOError get(); }
+				// basic information properties
+				property int					Version { int get(); }
+				property String^				DriverName { String^ get(); }
+				property int					BufferSize { int get(); }
+				property BufferInfo^			Buffer { BufferInfo^ get(); }
+				property LatencyInfo^			Latency { LatencyInfo^ get(); }
+				property array<Channel^>^		InputChannels { array<Channel^>^ get(); }
+				property array<Channel^>^		OutputChannels { array<Channel^>^ get(); }
+				property ASIOError				LastASIOError { ASIOError get(); }
 
 				// contructor
-        AsioDriver();
-        
-        // basic methods
+				AsioDriver();
+
+				// basic methods
 				bool Start();
 				bool Stop();
 				bool ShowControlPanel();

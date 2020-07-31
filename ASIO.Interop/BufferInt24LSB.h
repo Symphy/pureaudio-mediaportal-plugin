@@ -32,11 +32,11 @@
 
 using namespace System;
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			// represents the buffer for an ASIO channel
 			public ref class BufferInt24LSB : ChannelBuffer

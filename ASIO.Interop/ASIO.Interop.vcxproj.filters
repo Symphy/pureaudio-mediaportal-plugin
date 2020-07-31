@@ -58,9 +58,6 @@
     <ClInclude Include="AsioRedirect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ASIOSampleType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BufferInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>

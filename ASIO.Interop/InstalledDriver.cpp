@@ -32,11 +32,11 @@ using namespace Microsoft::Win32;
 // and we need this for typed lists
 using namespace System::Collections::Generic;
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			InstalledDriver::InstalledDriver(String^ name, String^ clsId)
 			{

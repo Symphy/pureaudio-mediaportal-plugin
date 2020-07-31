@@ -27,8 +27,6 @@
 #ifndef _ASIOREDIRECT_H_
 #define _ASIOREDIRECT_H_
 
-#pragma unmanaged
-
 #include "rpc.h"
 #include "rpcndr.h"
 
@@ -38,8 +36,9 @@
 #define IEEE754_64FLOAT		-1
 
 // including Asio.h directly confuses things somewhat, so we redirect to it from here
-
 #include "Asio.h"
+
+#pragma unmanaged
 
 // now we define the COM interface
 interface IAsio : public IUnknown
@@ -67,5 +66,4 @@ interface IAsio : public IUnknown
 	virtual ASIOError outputReady() = 0;
 };
 
-#pragma managed
 #endif // _ASIOREDIRECT_H_

@@ -24,13 +24,14 @@
 
 #pragma endregion
 
+#include "AsioRedirect.h"
 #include "Channel.h"
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			Channel::Channel(IAsio* pAsio, bool IsInput, int channelNumber, void* pTheirBuffer0, void* pTheirBuffer1)
 			{
@@ -47,7 +48,7 @@ namespace BlueWave
 				// get channelinfo
 				_isInput = pChannelInfo->isInput != 0;
 				_name = gcnew String(pChannelInfo->name);
-				_sampleType = (AsioSampleType)pChannelInfo->type;
+				_sampleType = (ASIOSampleType)pChannelInfo->type;
 				
 				// create an object representing the buffer
 				switch (_sampleType)
@@ -77,7 +78,7 @@ namespace BlueWave
 				return _name;
 			}
 
-			AsioSampleType Channel::SampleType::get()
+			ASIOSampleType Channel::SampleType::get()
 			{
 				return _sampleType;
 			}

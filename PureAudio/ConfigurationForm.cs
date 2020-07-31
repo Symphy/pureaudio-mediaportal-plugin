@@ -26,7 +26,7 @@ using MediaPortal.GUI.Library;
 using Un4seen.Bass;
 using Un4seen.BassWasapi;
 using MediaPortal.Player.PureAudio.Asio;
-using BlueWave.Interop.Asio;
+using PureAudio.Asio.Interop;
 using System.Diagnostics;
 using WMPEffects.Interop;
 

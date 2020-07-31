@@ -26,11 +26,11 @@
 
 #include "ChannelBuffer.h"
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			ChannelBuffer::ChannelBuffer()
 			{

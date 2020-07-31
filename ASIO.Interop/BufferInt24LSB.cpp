@@ -26,11 +26,11 @@
 
 #include "BufferInt24LSB.h"
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			BufferInt24LSB::BufferInt24LSB(void* pTheirBuffer0, void* pTheirBuffer1) : BufferInt24LSB::ChannelBuffer()
 			{

@@ -33,7 +33,7 @@ using Un4seen.Bass.AddOn.Vst;
 using Un4seen.Bass.AddOn.WaDsp;
 using Un4seen.Bass.AddOn.Tags;
 using Un4seen.Bass.Misc;
-using BlueWave.Interop.Asio;
+using PureAudio.Asio.Interop;
 using MediaPortal.Player.PureAudio.Asio;
 using System.IO;
 

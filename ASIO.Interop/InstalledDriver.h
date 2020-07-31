@@ -26,13 +26,14 @@
 
 #pragma once
 #pragma managed
+
 using namespace System;
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			// represents an installed ASIO driver
 			public ref class InstalledDriver

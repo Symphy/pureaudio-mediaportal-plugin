@@ -15,3 +15,7 @@ PureAudio/obj/
 PureAudio/obj/
 Tester/obj/
 ipch/
+/.vs/PureAudioPlugin/v15
+/Tester/bin/x86/Debug
+/WMPEffects.Interop/WMPEffects.Interop.vcxproj.user
+/ASIO.Interop/ASIO.Interop.vcxproj.user

@@ -26,11 +26,11 @@
 
 #include "BufferInfo.h"
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			BufferInfo::BufferInfo(IAsio* pAsio)
 			{

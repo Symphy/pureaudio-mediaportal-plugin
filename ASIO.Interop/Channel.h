@@ -24,7 +24,6 @@
 
 #pragma endregion
 
-#include "ASIOSampleType.h"
 #include "ChannelBuffer.h"
 #include "BufferInt32LSB.h"
 #include "BufferInt24LSB.h"
@@ -35,11 +34,11 @@
 
 using namespace System;
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			// represents a single audio channel (input or output) on the soundcard
 			public ref class Channel
@@ -53,7 +52,7 @@ namespace BlueWave
 				String^ _name;
 
 				// sample format
-				AsioSampleType _sampleType;
+				ASIOSampleType _sampleType;
 
 				// the actual buffer
 				ChannelBuffer^ _buffer;
@@ -70,7 +69,7 @@ namespace BlueWave
 				property String^ Name { String^ get(); }
 
 				// the sample type
-				property AsioSampleType SampleType { AsioSampleType get(); }
+				property ASIOSampleType SampleType { ASIOSampleType get(); }
 
 				// indexer for setting the value of sample in the buffer
 				property float default[int] { void set(int sample, float value); float get(int sample); }

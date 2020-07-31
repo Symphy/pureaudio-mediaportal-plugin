@@ -36,13 +36,12 @@
 #define ENABLETRACE 0
 
 using namespace System::Diagnostics;
-//using namespace MediaPortal::GUI::Library;
 
-namespace BlueWave
+namespace PureAudio
 {
-	namespace Interop
+	namespace Asio
 	{
-		namespace Asio
+		namespace Interop
 		{
 			array<InstalledDriver^>^ AsioDriver::InstalledDrivers::get()
 			{
