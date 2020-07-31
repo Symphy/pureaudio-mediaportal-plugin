@@ -66,7 +66,7 @@
         <Author>Sieds Tilstra (Symphy)</Author>
         <HomePage>https://github.com/Symphy/pureaudio-mediaportal-plugin</HomePage>
         <ForumPage>http://forum.team-mediaportal.com/forums/asio-music-player.245/</ForumPage>
-        <UpdateUrl>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.8.5/update.xml</UpdateUrl>
+        <UpdateUrl>https://raw.githubusercontent.com/Symphy/pureaudio-mediaportal-plugin/master/MPE/update.xml</UpdateUrl>
         <Version>
           <Major>0</Major>
           <Minor>2</Minor>
@@ -180,7 +180,7 @@
         <Author>Sieds Tilstra (Symphy)</Author>
         <HomePage>https://github.com/Symphy/pureaudio-mediaportal-plugin</HomePage>
         <ForumPage>http://forum.team-mediaportal.com/forums/asio-music-player.245/</ForumPage>
-        <UpdateUrl>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.9.0/update.xml</UpdateUrl>
+        <UpdateUrl>https://raw.githubusercontent.com/Symphy/pureaudio-mediaportal-plugin/master/MPE/update.xml</UpdateUrl>
         <Version>
           <Major>0</Major>
           <Minor>2</Minor>
