@@ -190,7 +190,7 @@
         <ExtensionDescription>High-End Music Player Plugin</ExtensionDescription>
         <VersionDescription />
         <DevelopmentStatus>Stable</DevelopmentStatus>
-        <OnlineLocation>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.8.5/PureAudio_0.2.9.0.mpe1</OnlineLocation>
+        <OnlineLocation>https://github.com/Symphy/pureaudio-mediaportal-plugin/releases/download/v0.2.9.0/PureAudio_0.2.9.0.mpe1</OnlineLocation>
         <ReleaseDate>2020-07-31T19:30:24</ReleaseDate>
         <Tags>audio,asio,gapless,bitperfect,replaygain</Tags>
         <Location>D:\Development\MediaPortal\GitHub\pureaudio-mediaportal-plugin\MPE\PureAudio_0.2.9.0.mpe1</Location>
